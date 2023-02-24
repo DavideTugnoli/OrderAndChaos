@@ -1,4 +1,5 @@
 package entities;
+import exceptions.InvalidMoveException;
 public class Board {
     private final Cell[][] gameBoard;
     private final int size;
@@ -28,7 +29,13 @@ public class Board {
         return size;
     }
 
-    public void makeMove(int row, int col, CellState state) {
+    public void makeMove(int row, int col, CellState state) throws InvalidMoveException {
+        if (row < 0 || row >= size || col < 0 || col >= size) {
+            throw new InvalidMoveException("Cell coordinates are out of bounds");
+        }
+        if (gameBoard[row][col].getState() != CellState.EMPTY) {
+            throw new InvalidMoveException("Cell is already occupied");
+        }
         gameBoard[row][col].setState(state);
     }
 }
