@@ -7,6 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import exceptions.InvalidMoveException;
 
 class BoardTest {
+    @Test
+    public void testGetCell() {
+        Board board = new Board();
+        Cell cell = board.getCell(0, 0);
+        assertNotNull(cell);
+        assertEquals(CellState.EMPTY, cell.getState());
+    }
+
     // verifica che tutte le celle della tavola siano vuote quando la tavola viene inizializzata.
     @Test
     void testEmptyBoard() {
@@ -39,5 +47,26 @@ class BoardTest {
         assertThrows(InvalidMoveException.class, () -> board.makeMove(board.getSize(), 0, CellState.X));
         assertThrows(InvalidMoveException.class, () -> board.makeMove(0, board.getSize(), CellState.X));
     }
+
+    @Test
+    void testBoardSize() {
+        int expectedSize = 6;
+        Board board = new Board(expectedSize);
+        assertEquals(expectedSize, board.getSize());
+    }
+
+    @Test
+    void testMakeMoveNotEmpty() throws InvalidMoveException {
+        Board board = new Board();
+        board.makeMove(0, 0, CellState.X);
+        assertFalse(board.isCellEmpty(0, 0));
+    }
+
+    @Test
+    public void testConstructor() {
+        Board board = new Board();
+        assertEquals(6, board.getSize());
+    }
+
 
 }
