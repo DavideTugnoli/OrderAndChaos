@@ -5,18 +5,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class CellTest {
+class CellTest {
     @Test
     void testNewCellIsEmpty() {
         Cell cell = new Cell(0, 0);
-        assertSame(cell.getState(), CellState.EMPTY);
+        assertSame(CellState.EMPTY, cell.getState());
     }
 
     @Test
     void testSetState() {
         Cell cell = new Cell(0, 0);
         cell.setState(CellState.X);
-        assertSame(cell.getState(), CellState.X);
+        assertSame(CellState.X, cell.getState());
     }
 
     @Test
