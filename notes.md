@@ -15,3 +15,13 @@
 - [X] Test 6: verifica che dopo aver fatto una mossa nella cella (0,0), la stessa cella non è più vuota.
 - [X] Test 7: verifica che la dimensione della tavola sia effettivamente quella specificata nel costruttore.
 - [X] Test 8: verificare che una board senza parametri sia una 6x6 di default.
+
+## Test classe WinChecker:
+- [ ] Test 1: verificare che il costruttore funzioni correttamente e che la variabile gameBoard sia inizializzata correttamente
+- [ ] Test 2: verificare che il metodo checkForWinner restituisca correttamente il vincitore se ci sono cinque pezzi dello stesso tipo in fila
+- [ ] Test 3: verificare che il metodo checkForWinner restituisca null se non ci sono cinque pezzi dello stesso tipo in fila
+- [ ] Test 4: verificare che il metodo checkForWinner restituisca null se non ci sono ancora abbastanza mosse per determinare un vincitore
+
+## Da aggiungere:
+- [ ] Istruzioni per versione da console
+- [ ] Regole di gioco

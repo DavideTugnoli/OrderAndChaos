@@ -8,7 +8,7 @@ import exceptions.InvalidMoveException;
 
 class BoardTest {
     @Test
-    public void testGetCell() {
+    void testGetCell() {
         Board board = new Board();
         Cell cell = board.getCell(0, 0);
         assertNotNull(cell);
@@ -63,10 +63,9 @@ class BoardTest {
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         Board board = new Board();
         assertEquals(6, board.getSize());
     }
-
 
 }
