@@ -11,24 +11,6 @@ public class MessagePrinter {
         System.out.println();
     }
 
-    public static void printOrder() {
-        System.out.println("******************************************************");
-        System.out.println("*                                                    *");
-        System.out.println("*                       ORDER                        *");
-        System.out.println("*                                                    *");
-        System.out.println("******************************************************");
-        System.out.println();
-    }
-
-    public static void printChaos() {
-        System.out.println("******************************************************");
-        System.out.println("*                                                    *");
-        System.out.println("*                       CHAOS                        *");
-        System.out.println("*                                                    *");
-        System.out.println("******************************************************");
-        System.out.println();
-    }
-
     public static void printWinner(Player player) {
         System.out.println("******************************************************");
         System.out.println("*                                                    *");

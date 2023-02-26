@@ -80,8 +80,8 @@ public class Board {
         return result;
     }
 
-    public CellState getCellState(int row, int col) {
+    /* public CellState getCellState(int row, int col) {
         return gameBoard[row][col].getState();
     }
-
+    */
 }

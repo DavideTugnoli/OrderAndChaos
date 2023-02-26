@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 
-public class BoardCheckerTest {
+class BoardCheckerTest {
     private BoardChecker checker;
     private Board board;
 
@@ -53,13 +53,10 @@ public class BoardCheckerTest {
     }
 
     @Test
-    void testIsNotChaosWinner() throws InvalidMoveException {
+    void testIsNotChaosWinnerNotFullBoard() throws InvalidMoveException {
         board.makeMove(0, 0, CellState.X);
         board.makeMove(0, 1, CellState.X);
-        board.makeMove(0, 2, CellState.X);
-        board.makeMove(0, 3, CellState.X);
-        board.makeMove(0, 4, CellState.X);
-        board.makeMove(0, 5, CellState.X);
+        board.makeMove(0, 2, CellState.O);
 
         assertFalse(checker.isChaosWinner());
     }
@@ -163,4 +160,56 @@ public class BoardCheckerTest {
         printer.printBoard(board);*/
         assertTrue(checker.isChaosWinner());
     }
+
+    @Test
+    void testIsGameOverOrderWin() throws InvalidMoveException {
+        board.makeMove(0, 0, CellState.X);
+        board.makeMove(0, 1, CellState.X);
+        board.makeMove(0, 2, CellState.X);
+        board.makeMove(0, 3, CellState.X);
+        board.makeMove(0, 4, CellState.X);
+        assertTrue(checker.isGameOver());
+    }
+
+    @Test
+    void testIsGameOverChaosWin() throws InvalidMoveException {
+        board.makeMove(0, 0, CellState.X);
+        board.makeMove(0, 1, CellState.O);
+        board.makeMove(0, 2, CellState.X);
+        board.makeMove(0, 3, CellState.O);
+        board.makeMove(0, 4, CellState.X);
+        board.makeMove(0, 5, CellState.X);
+        board.makeMove(1, 0, CellState.X);
+        board.makeMove(1, 1, CellState.O);
+        board.makeMove(1, 2, CellState.X);
+        board.makeMove(1, 3, CellState.O);
+        board.makeMove(1, 4, CellState.X);
+        board.makeMove(1, 5, CellState.O);
+        board.makeMove(2, 0, CellState.O);
+        board.makeMove(2, 1, CellState.X);
+        board.makeMove(2, 2, CellState.X);
+        board.makeMove(2, 3, CellState.X);
+        board.makeMove(2, 4, CellState.X);
+        board.makeMove(2, 5, CellState.O);
+        board.makeMove(3, 0, CellState.X);
+        board.makeMove(3, 1, CellState.O);
+        board.makeMove(3, 2, CellState.X);
+        board.makeMove(3, 3, CellState.O);
+        board.makeMove(3, 4, CellState.O);
+        board.makeMove(3, 5, CellState.O);
+        board.makeMove(4, 0, CellState.X);
+        board.makeMove(4, 1, CellState.O);
+        board.makeMove(4, 2, CellState.O);
+        board.makeMove(4, 3, CellState.O);
+        board.makeMove(4, 4, CellState.X);
+        board.makeMove(4, 5, CellState.O);
+        board.makeMove(5, 0, CellState.X);
+        board.makeMove(5, 1, CellState.O);
+        board.makeMove(5, 2, CellState.X);
+        board.makeMove(5, 3, CellState.O);
+        board.makeMove(5, 4, CellState.X);
+        board.makeMove(5, 5, CellState.X);
+        assertTrue(checker.isGameOver());
+    }
+
 }
