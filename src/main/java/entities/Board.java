@@ -1,9 +1,8 @@
 package entities;
-import exceptions.InvalidMoveException;
+
 public class Board {
     private final Cell[][] gameBoard;
     private final int size;
-    private int remainingCells;
 
     public Board() {
         this(6);
@@ -12,7 +11,6 @@ public class Board {
     public Board(int size) {
         this.size = size;
         gameBoard = new Cell[size][size];
-        remainingCells = size * size;
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 gameBoard[row][col] = new Cell(row, col);
@@ -32,19 +30,15 @@ public class Board {
         return size;
     }
 
-    public void makeMove(int row, int col, CellState state) throws InvalidMoveException {
-        if (row < 0 || row >= size || col < 0 || col >= size) {
-            throw new InvalidMoveException("Cell coordinates are out of bounds");
-        }
-        if (gameBoard[row][col].getState() != CellState.EMPTY) {
-            throw new InvalidMoveException("Cell is already occupied");
-        }
-        gameBoard[row][col].setState(state);
-        remainingCells--;
-    }
-
     public boolean isFull() {
-        return remainingCells == 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (gameBoard[i][j].getState() == CellState.EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public CellState[] getRow(int row) {
@@ -80,8 +74,13 @@ public class Board {
         return result;
     }
 
-    /* public CellState getCellState(int row, int col) {
+    public CellState getCellState(int row, int col) {
         return gameBoard[row][col].getState();
     }
-    */
+
+    public void setCellState(int row, int col, CellState state) {
+        gameBoard[row][col].setState(state);
+    }
+
+
 }

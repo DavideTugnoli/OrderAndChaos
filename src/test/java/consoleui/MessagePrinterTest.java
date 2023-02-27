@@ -1,8 +1,5 @@
-package consolui;
+package consoleui;
 
-import consoleui.BoardPrinter;
-import consoleui.MessagePrinter;
-import entities.Board;
 import entities.Player;
 import entities.PlayerRole;
 import org.junit.jupiter.api.BeforeEach;
