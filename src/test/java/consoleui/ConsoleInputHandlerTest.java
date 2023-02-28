@@ -1,27 +1,34 @@
 package consoleui;
 
 import entities.CellState;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConsoleInputHandlerTest {
+
     @Test
-    void getValidInput_returnsValidInput() {
-        String input = "1,2\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
-
-        int[] actual = consoleInputHandler.getValidInput("Enter two numbers separated by a comma, each from 1 to 10: ", 1, 10);
-
-        int[] expected = {1, 2};
-        assertArrayEquals(expected, actual);
+    void testGetValidInputValid() {
+        String prompt = "Enter row and column separated by a comma: ";
+        int min = 1;
+        int max = 10;
+        int[] expected = {5, 7};
+        simulateUserInput("5, 7");
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        int[] result = inputHandler.getValidInput(prompt, min, max);
+        assertArrayEquals(expected, result);
     }
-
     @Test
     void getPieceSelection_returnsO() {
         String input = "O\n";
@@ -34,16 +41,13 @@ class ConsoleInputHandlerTest {
         assertEquals(CellState.O, actual);
     }
 
-    @Test
-    void getPieceSelection_returnsX() {
-        String input = "X\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
-
-        CellState actual = consoleInputHandler.getPieceSelection();
-
-        assertEquals(CellState.X, actual);
+    @ParameterizedTest
+    @ValueSource(strings = {"O", "X"})
+    void testGetPieceSelectionValid(String input) {
+        simulateUserInput(input);
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        CellState result = inputHandler.getPieceSelection();
+        assertEquals(input.equalsIgnoreCase("O") ? CellState.O : CellState.X, result);
     }
 
 
@@ -69,6 +73,21 @@ class ConsoleInputHandlerTest {
         assertFalse(new Scanner(System.in).hasNext());
         System.setIn(initialIn);
     }
+
+
+
+    // Helper methods to simulate user input and capture system out
+    private void simulateUserInput(String input) {
+        ByteArrayInputStream inContent = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inContent);
+    }
+
+    private String systemOut() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        return outContent.toString();
+    }
+
 }
 
 

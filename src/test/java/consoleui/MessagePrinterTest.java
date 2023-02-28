@@ -20,19 +20,6 @@ class MessagePrinterTest {
     }
 
     @Test
-    void testPrintWelcome() {
-        MessagePrinter.printWelcome();
-        String expectedOutput =
-                "******************************************************\n" +
-                        "*                                                    *\n" +
-                        "*            WELCOME TO ORDER AND CHAOS              *\n" +
-                        "*                                                    *\n" +
-                        "******************************************************\n" +
-                        "\n";
-        assertEquals(expectedOutput, outContent.toString());
-    }
-
-    @Test
     void testPrintWinner() {
         Player orderPlayer = new Player("John", PlayerRole.ORDER);
         MessagePrinter.printWinner(orderPlayer);

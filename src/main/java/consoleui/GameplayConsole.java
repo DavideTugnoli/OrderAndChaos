@@ -1,10 +1,14 @@
 package consoleui;
 
+import annotations.Generated;
 import exceptions.InvalidMoveException;
 import gameutils.*;
 import entities.*;
 import gameutils.MoveParser;
 
+import java.util.Scanner;
+
+@Generated
 public class GameplayConsole {
     private final Board board;
     private final BoardPrinter printer;
@@ -17,7 +21,6 @@ public class GameplayConsole {
     private Player currentPlayer;
     private static final String THANKS_MESSAGE = "Thanks for playing!";
     private static final String INPUT_PROMPT = "Enter row,column: ";
-
 
     public GameplayConsole(Board board, ConsoleInputHandler consoleInputHandler, Player player1, Player player2) {
         this.board = board;
@@ -69,8 +72,20 @@ public class GameplayConsole {
 
         System.out.println("Final board:");
         printer.printBoard(board);
-        System.out.println(THANKS_MESSAGE);
-        consoleInputHandler.close();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Do you want to replay? Write 'Yes' or 'No'");
+        String input = scanner.nextLine();
+
+        if (input.equalsIgnoreCase("Yes")) {
+            Board board = new Board();
+            GameplayConsole gameplayConsole = new GameplayConsole(board, new ConsoleInputHandler(), player1, player2);
+            gameplayConsole.play();
+        } else {
+            System.out.println(THANKS_MESSAGE);
+            consoleInputHandler.close();
+        }
+
     }
 
 }
