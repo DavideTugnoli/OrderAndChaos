@@ -1,4 +1,5 @@
 package gameutils;
+
 import entities.CellState;
 import exceptions.InvalidMoveException;
 import entities.Board;
@@ -11,7 +12,6 @@ public class MoveParser {
     }
 
     public boolean makeMove(int row, int col, CellState piece) throws InvalidMoveException {
-        //try {
         if (row < 0 || row >= board.getSize() || col < 0 || col >= board.getSize()) {
             throw new InvalidMoveException("Cell coordinates are out of bounds");
         }
@@ -20,10 +20,5 @@ public class MoveParser {
         }
         board.setCellState(row, col, piece);
         return true;
-    } /*catch (InvalidMoveException e) {
-            System.out.println("Invalid move: " + e.getMessage());
-            return false;
-        }*/
-    //}
-
+    }
 }

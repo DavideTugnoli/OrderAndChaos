@@ -12,18 +12,17 @@ public class ConsoleInputHandler {
     }
 
     public int[] getValidInput(String prompt, int min, int max) {
-        String input;
         int row;
         int col;
 
         while (true) {
             System.out.print(prompt);
-            input = scanner.nextLine();
+            String input = scanner.nextLine();
 
             try {
                 String[] parts = input.split(",");
-                row = Integer.parseInt(parts[0]);
-                col = Integer.parseInt(parts[1]);
+                row = Integer.parseInt(parts[0].trim());
+                col = Integer.parseInt(parts[1].trim());
                 if (row < min || row > max || col < min || col > max) {
                     throw new NumberFormatException();
                 }
@@ -57,4 +56,7 @@ public class ConsoleInputHandler {
         return piece;
     }
 
+    public void close() {
+        scanner.close();
+    }
 }

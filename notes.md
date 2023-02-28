@@ -34,3 +34,5 @@
 ## Da aggiungere:
 - [ ] Istruzioni per versione da console
 - [ ] Regole di gioco
+- [ ] Istruzioni per versione grafica
+- [ ] Inserire nomi di default quando non si inseriscono i nomi dei giocatori in console

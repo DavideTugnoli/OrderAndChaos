@@ -10,7 +10,7 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MessagePrinterTest {
+class MessagePrinterTest {
     private ByteArrayOutputStream outContent;
 
     @BeforeEach
@@ -23,7 +23,7 @@ public class MessagePrinterTest {
     void testPrintWelcome() {
         MessagePrinter.printWelcome();
         String expectedOutput =
-                        "******************************************************\n" +
+                "******************************************************\n" +
                         "*                                                    *\n" +
                         "*            WELCOME TO ORDER AND CHAOS              *\n" +
                         "*                                                    *\n" +
@@ -37,7 +37,7 @@ public class MessagePrinterTest {
         Player orderPlayer = new Player("John", PlayerRole.ORDER);
         MessagePrinter.printWinner(orderPlayer);
         String expectedOutput =
-                        "******************************************************\n" +
+                "******************************************************\n" +
                         "*                                                    *\n" +
                         "*                 JOHN WINS!                      *\n" +
                         "*                                                    *\n" +

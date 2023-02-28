@@ -78,8 +78,15 @@ class BoardTest {
 
     @Test
     void testBoardSize() {
-        int expectedSize = 6;
+        int expectedSize = 7;
         Board board = new Board(expectedSize);
+        assertEquals(expectedSize, board.getSize());
+    }
+
+    @Test
+    void testBoardSizeWithoutParameter() {
+        int expectedSize = 6;
+        Board board = new Board();
         assertEquals(expectedSize, board.getSize());
     }
 

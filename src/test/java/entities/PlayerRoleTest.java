@@ -1,9 +1,10 @@
 package entities;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PlayerRoleTest {
+class PlayerRoleTest {
     @Test
     void testOrderRole() {
         PlayerRole order = PlayerRole.ORDER;

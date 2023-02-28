@@ -23,8 +23,8 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsOrderWinnerHorizontal()  {
-        try{
+    void testIsOrderWinnerHorizontal() {
+        try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(0, 1, CellState.X);
             moveParser.makeMove(0, 2, CellState.X);
@@ -37,7 +37,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsOrderWinnerVertical()  {
+    void testIsOrderWinnerVertical() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(1, 0, CellState.X);
@@ -51,7 +51,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsOrderWinnerDiagonal()  {
+    void testIsOrderWinnerDiagonal() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(1, 1, CellState.X);
@@ -66,7 +66,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsNotChaosWinner()  {
+    void testIsNotChaosWinner() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(0, 1, CellState.X);
@@ -81,7 +81,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void isNotChaosWinner()  {
+    void isNotChaosWinner() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(0, 1, CellState.X);
@@ -95,7 +95,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsOrderWinnerInRow()  {
+    void testIsOrderWinnerInRow() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(0, 1, CellState.X);
@@ -109,7 +109,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsOrderWinnerInCol()  {
+    void testIsOrderWinnerInCol() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(1, 0, CellState.X);
@@ -123,7 +123,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsOrderWinnerInDiagonal()  {
+    void testIsOrderWinnerInDiagonal() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(1, 1, CellState.X);
@@ -137,7 +137,7 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsOrderWinnerInAntiDiagonal()  {
+    void testIsOrderWinnerInAntiDiagonal() {
         try {
             moveParser.makeMove(0, 5, CellState.X);
             moveParser.makeMove(1, 4, CellState.X);
@@ -151,7 +151,23 @@ class BoardCheckerTest {
     }
 
     @Test
-    void testIsChaosWinner()  {
+    void testIsChaosWinner() {
+        fillBoardWithMoves();
+        // The board should now be full
+        assertTrue(board.isFull());
+       /* BoardPrinter printer = new BoardPrinter();
+        printer.printBoard(board);*/
+        assertTrue(checker.isChaosWinner());
+    }
+
+    @Test
+    void testIsGameOverWhenBoardIsFull() {
+        // Riempie il tabellone con i movimenti di entrambi i giocatori
+        fillBoardWithMoves();
+        assertTrue(checker.isGameOver());
+    }
+
+    public void fillBoardWithMoves() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(0, 1, CellState.O);
@@ -192,11 +208,7 @@ class BoardCheckerTest {
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
-        // The board should now be full
-        assertTrue(board.isFull());
-       /* BoardPrinter printer = new BoardPrinter();
-        printer.printBoard(board);*/
-        assertTrue(checker.isChaosWinner());
     }
+
 }
 

@@ -2,14 +2,13 @@ package consoleui;
 
 import entities.CellState;
 import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConsoleInputHandlerTest {
-
     @Test
     void getValidInput_returnsValidInput() {
         String input = "1,2\n";
@@ -60,7 +59,16 @@ class ConsoleInputHandlerTest {
         assertEquals(CellState.O, actual);
     }
 
-
+    @Test
+    void testClose() {
+        InputStream initialIn = System.in;
+        ByteArrayInputStream emptyInput = new ByteArrayInputStream("".getBytes());
+        System.setIn(emptyInput);
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        inputHandler.close();
+        assertFalse(new Scanner(System.in).hasNext());
+        System.setIn(initialIn);
+    }
 }
 
 
