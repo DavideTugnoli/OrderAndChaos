@@ -1,7 +1,6 @@
 package consoleui;
 
 
-
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class GameConsoleSetupTest {
+class GameConsoleSetupTest {
 
     @Test
     void testSetupPlayersWithValidInput() {

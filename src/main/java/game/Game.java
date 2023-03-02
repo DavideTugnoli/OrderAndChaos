@@ -1,12 +1,10 @@
 package game;
 
 import annotations.Generated;
-import consoleui.ConsoleInputHandler;
-import consoleui.GameplayConsole;
-import consoleui.GameConsoleSetup;
-import consoleui.MessagePrinter;
+import consoleui.*;
 import entities.Board;
 import entities.Player;
+import gameutils.GameplayLogic;
 
 import java.util.List;
 import java.util.Scanner;
@@ -21,8 +19,9 @@ public class Game {
             MessagePrinter.printInstructions();
             Board board = new Board();
             List<Player> players = GameConsoleSetup.setupPlayers();
-            GameplayConsole gameplayConsole = new GameplayConsole(board, new ConsoleInputHandler(), players.get(0), players.get(1));
-            gameplayConsole.play();
+            GameplayLogic gameplayLogic = new GameplayLogic(board, players.get(0), players.get(1));
+            Consoleui consoleui = new Consoleui(gameplayLogic, new ConsoleInputHandler());
+            consoleui.play();
         } else if (choice == 2) {
             //GameGUI();
         } else {

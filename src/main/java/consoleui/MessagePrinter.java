@@ -15,11 +15,11 @@ public class MessagePrinter {
     }
 
     public static void printWinner(Player player) {
-        System.out.println("******************************************************");
-        System.out.println("*                                                    *");
-        System.out.println("*                 " + player.getName().toUpperCase() + " WINS!                      *");
-        System.out.println("*                                                    *");
-        System.out.println("******************************************************");
+        System.out.println("************************************************************************************************************");
+        System.out.println("                                                    ");
+        System.out.println("                 " + player.getName().toUpperCase() + " WINS!                      ");
+        System.out.println("                                                      ");
+        System.out.println("************************************************************************************************************");
         System.out.println();
     }
 

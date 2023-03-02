@@ -24,11 +24,11 @@ class MessagePrinterTest {
         Player orderPlayer = new Player("John", PlayerRole.ORDER);
         MessagePrinter.printWinner(orderPlayer);
         String expectedOutput =
-                "******************************************************\n" +
-                        "*                                                    *\n" +
-                        "*                 JOHN WINS!                      *\n" +
-                        "*                                                    *\n" +
-                        "******************************************************\n" +
+                "************************************************************************************************************\n" +
+                        "                                                    \n" +
+                        "                 JOHN WINS!                      \n" +
+                        "                                                      \n" +
+                        "************************************************************************************************************\n" +
                         "\n";
         assertEquals(expectedOutput, outContent.toString());
     }
