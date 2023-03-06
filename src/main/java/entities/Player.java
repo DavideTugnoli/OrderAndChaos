@@ -1,8 +1,8 @@
 package entities;
 
 public class Player {
-    private String name;
-    private PlayerRole role;
+    private final String name;
+    private final PlayerRole role;
 
     public Player(String name, PlayerRole role) {
         this.name = name;

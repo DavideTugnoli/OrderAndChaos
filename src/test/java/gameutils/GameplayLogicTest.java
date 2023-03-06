@@ -4,12 +4,12 @@ import entities.Board;
 import entities.CellState;
 import entities.Player;
 import entities.PlayerRole;
-import gameutils.GameplayLogic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameplayLogicTest {
+class GameplayLogicTest {
 
     private Board board;
     private Player player1;
@@ -82,11 +82,11 @@ public class GameplayLogicTest {
 
     @Test
     void testGetNoWinner() {
-        assertEquals(null, gameplayLogic.getWinner());
+        assertNull(gameplayLogic.getWinner());
     }
 
     @Test
-    void testGetWinner() {
+    void testGetWinnerOrder() {
         gameplayLogic.playTurn(0, 0, CellState.X);
         gameplayLogic.playTurn(0, 1, CellState.X);
         gameplayLogic.playTurn(0, 2, CellState.X);
@@ -95,4 +95,50 @@ public class GameplayLogicTest {
         gameplayLogic.playTurn(0, 5, CellState.X);
         assertEquals(player1, gameplayLogic.getWinner());
     }
+
+    @Test
+    void testGetWinnerNotOrder() {
+        playAllTurns();
+        assertEquals(player2, gameplayLogic.getWinner());
+    }
+
+    public void playAllTurns() {
+        gameplayLogic.playTurn(0, 0, CellState.X);
+        gameplayLogic.playTurn(0, 1, CellState.O);
+        gameplayLogic.playTurn(0, 2, CellState.X);
+        gameplayLogic.playTurn(0, 3, CellState.O);
+        gameplayLogic.playTurn(0, 4, CellState.X);
+        gameplayLogic.playTurn(0, 5, CellState.X);
+        gameplayLogic.playTurn(1, 0, CellState.X);
+        gameplayLogic.playTurn(1, 1, CellState.O);
+        gameplayLogic.playTurn(1, 2, CellState.X);
+        gameplayLogic.playTurn(1, 3, CellState.O);
+        gameplayLogic.playTurn(1, 4, CellState.X);
+        gameplayLogic.playTurn(1, 5, CellState.O);
+        gameplayLogic.playTurn(2, 0, CellState.O);
+        gameplayLogic.playTurn(2, 1, CellState.X);
+        gameplayLogic.playTurn(2, 2, CellState.X);
+        gameplayLogic.playTurn(2, 3, CellState.X);
+        gameplayLogic.playTurn(2, 4, CellState.X);
+        gameplayLogic.playTurn(2, 5, CellState.O);
+        gameplayLogic.playTurn(3, 0, CellState.X);
+        gameplayLogic.playTurn(3, 1, CellState.O);
+        gameplayLogic.playTurn(3, 2, CellState.X);
+        gameplayLogic.playTurn(3, 3, CellState.O);
+        gameplayLogic.playTurn(3, 4, CellState.O);
+        gameplayLogic.playTurn(3, 5, CellState.O);
+        gameplayLogic.playTurn(4, 0, CellState.X);
+        gameplayLogic.playTurn(4, 1, CellState.O);
+        gameplayLogic.playTurn(4, 2, CellState.O);
+        gameplayLogic.playTurn(4, 3, CellState.O);
+        gameplayLogic.playTurn(4, 4, CellState.X);
+        gameplayLogic.playTurn(4, 5, CellState.O);
+        gameplayLogic.playTurn(5, 0, CellState.X);
+        gameplayLogic.playTurn(5, 1, CellState.O);
+        gameplayLogic.playTurn(5, 2, CellState.X);
+        gameplayLogic.playTurn(5, 3, CellState.O);
+        gameplayLogic.playTurn(5, 4, CellState.X);
+        gameplayLogic.playTurn(5, 5, CellState.X);
+    }
+
 }

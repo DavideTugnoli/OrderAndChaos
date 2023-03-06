@@ -4,8 +4,6 @@ import entities.Board;
 import entities.CellState;
 import entities.Player;
 import exceptions.InvalidMoveException;
-import gameutils.BoardChecker;
-import gameutils.MoveParser;
 
 public class GameplayLogic {
     private final Board board;

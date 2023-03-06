@@ -5,7 +5,7 @@ import entities.CellState;
 
 public class BoardChecker {
 
-    private Board board;
+    private final Board board;
 
     public BoardChecker(Board board) {
         this.board = board;

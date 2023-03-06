@@ -55,7 +55,7 @@ public class Consoleui {
         }
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Do you want to replay? Write 'Yes' or 'No'");
+        System.out.println("Do you want to play again? Write 'Yes' or 'No'");
         String input = scanner.nextLine();
 
         if (input.equalsIgnoreCase("Yes")) {
