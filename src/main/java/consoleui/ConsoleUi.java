@@ -7,7 +7,7 @@ import gameutils.GameplayLogic;
 import java.util.Scanner;
 
 @Generated
-public class Consoleui {
+public class ConsoleUi {
     private final GameplayLogic gameplayLogic;
     private final BoardPrinter printer;
     private final ConsoleInputHandler consoleInputHandler;
@@ -15,7 +15,7 @@ public class Consoleui {
     private static final String THANKS_MESSAGE = "Thanks for playing!";
     private static final String INPUT_PROMPT = "Enter row,column: ";
 
-    public Consoleui(GameplayLogic gameplayLogic, ConsoleInputHandler consoleInputHandler) {
+    public ConsoleUi(GameplayLogic gameplayLogic, ConsoleInputHandler consoleInputHandler) {
         this.gameplayLogic = gameplayLogic;
         this.printer = new BoardPrinter();
         this.consoleInputHandler = consoleInputHandler;
@@ -69,8 +69,8 @@ public class Consoleui {
     private void restartGame() {
         Board newBoard = new Board();
         GameplayLogic newGameplayLogic = new GameplayLogic(newBoard, gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2());
-        Consoleui newConsoleui = new Consoleui(newGameplayLogic, consoleInputHandler);
-        newConsoleui.play();
+        ConsoleUi newConsoleUi = new ConsoleUi(newGameplayLogic, consoleInputHandler);
+        newConsoleUi.play();
     }
 }
 
