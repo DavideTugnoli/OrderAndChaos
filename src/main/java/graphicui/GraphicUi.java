@@ -1,5 +1,6 @@
 package graphicui;
 
+import annotations.Generated;
 import entities.Board;
 import entities.CellState;
 import gameutils.GameplayLogic;
@@ -9,15 +10,15 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
+@Generated
 public class GraphicUi extends JFrame {
-    private final GameplayLogic gameplayLogic;
+    private final transient GameplayLogic gameplayLogic;
     private final JButton[][] cellButtons;
 
     public GraphicUi(GameplayLogic gameplayLogic) {
         super("Order and Chaos");
         this.gameplayLogic = gameplayLogic;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JPanel gamePanel = new JPanel(new GridLayout(6, 6));
         cellButtons = new JButton[6][6];
         createCellButtons(gamePanel);
@@ -44,42 +45,56 @@ public class GraphicUi extends JFrame {
         }
     }
 
-    private void handleButtonClick(JButton cellButton, MouseEvent e) {
-        final ImageIcon ICON_O = new ImageIcon("src/main/java/graphicui/images/O.png");
-        final ImageIcon ICON_X = new ImageIcon("src/main/java/graphicui/images/X.png");
+    private void handleButtonClick(JButton clickedCellButton, MouseEvent e) {
+        final ImageIcon iconO = new ImageIcon("src/main/java/graphicui/images/O.png");
+        final ImageIcon iconX = new ImageIcon("src/main/java/graphicui/images/X.png");
         boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
-        boolean isRightClick = SwingUtilities.isRightMouseButton(e);
 
-        if (isLeftClick && !cellButton.isEnabled()) {
+        if (isLeftClick && !clickedCellButton.isEnabled()) {
             return;
         }
 
-        if (isLeftClick) {
-            ImageIcon icon = new ImageIcon(ICON_O.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH));
-            cellButton.setIcon(icon);
-            cellButton.setDisabledIcon(icon);
-        } else if (isRightClick) {
-            if (cellButton.isEnabled()) {
-                ImageIcon icon = new ImageIcon(ICON_X.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH));
-                cellButton.setIcon(icon);
-                cellButton.setDisabledIcon(icon);
+        ImageIcon icon = null;
+        CellState piece = null;
+
+        switch (e.getButton()) {
+            case MouseEvent.BUTTON1 -> {
+                icon = new ImageIcon(iconO.getImage().getScaledInstance(clickedCellButton.getWidth(), clickedCellButton.getHeight(), Image.SCALE_SMOOTH));
+                piece = CellState.O;
+            }
+            case MouseEvent.BUTTON3 -> {
+                if (clickedCellButton.isEnabled()) {
+                    icon = new ImageIcon(iconX.getImage().getScaledInstance(clickedCellButton.getWidth(), clickedCellButton.getHeight(), Image.SCALE_SMOOTH));
+                    piece = CellState.X;
+                }
+            }
+            default -> {
             }
         }
 
-        cellButton.setEnabled(false);
+        updateButtonIcon(clickedCellButton, icon);
+        disableButton(clickedCellButton);
 
-        int[] coords = getRowAndColForButton(cellButton);
-        assert coords != null;
+        int[] coords = getRowAndColForButton(clickedCellButton);
         int row = coords[0];
         int col = coords[1];
 
-        CellState piece = isLeftClick ? CellState.O : CellState.X;
         gameplayLogic.playTurn(row, col, piece);
 
         if (gameplayLogic.isGameOver()) {
             showGameOverDialog();
         }
     }
+
+    private void updateButtonIcon(JButton button, ImageIcon icon) {
+        button.setIcon(icon);
+        button.setDisabledIcon(icon);
+    }
+
+    private void disableButton(JButton button) {
+        button.setEnabled(false);
+    }
+
 
     private int[] getRowAndColForButton(JButton button) {
         int[] rowAndCol = new int[2];
@@ -92,7 +107,7 @@ public class GraphicUi extends JFrame {
                 }
             }
         }
-        return null;
+        return new int[0];
     }
 
     private void setWindowProperties(JPanel gamePanel) {

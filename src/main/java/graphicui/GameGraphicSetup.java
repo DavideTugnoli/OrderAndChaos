@@ -1,5 +1,6 @@
 package graphicui;
 
+import annotations.Generated;
 import entities.Player;
 import entities.PlayerRole;
 
@@ -9,12 +10,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Generated
 public class GameGraphicSetup {
 
     public static List<Player> setupPlayers() {
         List<Player> players = new ArrayList<>();
         Player[] selectedPlayers = showPlayerNamesDialog();
-        if (selectedPlayers != null) {
+        if (selectedPlayers == null) {
+            System.exit(0); // Terminates the program when the cancel button is clicked
+        } else {
             players.addAll(Arrays.asList(selectedPlayers));
         }
         return players;
