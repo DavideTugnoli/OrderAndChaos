@@ -25,6 +25,7 @@ class MessagePrinterTest {
     @Test
     void testPrintWinner() {
         Player orderPlayer = new Player("John", PlayerRole.ORDER);
+        MessagePrinter.setCurrentLocale(Locale.ENGLISH);
         MessagePrinter.printWinner(orderPlayer);
         String expectedOutput =
                 """
