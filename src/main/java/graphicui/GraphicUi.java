@@ -1,6 +1,7 @@
 package graphicui;
 
 import annotations.Generated;
+import gameutils.MessagePrinter;
 import entities.Board;
 import entities.CellState;
 import gameutils.GameplayLogic;
@@ -14,15 +15,32 @@ import java.awt.event.MouseEvent;
 public class GraphicUi extends JFrame {
     private final transient GameplayLogic gameplayLogic;
     private final JButton[][] cellButtons;
+    private final JLabel turnLabel;
 
     public GraphicUi(GameplayLogic gameplayLogic) {
         super("Order and Chaos");
         this.gameplayLogic = gameplayLogic;
+        turnLabel = createTurnLabel();
+        getContentPane().add(turnLabel, BorderLayout.NORTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JPanel gamePanel = new JPanel(new GridLayout(6, 6));
         cellButtons = new JButton[6][6];
         createCellButtons(gamePanel);
         setWindowProperties(gamePanel);
+    }
+
+    private JLabel createTurnLabel() {
+        JLabel turnLabel = new JLabel();
+        turnLabel.setHorizontalAlignment(JLabel.CENTER);
+        turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        String currentPlayerName = gameplayLogic.getCurrentPlayer().getName();
+        turnLabel.setText(MessagePrinter.getTurnMessage(currentPlayerName));
+        return turnLabel;
+    }
+
+    private void updateTurnLabel() {
+        String currentPlayerName = gameplayLogic.getCurrentPlayerName();
+        turnLabel.setText(MessagePrinter.getTurnMessage(currentPlayerName));
     }
 
     private void createCellButtons(JPanel gamePanel) {
@@ -45,41 +63,35 @@ public class GraphicUi extends JFrame {
         }
     }
 
-    private void handleButtonClick(JButton clickedCellButton, MouseEvent e) {
+    private void handleButtonClick(JButton cellButton, MouseEvent e) {
         final ImageIcon iconO = new ImageIcon("src/main/java/graphicui/images/O.png");
         final ImageIcon iconX = new ImageIcon("src/main/java/graphicui/images/X.png");
         boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
+        boolean isRightClick = SwingUtilities.isRightMouseButton(e);
 
-        if (isLeftClick && !clickedCellButton.isEnabled()) {
+        if (isLeftClick && !cellButton.isEnabled()) {
             return;
         }
 
-        ImageIcon icon = null;
-        CellState piece = null;
-
-        switch (e.getButton()) {
-            case MouseEvent.BUTTON1 -> {
-                icon = new ImageIcon(iconO.getImage().getScaledInstance(clickedCellButton.getWidth(), clickedCellButton.getHeight(), Image.SCALE_SMOOTH));
-                piece = CellState.O;
-            }
-            case MouseEvent.BUTTON3 -> {
-                if (clickedCellButton.isEnabled()) {
-                    icon = new ImageIcon(iconX.getImage().getScaledInstance(clickedCellButton.getWidth(), clickedCellButton.getHeight(), Image.SCALE_SMOOTH));
-                    piece = CellState.X;
-                }
-            }
-            default -> {
+        if (isLeftClick) {
+            ImageIcon icon = new ImageIcon(iconO.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH));
+            updateButtonIcon(cellButton, icon);
+        } else if (isRightClick) {
+            if (cellButton.isEnabled()) {
+                ImageIcon icon = new ImageIcon(iconX.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH));
+                updateButtonIcon(cellButton, icon);
             }
         }
 
-        updateButtonIcon(clickedCellButton, icon);
-        disableButton(clickedCellButton);
+        disableButton(cellButton);
 
-        int[] coords = getRowAndColForButton(clickedCellButton);
+        int[] coords = getRowAndColForButton(cellButton);
         int row = coords[0];
         int col = coords[1];
 
+        CellState piece = isLeftClick ? CellState.O : CellState.X;
         gameplayLogic.playTurn(row, col, piece);
+        updateTurnLabel();
 
         if (gameplayLogic.isGameOver()) {
             showGameOverDialog();
@@ -120,7 +132,7 @@ public class GraphicUi extends JFrame {
 
     private void showGameOverDialog() {
         if (gameplayLogic.getWinner() != null) {
-            if (JOptionPane.showConfirmDialog(GraphicUi.this, "Vuoi fare un'altra partita?", "Hai vinto " + gameplayLogic.getWinner().getName() + "!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            if (JOptionPane.showConfirmDialog(GraphicUi.this, MessagePrinter.getGameOverMessage(gameplayLogic.getWinner().getName()), "Game Over", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 dispose();
                 new GraphicUi(new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2())).setVisible(true);
             } else {
@@ -128,4 +140,5 @@ public class GraphicUi extends JFrame {
             }
         }
     }
+
 }

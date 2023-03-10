@@ -5,12 +5,14 @@ import consoleui.*;
 import entities.Board;
 import entities.Player;
 import gameutils.GameplayLogic;
+import gameutils.MessagePrinter;
 import graphicui.GameGraphicSetup;
 import graphicui.GraphicUi;
 
 
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 @Generated
@@ -19,16 +21,17 @@ public class Game {
     private static final int GRAPHIC_CHOICE = 2;
 
     public static void main(String[] args) {
-        System.out.println("Scegli l'interfaccia di gioco: 1 per console, 2 per grafica");
         Scanner scanner = new Scanner(System.in);
+        MessagePrinter.printLanguageChoiceRequest();
+        String languageChoice = getLanguageChoice(scanner);
+        setCurrentLocale(languageChoice);
         Board board = new Board();
+        int interfaceChoice = getGameInterfaceChoice(scanner);
 
-        int choice = getGameInterfaceChoice(scanner);
-
-        switch (choice) {
+        switch (interfaceChoice) {
             case CONSOLE_CHOICE -> startGameWithConsoleInterface(board);
             case GRAPHIC_CHOICE -> startGameWithGraphicInterface(board);
-            default -> System.out.println("Scelta non valida");
+            default -> MessagePrinter.getInvalidChoiceMessage();
         }
     }
 
@@ -36,19 +39,42 @@ public class Game {
         int choice;
 
         while (true) {
+            MessagePrinter.printGameInterfaceChoiceRequest();
             try {
                 choice = scanner.nextInt();
                 if (choice == CONSOLE_CHOICE || choice == GRAPHIC_CHOICE) {
                     break;
                 }
-                System.out.println("Scelta non valida. Inserisci 1 per console, 2 per grafica.");
+                MessagePrinter.printInvalidChoiceMessage();
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero intero");
+                MessagePrinter.printEnterIntegerMessage();
                 scanner.nextLine();
             }
         }
 
         return choice;
+    }
+
+    private static String getLanguageChoice(Scanner scanner) {
+        String language;
+
+        while (true) {
+            language = scanner.nextLine();
+            if (language.equals("1") || language.equals("2")) {
+                break;
+            }
+            MessagePrinter.printInvalidChoiceMessage();
+        }
+
+        return language;
+    }
+
+    private static void setCurrentLocale(String languageChoice) {
+        if (languageChoice.equals("1")) {
+            MessagePrinter.setCurrentLocale(Locale.ENGLISH);
+        } else if (languageChoice.equals("2")) {
+            MessagePrinter.setCurrentLocale(Locale.ITALIAN);
+        }
     }
 
     private static void startGameWithConsoleInterface(Board board) {
@@ -66,3 +92,4 @@ public class Game {
         graphicUi.setVisible(true);
     }
 }
+

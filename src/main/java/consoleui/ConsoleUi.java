@@ -3,8 +3,7 @@ package consoleui;
 import annotations.Generated;
 import entities.*;
 import gameutils.GameplayLogic;
-
-import java.util.Scanner;
+import gameutils.MessagePrinter;
 
 @Generated
 public class ConsoleUi {
@@ -12,8 +11,6 @@ public class ConsoleUi {
     private final BoardPrinter printer;
     private final ConsoleInputHandler consoleInputHandler;
 
-    private static final String THANKS_MESSAGE = "Thanks for playing!";
-    private static final String INPUT_PROMPT = "Enter row,column: ";
 
     public ConsoleUi(GameplayLogic gameplayLogic, ConsoleInputHandler consoleInputHandler) {
         this.gameplayLogic = gameplayLogic;
@@ -25,11 +22,11 @@ public class ConsoleUi {
         MessagePrinter.printWelcome();
 
         while (!gameplayLogic.isGameOver()) {
-            System.out.println("Current board:");
+            MessagePrinter.getCurrentBoardMessage();
             printer.printBoard(gameplayLogic.getBoard());
 
-            System.out.println("It's " + gameplayLogic.getCurrentPlayer().getName() + "'s turn.");
-            int[] input = consoleInputHandler.getValidInput(INPUT_PROMPT, 1, gameplayLogic.getBoard().getSize());
+            MessagePrinter.getCurrentPlayerTurnMessage(gameplayLogic.getCurrentPlayerName());
+            int[] input = consoleInputHandler.getValidInput(MessagePrinter.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
             int row = input[0] - 1;
             int col = input[1] - 1;
 
@@ -41,30 +38,23 @@ public class ConsoleUi {
     }
 
     private void endGame() {
-        System.out.println("Final board:");
+        MessagePrinter.getFinalBoardMessage();
         printer.printBoard(gameplayLogic.getBoard());
 
-        Player winner = null;
-        if (gameplayLogic.getWinner() != null) {
-            winner = gameplayLogic.getWinner();
-        }
-
+        Player winner = gameplayLogic.getWinner();
         if (winner != null) {
             MessagePrinter.printWinner(winner);
-            return;
         }
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Do you want to play again? Write 'Yes' or 'No'");
-        String input = scanner.nextLine();
-
-        if (input.equalsIgnoreCase("Yes")) {
+        String input = MessagePrinter.getPlayAgainInput();
+        if (input.equalsIgnoreCase(MessagePrinter.getYesInput())) {
             restartGame();
         } else {
-            System.out.println(THANKS_MESSAGE);
+            MessagePrinter.printThanksMessage();
             consoleInputHandler.close();
         }
     }
+
 
     private void restartGame() {
         Board newBoard = new Board();

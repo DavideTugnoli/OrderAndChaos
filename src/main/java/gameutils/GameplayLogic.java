@@ -47,6 +47,10 @@ public class GameplayLogic {
         return currentPlayer;
     }
 
+    public String getCurrentPlayerName() {
+        return currentPlayer.getName();
+    }
+
     public boolean isGameOver() {
         return checker.isGameOver();
     }

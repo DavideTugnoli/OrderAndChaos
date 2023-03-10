@@ -141,4 +141,13 @@ class GameplayLogicTest {
         gameplayLogic.playTurn(5, 5, CellState.X);
     }
 
+    @Test
+    public void testGetCurrentPlayerName() {
+        assertEquals("Player 1", gameplayLogic.getCurrentPlayerName());
+        gameplayLogic.playTurn(0, 0, CellState.O);
+        assertEquals("Player 2", gameplayLogic.getCurrentPlayerName());
+        gameplayLogic.playTurn(1, 1, CellState.X);
+        assertEquals("Player 1", gameplayLogic.getCurrentPlayerName());
+    }
+
 }
