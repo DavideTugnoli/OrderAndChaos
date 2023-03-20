@@ -3,6 +3,7 @@ package gameutils;
 import entities.Player;
 import entities.PlayerRole;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -54,16 +55,9 @@ class MessagePrinterTest {
 
     @Test
     public void testGetInputPrompt() {
-        // Set the current locale to Italian
         MessagePrinter.setCurrentLocale(Locale.ITALIAN);
-
-        // Test that the prompt is correctly printed in Italian
         assertEquals("Inserisci riga,colonna: ", MessagePrinter.getInputPrompt());
-
-        // Set the current locale to English
         MessagePrinter.setCurrentLocale(Locale.ENGLISH);
-
-        // Test that the prompt is correctly printed in English
         assertEquals("Enter row,column: ", MessagePrinter.getInputPrompt());
     }
 
@@ -103,5 +97,75 @@ class MessagePrinterTest {
         assertEquals(expectedOutput, output);
     }
 
+    @Test
+    @DisplayName("Test gameMenuLabel() with default language")
+    void testGameMenuLabelDefault() {
+        MessagePrinter.setCurrentLocale(Locale.ENGLISH);
+        assertEquals("Game", MessagePrinter.gameMenuLabel());
+    }
 
+    @Test
+    @DisplayName("Test gameMenuLabel() with Italian language")
+    void testGameMenuLabelItalian() {
+        MessagePrinter.setCurrentLocale(Locale.ITALIAN);
+        assertEquals("Gioco", MessagePrinter.gameMenuLabel());
+    }
+
+    @Test
+    @DisplayName("Test gameMenuNewGameLabel() with default language")
+    void testGameMenuNewGameLabelDefault() {
+        MessagePrinter.setCurrentLocale(Locale.ENGLISH);
+        assertEquals("New game", MessagePrinter.gameMenuNewGameLabel());
+    }
+
+    @Test
+    @DisplayName("Test gameMenuNewGameLabel() with Italian language")
+    void testGameMenuNewGameLabelItalian() {
+        MessagePrinter.setCurrentLocale(Locale.ITALIAN);
+        assertEquals("Nuova partita", MessagePrinter.gameMenuNewGameLabel());
+    }
+
+    @Test
+    @DisplayName("Test helpMenuLabel() with default language")
+    void testHelpMenuLabelDefault() {
+        MessagePrinter.setCurrentLocale(Locale.ENGLISH);
+        assertEquals("Help", MessagePrinter.helpMenuLabel());
+    }
+
+    @Test
+    @DisplayName("Test helpMenuLabel() with Italian language")
+    void testHelpMenuLabelEnglish() {
+        MessagePrinter.setCurrentLocale(Locale.ITALIAN);
+        assertEquals("Aiuto", MessagePrinter.helpMenuLabel());
+    }
+
+    @Test
+    @DisplayName("Test helpMenuInstructionsLabel() with default language")
+    void testHelpMenuInstructionsLabelDefault() {
+        MessagePrinter.setCurrentLocale(Locale.ENGLISH);
+        assertEquals("Instructions", MessagePrinter.helpMenuInstructionsLabel());
+    }
+
+    @Test
+    @DisplayName("Test helpMenuInstructionsLabel() with Italian language")
+    void testHelpMenuInstructionsLabelItalian() {
+        MessagePrinter.setCurrentLocale(Locale.ITALIAN);
+        assertEquals("Istruzioni", MessagePrinter.helpMenuInstructionsLabel());
+    }
+
+    @Test
+    @DisplayName("Test getInstructionsDialogMessage() with default language")
+    void testGetInstructionsDialogMessageDefault() {
+        MessagePrinter.setCurrentLocale(Locale.ENGLISH);
+        String expected = "The game instructions are:\n\n1. Create a row or a column of 5 similar symbols to win.\n2. The game ends when one of the two players manages to complete a row or a column of 5 similar symbols.";
+        assertEquals(expected, MessagePrinter.getInstructionsDialogMessage());
+    }
+
+    @Test
+    @DisplayName("Test getInstructionsDialogMessage() with Italian language")
+    void testGetInstructionsDialogMessageItalian() {
+        MessagePrinter.setCurrentLocale(Locale.ITALIAN);
+        String expected = "Le istruzioni del gioco sono:\n\n1. Crea una riga o una colonna di 5 simboli uguali per vincere.\n2. Il gioco termina quando uno dei due giocatori riesce a completare una riga o una colonna di 5 simboli uguali.";
+        assertEquals(expected, MessagePrinter.getInstructionsDialogMessage());
+    }
 }

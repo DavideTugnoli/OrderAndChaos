@@ -204,4 +204,44 @@ public class MessagePrinter {
         }
     }
 
+    public static String gameMenuLabel() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Gioco";
+        } else {
+            return "Game";
+        }
+    }
+
+    public static String gameMenuNewGameLabel() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Nuova partita";
+        } else {
+            return "New game";
+        }
+    }
+
+    public static String helpMenuLabel() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Aiuto";
+        } else {
+            return "Help";
+        }
+    }
+
+    public static String helpMenuInstructionsLabel() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Istruzioni";
+        } else {
+            return "Instructions";
+        }
+    }
+
+    public static String getInstructionsDialogMessage() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Le istruzioni del gioco sono:\n\n1. Crea una riga o una colonna di 5 simboli uguali per vincere.\n2. Il gioco termina quando uno dei due giocatori riesce a completare una riga o una colonna di 5 simboli uguali.";
+        } else {
+            return "The game instructions are:\n\n1. Create a row or a column of 5 similar symbols to win.\n2. The game ends when one of the two players manages to complete a row or a column of 5 similar symbols.";
+        }
+    }
+
 }

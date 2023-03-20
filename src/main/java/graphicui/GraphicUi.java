@@ -26,7 +26,55 @@ public class GraphicUi extends JFrame {
         JPanel gamePanel = new JPanel(new GridLayout(6, 6));
         cellButtons = new JButton[6][6];
         createCellButtons(gamePanel);
+        createMenu();
         setWindowProperties(gamePanel);
+    }
+
+    private void createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu(MessagePrinter.gameMenuLabel());
+        JMenuItem newGameItem = new JMenuItem(MessagePrinter.gameMenuNewGameLabel());
+        newGameItem.addActionListener(e -> {
+            dispose();
+            new GraphicUi(new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2())).setVisible(true);
+        });
+        gameMenu.add(newGameItem);
+        JMenu helpMenu = new JMenu(MessagePrinter.helpMenuLabel());
+        JMenuItem instructionsItem = new JMenuItem(MessagePrinter.helpMenuInstructionsLabel());
+        instructionsItem.addActionListener(e -> showInstructionsDialog());
+        helpMenu.add(instructionsItem);
+        menuBar.add(gameMenu);
+        menuBar.add(helpMenu);
+        setJMenuBar(menuBar);
+    }
+
+    private void showInstructionsDialog() {
+        // Create the dialog window
+        JDialog instructionsDialog = new JDialog(this, MessagePrinter.helpMenuInstructionsLabel(), true);
+        instructionsDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        // Create a panel with a border and white background to hold the text and image
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.setBackground(Color.WHITE);
+
+        // Add the text from MessagePrinter.getInstructionsDialogMessage() to the panel
+        JTextArea textArea = new JTextArea(MessagePrinter.getInstructionsDialogMessage());
+        textArea.setEditable(false);
+        panel.add(textArea, BorderLayout.NORTH);
+
+        // Load the instructions image and add it to the panel
+        ImageIcon instructionsImage = new ImageIcon("src/main/java/graphicui/images/mouse-instructions.png");
+        JLabel instructionsLabel = new JLabel(instructionsImage);
+        panel.add(instructionsLabel, BorderLayout.CENTER);
+
+        // Add the panel to the dialog
+        instructionsDialog.add(panel);
+
+        // Set the size and position of the dialog, and show it
+        instructionsDialog.pack();
+        instructionsDialog.setLocationRelativeTo(this);
+        instructionsDialog.setVisible(true);
     }
 
     private JLabel createTurnLabel() {
