@@ -32,7 +32,8 @@
 - [X] Test 3: verifica che il costruttore della classe Player inizializzi correttamente i campi name e role.
 
 ## Da aggiungere:
-- [ ] Istruzioni per versione da console
-- [ ] Regole di gioco
-- [ ] Istruzioni per versione grafica
-- [ ] Inserire nomi di default quando non si inseriscono i nomi dei giocatori in console
+- [X] Istruzioni per versione da console
+- [X] Regole di gioco
+- [X] Istruzioni per versione grafica
+- [X] Inserire nomi di default quando non si inseriscono i nomi dei giocatori in console
+- [ ] Comandi personalizzati per avviare direttamente consle o GUI con la lingua desiderata

@@ -23,15 +23,14 @@ public class Game {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         MessagePrinter.printLanguageChoiceRequest();
-        String languageChoice = getLanguageChoice(scanner);
-        setCurrentLocale(languageChoice);
+        setCurrentLocale(getLanguageChoice(scanner));
         Board board = new Board();
         int interfaceChoice = getGameInterfaceChoice(scanner);
 
         switch (interfaceChoice) {
             case CONSOLE_CHOICE -> startGameWithConsoleInterface(board);
             case GRAPHIC_CHOICE -> startGameWithGraphicInterface(board);
-            default -> MessagePrinter.getInvalidChoiceMessage();
+            default -> MessagePrinter.printInvalidChoiceMessage();
         }
     }
 
@@ -69,12 +68,20 @@ public class Game {
         return language;
     }
 
+
     private static void setCurrentLocale(String languageChoice) {
-        if (languageChoice.equals("1")) {
-            MessagePrinter.setCurrentLocale(Locale.ENGLISH);
-        } else if (languageChoice.equals("2")) {
-            MessagePrinter.setCurrentLocale(Locale.ITALIAN);
+        Locale locale;
+
+        switch (languageChoice) {
+            case "1" -> locale = Locale.ENGLISH;
+            case "2" -> locale = Locale.ITALIAN;
+            default -> {
+                MessagePrinter.printInvalidChoiceMessage();
+                return;
+            }
         }
+
+        MessagePrinter.setCurrentLocale(locale);
     }
 
     private static void startGameWithConsoleInterface(Board board) {

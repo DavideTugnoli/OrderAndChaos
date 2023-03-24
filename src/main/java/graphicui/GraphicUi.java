@@ -34,10 +34,7 @@ public class GraphicUi extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu gameMenu = new JMenu(MessagePrinter.gameMenuLabel());
         JMenuItem newGameItem = new JMenuItem(MessagePrinter.gameMenuNewGameLabel());
-        newGameItem.addActionListener(e -> {
-            dispose();
-            new GraphicUi(new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2())).setVisible(true);
-        });
+        newGameItem.addActionListener(e -> startNewGame());
         gameMenu.add(newGameItem);
         JMenu helpMenu = new JMenu(MessagePrinter.helpMenuLabel());
         JMenuItem instructionsItem = new JMenuItem(MessagePrinter.helpMenuInstructionsLabel());
@@ -46,6 +43,14 @@ public class GraphicUi extends JFrame {
         menuBar.add(gameMenu);
         menuBar.add(helpMenu);
         setJMenuBar(menuBar);
+    }
+
+    private void startNewGame() {
+        Point windowLocation = getLocation();
+        dispose();
+        GraphicUi newGame = new GraphicUi(new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2()));
+        newGame.setLocation(windowLocation);
+        newGame.setVisible(true);
     }
 
     private void showInstructionsDialog() {
@@ -112,8 +117,8 @@ public class GraphicUi extends JFrame {
     }
 
     private void handleButtonClick(JButton cellButton, MouseEvent e) {
-        final ImageIcon iconO = new ImageIcon("src/main/java/graphicui/images/O.png");
-        final ImageIcon iconX = new ImageIcon("src/main/java/graphicui/images/X.png");
+        final ImageIcon iconO = loadScaledImageIcon("src/main/java/graphicui/images/O.png", cellButton);
+        final ImageIcon iconX = loadScaledImageIcon("src/main/java/graphicui/images/X.png", cellButton);
         boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
         boolean isRightClick = SwingUtilities.isRightMouseButton(e);
 
@@ -122,12 +127,10 @@ public class GraphicUi extends JFrame {
         }
 
         if (isLeftClick) {
-            ImageIcon icon = new ImageIcon(iconO.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH));
-            updateButtonIcon(cellButton, icon);
+            updateButtonIcon(cellButton, iconO);
         } else if (isRightClick) {
             if (cellButton.isEnabled()) {
-                ImageIcon icon = new ImageIcon(iconX.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH));
-                updateButtonIcon(cellButton, icon);
+                updateButtonIcon(cellButton, iconX);
             }
         }
 
@@ -144,6 +147,12 @@ public class GraphicUi extends JFrame {
         if (gameplayLogic.isGameOver()) {
             showGameOverDialog();
         }
+    }
+
+    private ImageIcon loadScaledImageIcon(String imagePath, JButton cellButton) {
+        ImageIcon originalIcon = new ImageIcon(imagePath);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
     }
 
     private void updateButtonIcon(JButton button, ImageIcon icon) {
@@ -181,8 +190,7 @@ public class GraphicUi extends JFrame {
     private void showGameOverDialog() {
         if (gameplayLogic.getWinner() != null) {
             if (JOptionPane.showConfirmDialog(GraphicUi.this, MessagePrinter.getGameOverMessage(gameplayLogic.getWinner().getName()), "Game Over", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                dispose();
-                new GraphicUi(new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2())).setVisible(true);
+                startNewGame();
             } else {
                 dispose();
             }
