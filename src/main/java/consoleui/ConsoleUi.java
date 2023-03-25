@@ -11,7 +11,6 @@ public class ConsoleUi {
     private final BoardPrinter printer;
     private final ConsoleInputHandler consoleInputHandler;
 
-
     public ConsoleUi(GameplayLogic gameplayLogic, ConsoleInputHandler consoleInputHandler) {
         this.gameplayLogic = gameplayLogic;
         this.printer = new BoardPrinter();
@@ -22,25 +21,43 @@ public class ConsoleUi {
         MessagePrinter.printWelcome();
 
         while (!gameplayLogic.isGameOver()) {
-            MessagePrinter.getCurrentBoardMessage();
-            printer.printBoard(gameplayLogic.getBoard());
-
-            MessagePrinter.getCurrentPlayerTurnMessage(gameplayLogic.getCurrentPlayerName());
-            int[] input = consoleInputHandler.getValidInput(MessagePrinter.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
-            int row = input[0] - 1;
-            int col = input[1] - 1;
-
-            CellState piece = consoleInputHandler.getPieceSelection();
-            gameplayLogic.playTurn(row, col, piece);
+            printCurrentBoard();
+            printCurrentPlayerTurn();
+            executeTurn();
         }
 
         endGame();
     }
 
+    private void printCurrentBoard() {
+        MessagePrinter.getCurrentBoardMessage();
+        printer.printBoard(gameplayLogic.getBoard());
+    }
+
+    private void printCurrentPlayerTurn() {
+        MessagePrinter.getCurrentPlayerTurnMessage(gameplayLogic.getCurrentPlayerName());
+    }
+
+    private void executeTurn() {
+        int[] input = consoleInputHandler.getValidInput(MessagePrinter.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
+        int row = input[0] - 1;
+        int col = input[1] - 1;
+
+        CellState piece = consoleInputHandler.getPieceSelection();
+        gameplayLogic.playTurn(row, col, piece);
+    }
+
     private void endGame() {
+        printFinalBoard();
+        handlePostGame();
+    }
+
+    private void printFinalBoard() {
         MessagePrinter.getFinalBoardMessage();
         printer.printBoard(gameplayLogic.getBoard());
+    }
 
+    private void handlePostGame() {
         Player winner = gameplayLogic.getWinner();
         if (winner != null) {
             MessagePrinter.printWinner(winner);
@@ -55,7 +72,6 @@ public class ConsoleUi {
         }
     }
 
-
     private void restartGame() {
         Board newBoard = new Board();
         GameplayLogic newGameplayLogic = new GameplayLogic(newBoard, gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2());
@@ -63,4 +79,3 @@ public class ConsoleUi {
         newConsoleUi.play();
     }
 }
-

@@ -101,4 +101,38 @@ class BoardTest {
         assertEquals(6, board.getSize());
     }
 
+    @Test
+    void testGetMinorDiagonalDescending() {
+        try {
+            moveParser.makeMove(1, 1, CellState.O);
+            moveParser.makeMove(2, 2, CellState.O);
+            moveParser.makeMove(3, 3, CellState.O);
+            moveParser.makeMove(4, 4, CellState.O);
+            moveParser.makeMove(5, 5, CellState.O);
+
+            CellState[] expected = {CellState.O, CellState.O, CellState.O, CellState.O, CellState.O};
+            CellState[] diagonal = board.getMinorDiagonal(1, 1, false);
+            assertArrayEquals(expected, diagonal);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testGetMinorDiagonalAscending() {
+        try {
+            moveParser.makeMove(4, 1, CellState.X);
+            moveParser.makeMove(3, 2, CellState.X);
+            moveParser.makeMove(2, 3, CellState.X);
+            moveParser.makeMove(1, 4, CellState.X);
+            moveParser.makeMove(0, 5, CellState.X);
+
+            CellState[] expected = {CellState.X, CellState.X, CellState.X, CellState.X, CellState.X};
+            CellState[] diagonal = board.getMinorDiagonal(4, 1, true);
+            assertArrayEquals(expected, diagonal);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -238,9 +238,72 @@ public class MessagePrinter {
 
     public static String getInstructionsDialogMessage() {
         if (currentLocale.getLanguage().equals("it")) {
-            return "Le istruzioni del gioco sono:\n\n1. Crea una riga o una colonna di 5 simboli uguali per vincere.\n2. Il gioco termina quando uno dei due giocatori riesce a completare una riga o una colonna di 5 simboli uguali.";
+            return "Istruzioni di gioco:\n\n1. Order deve formare una sequenza di 5 simboli uguali per vincere.\n2. Il gioco termina se Order vince o Chaos glielo impedisce.";
         } else {
-            return "The game instructions are:\n\n1. Create a row or a column of 5 similar symbols to win.\n2. The game ends when one of the two players manages to complete a row or a column of 5 similar symbols.";
+            return "Game instructions:\n\n1. Order must form a sequence of 5 of the same symbols to win.\n2. The game is over if Order wins or Chaos prevents it.";
+        }
+    }
+
+    @Generated
+    public static String getOrderPlayerName() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Inserisci il nome di Order: ";
+        } else {
+            return "Enter Order player name: ";
+        }
+    }
+
+    @Generated
+    public static String getChaosPlayerName() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Inserisci il nome di Chaos: ";
+        } else {
+            return "Enter Choas player name: ";
+        }
+    }
+
+    @Generated
+    public static String getEnterPlayerNamesMessage() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Inserisci i nomi dei giocatori:";
+        } else {
+            return "Enter player names:";
+        }
+    }
+
+    @Generated
+    public static String inputConsoleOutOfBoundMessage(){
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d.%n";
+        } else {
+            return "Invalid input. Please enter two numbers separated by a comma, each from %d to %d.%n";
+        }
+    }
+
+    @Generated
+    public static String invalidConsoleInputMessage(){
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Input non valido. Inserisci due numeri separati da una virgola.";
+        } else {
+            return "Invalid input. Please enter two numbers separated by a comma.";
+        }
+    }
+
+    @Generated
+    public static String selectConsolePeaceMessage(){
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Scegli il pezzo (O o X): ";
+        } else {
+            return "Enter piece (O or X): ";
+        }
+    }
+
+    @Generated
+    public static String badSelectionConsolePeaceMessage(){
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Input non valido. Inserisci O o X.";
+        } else {
+            return "Invalid input. Please enter O or X.";
         }
     }
 

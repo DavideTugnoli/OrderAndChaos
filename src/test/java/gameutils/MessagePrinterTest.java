@@ -157,7 +157,7 @@ class MessagePrinterTest {
     @DisplayName("Test getInstructionsDialogMessage() with default language")
     void testGetInstructionsDialogMessageDefault() {
         MessagePrinter.setCurrentLocale(Locale.ENGLISH);
-        String expected = "The game instructions are:\n\n1. Create a row or a column of 5 similar symbols to win.\n2. The game ends when one of the two players manages to complete a row or a column of 5 similar symbols.";
+        String expected = "Game instructions:\n\n1. Order must form a sequence of 5 of the same symbols to win.\n2. The game is over if Order wins or Chaos prevents it.";
         assertEquals(expected, MessagePrinter.getInstructionsDialogMessage());
     }
 
@@ -165,7 +165,7 @@ class MessagePrinterTest {
     @DisplayName("Test getInstructionsDialogMessage() with Italian language")
     void testGetInstructionsDialogMessageItalian() {
         MessagePrinter.setCurrentLocale(Locale.ITALIAN);
-        String expected = "Le istruzioni del gioco sono:\n\n1. Crea una riga o una colonna di 5 simboli uguali per vincere.\n2. Il gioco termina quando uno dei due giocatori riesce a completare una riga o una colonna di 5 simboli uguali.";
+        String expected = "Istruzioni di gioco:\n\n1. Order deve formare una sequenza di 5 simboli uguali per vincere.\n2. Il gioco termina se Order vince o Chaos glielo impedisce.";
         assertEquals(expected, MessagePrinter.getInstructionsDialogMessage());
     }
 }

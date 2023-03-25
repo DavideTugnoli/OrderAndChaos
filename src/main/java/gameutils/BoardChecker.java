@@ -13,11 +13,11 @@ public class BoardChecker {
 
     public boolean isOrderWinner() {
         for (int i = 0; i < board.getSize(); i++) {
-            if (checkRow(i) || checkCol(i) || checkMainDiagonal() || checkSecondaryDiagonal()) {
+            if (checkRow(i) || checkCol(i)) {
                 return true;
             }
         }
-        return false;
+        return checkMainDiagonal() || checkSecondaryDiagonal() || checkMinorDiagonals();
     }
 
     public boolean isChaosWinner() {
@@ -42,6 +42,18 @@ public class BoardChecker {
     private boolean checkSecondaryDiagonal() {
         CellState[] cells = board.getSecondaryDiagonal();
         return checkLine(cells);
+    }
+
+    private boolean checkMinorDiagonals() {
+        for (int row = 0; row < board.getSize() - 4; row++) {
+            for (int col = 0; col < board.getSize() - 4; col++) {
+                if (checkLine(board.getMinorDiagonal(row, col, false)) ||
+                        checkLine(board.getMinorDiagonal(row + 4, col, true))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean checkLine(CellState[] cells) {

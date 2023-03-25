@@ -1,6 +1,7 @@
 package consoleui;
 
 import entities.CellState;
+import gameutils.MessagePrinter;
 
 import java.util.Scanner;
 
@@ -12,48 +13,63 @@ public class ConsoleInputHandler {
     }
 
     public int[] getValidInput(String prompt, int min, int max) {
-        int row;
-        int col;
+        int[] coordinates;
 
-        while (true) {
+        do {
             System.out.print(prompt);
             String input = scanner.nextLine();
 
-            try {
-                String[] parts = input.split(",");
-                row = Integer.parseInt(parts[0].trim());
-                col = Integer.parseInt(parts[1].trim());
-                if (row < min || row > max || col < min || col > max) {
-                    throw new NumberFormatException();
-                }
-                break;
-            } catch (NumberFormatException e) {
-                System.out.printf("Invalid input. Please enter two numbers separated by a comma, each from %d to %d.%n", min, max);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("Invalid input. Please enter two numbers separated by a comma.");
-            }
-        }
+            coordinates = parseInput(input);
 
-        return new int[]{row, col};
+            System.out.printf(MessagePrinter.inputConsoleOutOfBoundMessage(), min, max);
+        } while (coordinates == null || !isValidCoordinates(coordinates, min, max));
+
+        return coordinates;
+    }
+
+    private int[] parseInput(String input) {
+        try {
+            String[] parts = input.split(",");
+            int row = Integer.parseInt(parts[0].trim());
+            int col = Integer.parseInt(parts[1].trim());
+
+            return new int[]{row, col};
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.out.println(MessagePrinter.invalidConsoleInputMessage());
+            return null;
+        }
+    }
+
+    private boolean isValidCoordinates(int[] coordinates, int min, int max) {
+        int row = coordinates[0];
+        int col = coordinates[1];
+
+        return row >= min && row <= max && col >= min && col <= max;
     }
 
     public CellState getPieceSelection() {
-        CellState piece = null;
-
-        while (piece == null) {
-            System.out.print("Enter piece (O or X): ");
+        while (true) {
+            System.out.print(MessagePrinter.selectConsolePeaceMessage());
             String line = scanner.nextLine();
 
-            if (line.equalsIgnoreCase("O")) {
-                piece = CellState.O;
-            } else if (line.equalsIgnoreCase("X")) {
-                piece = CellState.X;
+            CellState piece = parsePieceSelection(line);
+
+            if (piece != null) {
+                return piece;
             } else {
-                System.out.println("Invalid input. Please enter O or X.");
+                System.out.println(MessagePrinter.badSelectionConsolePeaceMessage());
             }
         }
+    }
 
-        return piece;
+    private CellState parsePieceSelection(String input) {
+        if (input.equalsIgnoreCase("O")) {
+            return CellState.O;
+        } else if (input.equalsIgnoreCase("X")) {
+            return CellState.X;
+        }
+
+        return null;
     }
 
     public void close() {

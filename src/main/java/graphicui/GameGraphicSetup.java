@@ -3,6 +3,7 @@ package graphicui;
 import annotations.Generated;
 import entities.Player;
 import entities.PlayerRole;
+import gameutils.MessagePrinter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,17 +27,17 @@ public class GameGraphicSetup {
 
     private static Player[] showPlayerNamesDialog() {
         JPanel panel = createPlayerNamesPanel();
-        int result = JOptionPane.showConfirmDialog(null, panel, "Enter Player Names", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(null, panel, MessagePrinter.getEnterPlayerNamesMessage(), JOptionPane.OK_CANCEL_OPTION);
         if (result != JOptionPane.OK_OPTION) {
             return null; // Handle cancel button click
         }
         String orderPlayerName = getPlayerName(panel, 0);
         String chaosPlayerName = getPlayerName(panel, 1);
         if (orderPlayerName.isEmpty()) {
-            orderPlayerName = "Order Player";
+            orderPlayerName = "Order";
         }
         if (chaosPlayerName.isEmpty()) {
-            chaosPlayerName = "Chaos Player";
+            chaosPlayerName = "Chaos";
         }
         Player player1 = new Player(orderPlayerName, PlayerRole.ORDER);
         Player player2 = new Player(chaosPlayerName, PlayerRole.CHAOS);
@@ -47,9 +48,9 @@ public class GameGraphicSetup {
         JPanel panel = new JPanel(new GridLayout(2, 2));
         JTextField orderPlayerNameField = new JTextField();
         JTextField chaosPlayerNameField = new JTextField();
-        panel.add(new JLabel("Order Player Name:"));
+        panel.add(new JLabel(MessagePrinter.getOrderPlayerName()));
         panel.add(orderPlayerNameField);
-        panel.add(new JLabel("Chaos Player Name:"));
+        panel.add(new JLabel(MessagePrinter.getChaosPlayerName()));
         panel.add(chaosPlayerNameField);
         return panel;
     }

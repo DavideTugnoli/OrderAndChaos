@@ -153,10 +153,7 @@ class BoardCheckerTest {
     @Test
     void testIsChaosWinner() {
         fillBoardWithMoves();
-        // The board should now be full
         assertTrue(board.isFull());
-       /* BoardPrinter printer = new BoardPrinter();
-        printer.printBoard(board);*/
         assertTrue(checker.isChaosWinner());
     }
 

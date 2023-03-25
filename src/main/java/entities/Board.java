@@ -11,6 +11,10 @@ public class Board {
     public Board(int size) {
         this.size = size;
         gameBoard = new Cell[size][size];
+        initializeBoard();
+    }
+
+    private void initializeBoard() {
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 gameBoard[row][col] = new Cell(row, col);
@@ -42,34 +46,43 @@ public class Board {
     }
 
     public CellState[] getRow(int row) {
-        CellState[] result = new CellState[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = gameBoard[row][i].getState();
-        }
-        return result;
+        return extractArray(row, 0, 0, 1);
     }
 
     public CellState[] getCol(int col) {
-        CellState[] result = new CellState[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = gameBoard[i][col].getState();
-        }
-        return result;
+        return extractArray(0, col, 1, 0);
     }
 
     public CellState[] getMainDiagonal() {
-        CellState[] result = new CellState[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = gameBoard[i][i].getState();
-        }
-        return result;
+        return extractArray(0, 0, 1, 1);
     }
 
-
     public CellState[] getSecondaryDiagonal() {
-        CellState[] result = new CellState[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = gameBoard[i][size - i - 1].getState();
+        return extractArray(0, size - 1, 1, -1);
+    }
+
+    public CellState[] getMinorDiagonal(int row, int col, boolean ascending) {
+        int rowIncrement = ascending ? -1 : 1;
+        int maxLength = ascending ? Math.min(row + 1, getSize() - col) : Math.min(getSize() - row, getSize() - col);
+        int length = 0;
+
+        for (int i = 0; i < maxLength && row + rowIncrement * i >= 0 && row + rowIncrement * i < getSize() && col + i < getSize(); i++) {
+            length++;
+        }
+
+        return extractArray(row, col, rowIncrement, 1, length);
+    }
+
+    private CellState[] extractArray(int row, int col, int rowIncrement, int colIncrement) {
+        return extractArray(row, col, rowIncrement, colIncrement, size);
+    }
+
+    private CellState[] extractArray(int row, int col, int rowIncrement, int colIncrement, int length) {
+        CellState[] result = new CellState[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = gameBoard[row][col].getState();
+            row += rowIncrement;
+            col += colIncrement;
         }
         return result;
     }
@@ -81,6 +94,4 @@ public class Board {
     public void setCellState(int row, int col, CellState state) {
         gameBoard[row][col].setState(state);
     }
-
-
 }

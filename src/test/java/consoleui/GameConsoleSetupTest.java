@@ -50,10 +50,10 @@ class GameConsoleSetupTest {
         // Verify the results
         assertEquals(2, players.size());
 
-        assertEquals(player1Name == null || player1Name.isEmpty() ? "Order Player" : player1Name, players.get(0).getName());
+        assertEquals(player1Name == null || player1Name.isEmpty() ? "Order" : player1Name, players.get(0).getName());
         assertEquals(PlayerRole.ORDER, players.get(0).getRole());
 
-        assertEquals(player2Name == null || player2Name.isEmpty() ? "Chaos Player" : player2Name, players.get(1).getName());
+        assertEquals(player2Name == null || player2Name.isEmpty() ? "Chaos" : player2Name, players.get(1).getName());
         assertEquals(PlayerRole.CHAOS, players.get(1).getRole());
     }
 }
