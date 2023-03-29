@@ -1,7 +1,7 @@
 package consoleui;
 
 import entities.CellState;
-import gameutils.MessagePrinter;
+import gameutils.MessageBundle;
 
 import java.util.Scanner;
 
@@ -21,7 +21,9 @@ public class ConsoleInputHandler {
 
             coordinates = parseInput(input);
 
-            System.out.printf(MessagePrinter.inputConsoleOutOfBoundMessage(), min, max);
+            if (coordinates == null || !isValidCoordinates(coordinates, min, max)) {
+                System.out.printf(MessageBundle.inputConsoleOutOfBoundMessage(), min, max);
+            }
         } while (coordinates == null || !isValidCoordinates(coordinates, min, max));
 
         return coordinates;
@@ -30,13 +32,14 @@ public class ConsoleInputHandler {
     private int[] parseInput(String input) {
         try {
             String[] parts = input.split(",");
+            if (parts.length != 2) {
+                return null; // input non valido, ci sono meno o più di due parti
+            }
             int row = Integer.parseInt(parts[0].trim());
             int col = Integer.parseInt(parts[1].trim());
-
             return new int[]{row, col};
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            System.out.println(MessagePrinter.invalidConsoleInputMessage());
-            return null;
+        } catch (NumberFormatException e) {
+            return null; // input non valido, una delle parti non è un intero
         }
     }
 
@@ -49,7 +52,7 @@ public class ConsoleInputHandler {
 
     public CellState getPieceSelection() {
         while (true) {
-            System.out.print(MessagePrinter.selectConsolePeaceMessage());
+            System.out.print(MessageBundle.selectConsolePeaceMessage());
             String line = scanner.nextLine();
 
             CellState piece = parsePieceSelection(line);
@@ -57,7 +60,7 @@ public class ConsoleInputHandler {
             if (piece != null) {
                 return piece;
             } else {
-                System.out.println(MessagePrinter.badSelectionConsolePeaceMessage());
+                System.out.println(MessageBundle.badSelectionConsolePeaceMessage());
             }
         }
     }

@@ -3,7 +3,7 @@ package graphicui;
 import annotations.Generated;
 import entities.Player;
 import entities.PlayerRole;
-import gameutils.MessagePrinter;
+import gameutils.MessageBundle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,9 +48,9 @@ public class GameGraphicSetup {
         JPanel panel = new JPanel(new GridLayout(2, 2));
         JTextField orderPlayerNameField = new JTextField();
         JTextField chaosPlayerNameField = new JTextField();
-        panel.add(new JLabel(MessagePrinter.getOrderPlayerName()));
+        panel.add(new JLabel(MessageBundle.getOrderPlayerName()));
         panel.add(orderPlayerNameField);
-        panel.add(new JLabel(MessagePrinter.getChaosPlayerName()));
+        panel.add(new JLabel(MessageBundle.getChaosPlayerName()));
         panel.add(chaosPlayerNameField);
         return panel;
     }

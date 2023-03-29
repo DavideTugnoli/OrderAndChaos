@@ -5,7 +5,7 @@ import consoleui.*;
 import entities.Board;
 import entities.Player;
 import gameutils.GameplayLogic;
-import gameutils.MessagePrinter;
+import gameutils.MessageBundle;
 import graphicui.GameGraphicSetup;
 import graphicui.GraphicUi;
 
@@ -28,7 +28,6 @@ public class Game {
         switch (interfaceChoice) {
             case CONSOLE_CHOICE -> startGameWithConsoleInterface(board);
             case GRAPHIC_CHOICE -> startGameWithGraphicInterface(board);
-            default -> MessagePrinter.printInvalidChoiceMessage();
         }
     }
 
@@ -36,15 +35,15 @@ public class Game {
         int choice;
 
         while (true) {
-            MessagePrinter.printGameInterfaceChoiceRequest();
+            System.out.println(MessageBundle.getGameInterfaceChoiceRequestMessage());
             try {
                 choice = scanner.nextInt();
                 if (choice == CONSOLE_CHOICE || choice == GRAPHIC_CHOICE) {
                     break;
                 }
-                MessagePrinter.printInvalidChoiceMessage();
+                System.out.println(MessageBundle.getInvalidInterfaceChoiceMessage());
             } catch (InputMismatchException e) {
-                MessagePrinter.printEnterIntegerMessage();
+                System.out.println(MessageBundle.getEnterIntegerMessage());
                 scanner.nextLine();
             }
         }
@@ -54,36 +53,32 @@ public class Game {
 
     private static void setLocaleFromUserChoice(Scanner scanner) {
         String languageChoice;
-        MessagePrinter.printLanguageChoiceRequest();
+        System.out.println(MessageBundle.getLanguageChoiceRequestMessage());
 
         while (true) {
             languageChoice = scanner.nextLine();
             if (languageChoice.equals("1") || languageChoice.equals("2")) {
                 break;
             }
-            MessagePrinter.printInvalidChoiceMessage();
+            System.out.println(MessageBundle.getInvalidLanguageChoiceMessage());
         }
 
         setCurrentLocale(languageChoice);
     }
 
     private static void setCurrentLocale(String languageChoice) {
-        Locale locale;
+        Locale locale = Locale.ENGLISH;
 
         switch (languageChoice) {
             case "1" -> locale = Locale.ENGLISH;
             case "2" -> locale = Locale.ITALIAN;
-            default -> {
-                MessagePrinter.printInvalidChoiceMessage();
-                return;
-            }
         }
 
-        MessagePrinter.setCurrentLocale(locale);
+        MessageBundle.setCurrentLocale(locale);
     }
 
     private static void startGameWithConsoleInterface(Board board) {
-        MessagePrinter.printInstructions();
+        System.out.println(MessageBundle.getInstructionsMessage());
         List<Player> players = GameConsoleSetup.setupPlayers();
         GameplayLogic gameplayLogic = new GameplayLogic(board, players.get(0), players.get(1));
         ConsoleUi consoleui = new ConsoleUi(gameplayLogic, new ConsoleInputHandler());

@@ -1,7 +1,7 @@
 package graphicui;
 
 import annotations.Generated;
-import gameutils.MessagePrinter;
+import gameutils.MessageBundle;
 import entities.Board;
 import entities.CellState;
 import gameutils.GameplayLogic;
@@ -43,16 +43,16 @@ public class GraphicUi extends JFrame {
     }
 
     private JMenu createGameMenu() {
-        JMenu gameMenu = new JMenu(MessagePrinter.gameMenuLabel());
-        JMenuItem newGameItem = new JMenuItem(MessagePrinter.gameMenuNewGameLabel());
+        JMenu gameMenu = new JMenu(MessageBundle.gameMenuLabel());
+        JMenuItem newGameItem = new JMenuItem(MessageBundle.gameMenuNewGameLabel());
         newGameItem.addActionListener(e -> startNewGame());
         gameMenu.add(newGameItem);
         return gameMenu;
     }
 
     private JMenu createHelpMenu() {
-        JMenu helpMenu = new JMenu(MessagePrinter.helpMenuLabel());
-        JMenuItem instructionsItem = new JMenuItem(MessagePrinter.helpMenuInstructionsLabel());
+        JMenu helpMenu = new JMenu(MessageBundle.helpMenuLabel());
+        JMenuItem instructionsItem = new JMenuItem(MessageBundle.helpMenuInstructionsLabel());
         instructionsItem.addActionListener(e -> showInstructionsDialog());
         helpMenu.add(instructionsItem);
         return helpMenu;
@@ -68,7 +68,7 @@ public class GraphicUi extends JFrame {
 
     private void showInstructionsDialog() {
         // Create the dialog window
-        JDialog instructionsDialog = new JDialog(this, MessagePrinter.helpMenuInstructionsLabel(), true);
+        JDialog instructionsDialog = new JDialog(this, MessageBundle.helpMenuInstructionsLabel(), true);
         instructionsDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Create a panel with a border and white background to hold the text and image
@@ -77,7 +77,7 @@ public class GraphicUi extends JFrame {
         panel.setBackground(Color.WHITE);
 
         // Add the text from MessagePrinter.getInstructionsDialogMessage() to the panel
-        JTextArea textArea = new JTextArea(MessagePrinter.getInstructionsDialogMessage());
+        JTextArea textArea = new JTextArea(MessageBundle.getInstructionsDialogMessage());
         textArea.setEditable(false);
         panel.add(textArea, BorderLayout.NORTH);
 
@@ -100,13 +100,13 @@ public class GraphicUi extends JFrame {
         turnLabel.setHorizontalAlignment(JLabel.CENTER);
         turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
         String currentPlayerName = gameplayLogic.getCurrentPlayer().getName();
-        turnLabel.setText(MessagePrinter.getTurnMessage(currentPlayerName));
+        turnLabel.setText(MessageBundle.getTurnMessage(currentPlayerName));
         return turnLabel;
     }
 
     private void updateTurnLabel() {
         String currentPlayerName = gameplayLogic.getCurrentPlayerName();
-        turnLabel.setText(MessagePrinter.getTurnMessage(currentPlayerName));
+        turnLabel.setText(MessageBundle.getTurnMessage(currentPlayerName));
     }
 
     private void createCellButtons(JPanel gamePanel) {
@@ -200,7 +200,7 @@ public class GraphicUi extends JFrame {
 
     private void showGameOverDialog() {
         if (gameplayLogic.getWinner() != null) {
-            if (JOptionPane.showConfirmDialog(GraphicUi.this, MessagePrinter.getGameOverMessage(gameplayLogic.getWinner().getName()), "Game Over", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            if (JOptionPane.showConfirmDialog(GraphicUi.this, MessageBundle.getGameOverMessage(gameplayLogic.getWinner().getName()), "Game Over", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 startNewGame();
             } else {
                 dispose();

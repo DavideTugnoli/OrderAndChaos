@@ -3,7 +3,7 @@ package consoleui;
 import annotations.Generated;
 import entities.*;
 import gameutils.GameplayLogic;
-import gameutils.MessagePrinter;
+import gameutils.MessageBundle;
 
 @Generated
 public class ConsoleUi {
@@ -18,7 +18,7 @@ public class ConsoleUi {
     }
 
     public void play() {
-        MessagePrinter.printWelcome();
+        System.out.println(MessageBundle.getWelcomeMessage());
 
         while (!gameplayLogic.isGameOver()) {
             printCurrentBoard();
@@ -30,16 +30,16 @@ public class ConsoleUi {
     }
 
     private void printCurrentBoard() {
-        MessagePrinter.getCurrentBoardMessage();
+        System.out.println(MessageBundle.getCurrentBoardMessage());
         printer.printBoard(gameplayLogic.getBoard());
     }
 
     private void printCurrentPlayerTurn() {
-        MessagePrinter.getCurrentPlayerTurnMessage(gameplayLogic.getCurrentPlayerName());
+        System.out.println(MessageBundle.getCurrentPlayerTurnMessage(gameplayLogic.getCurrentPlayerName()));
     }
 
     private void executeTurn() {
-        int[] input = consoleInputHandler.getValidInput(MessagePrinter.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
+        int[] input = consoleInputHandler.getValidInput(MessageBundle.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
         int row = input[0] - 1;
         int col = input[1] - 1;
 
@@ -53,21 +53,21 @@ public class ConsoleUi {
     }
 
     private void printFinalBoard() {
-        MessagePrinter.getFinalBoardMessage();
+        System.out.println(MessageBundle.getFinalBoardMessage());
         printer.printBoard(gameplayLogic.getBoard());
     }
 
     private void handlePostGame() {
         Player winner = gameplayLogic.getWinner();
         if (winner != null) {
-            MessagePrinter.printWinner(winner);
+            System.out.println(MessageBundle.getWinnerMessage(winner));
         }
 
-        String input = MessagePrinter.getPlayAgainInput();
-        if (input.equalsIgnoreCase(MessagePrinter.getYesInput())) {
+        String input = MessageBundle.getPlayAgainInput();
+        if (input.equalsIgnoreCase(MessageBundle.getYesInput())) {
             restartGame();
         } else {
-            MessagePrinter.printThanksMessage();
+            System.out.println(MessageBundle.getThanksMessage());
             consoleInputHandler.close();
         }
     }
