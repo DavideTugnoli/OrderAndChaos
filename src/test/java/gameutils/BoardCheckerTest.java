@@ -152,19 +152,35 @@ class BoardCheckerTest {
 
     @Test
     void testIsChaosWinner() {
-        fillBoardWithMoves();
+        fillBoardWithMovesWithoutOrderWin();
         assertTrue(board.isFull());
+        assertFalse(checker.isOrderWinner());
         assertTrue(checker.isChaosWinner());
     }
 
     @Test
+    void testIsOrderWinnerInMinorDiagonal() {
+        try {
+            moveParser.makeMove(0, 1, CellState.X);
+            moveParser.makeMove(1, 2, CellState.X);
+            moveParser.makeMove(2, 3, CellState.X);
+            moveParser.makeMove(3, 4, CellState.X);
+            moveParser.makeMove(4, 5, CellState.X);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        assertTrue(checker.isOrderWinner());
+    }
+
+
+    @Test
     void testIsGameOverWhenBoardIsFull() {
         // Riempie il tabellone con i movimenti di entrambi i giocatori
-        fillBoardWithMoves();
+        fillBoardWithMovesWithoutOrderWin();
         assertTrue(checker.isGameOver());
     }
 
-    public void fillBoardWithMoves() {
+    public void fillBoardWithMovesWithoutOrderWin() {
         try {
             moveParser.makeMove(0, 0, CellState.X);
             moveParser.makeMove(0, 1, CellState.O);

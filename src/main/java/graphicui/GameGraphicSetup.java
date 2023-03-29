@@ -27,7 +27,7 @@ public class GameGraphicSetup {
 
     private static Player[] showPlayerNamesDialog() {
         JPanel panel = createPlayerNamesPanel();
-        int result = JOptionPane.showConfirmDialog(null, panel, MessagePrinter.getEnterPlayerNamesMessage(), JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(null, panel, "Enter player names", JOptionPane.OK_CANCEL_OPTION);
         if (result != JOptionPane.OK_OPTION) {
             return null; // Handle cancel button click
         }
@@ -55,8 +55,8 @@ public class GameGraphicSetup {
         return panel;
     }
 
-    private static String getPlayerName(JPanel panel, int index) {
-        JTextField playerNameField = (JTextField) panel.getComponent(index * 2 + 1);
+    private static String getPlayerName(JPanel panel, int playerIndex) {
+        JTextField playerNameField = (JTextField) panel.getComponent(playerIndex * 2 + 1);
         return playerNameField.getText().trim();
     }
 }

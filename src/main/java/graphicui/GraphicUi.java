@@ -17,9 +17,14 @@ public class GraphicUi extends JFrame {
     private final JButton[][] cellButtons;
     private final JLabel turnLabel;
 
+    private final ImageIcon iconO;
+    private final ImageIcon iconX;
+
     public GraphicUi(GameplayLogic gameplayLogic) {
         super("Order and Chaos");
         this.gameplayLogic = gameplayLogic;
+        iconO = loadScaledImageIcon("src/main/java/graphicui/images/O.png");
+        iconX = loadScaledImageIcon("src/main/java/graphicui/images/X.png");
         turnLabel = createTurnLabel();
         getContentPane().add(turnLabel, BorderLayout.NORTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -32,17 +37,25 @@ public class GraphicUi extends JFrame {
 
     private void createMenu() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.add(createGameMenu());
+        menuBar.add(createHelpMenu());
+        setJMenuBar(menuBar);
+    }
+
+    private JMenu createGameMenu() {
         JMenu gameMenu = new JMenu(MessagePrinter.gameMenuLabel());
         JMenuItem newGameItem = new JMenuItem(MessagePrinter.gameMenuNewGameLabel());
         newGameItem.addActionListener(e -> startNewGame());
         gameMenu.add(newGameItem);
+        return gameMenu;
+    }
+
+    private JMenu createHelpMenu() {
         JMenu helpMenu = new JMenu(MessagePrinter.helpMenuLabel());
         JMenuItem instructionsItem = new JMenuItem(MessagePrinter.helpMenuInstructionsLabel());
         instructionsItem.addActionListener(e -> showInstructionsDialog());
         helpMenu.add(instructionsItem);
-        menuBar.add(gameMenu);
-        menuBar.add(helpMenu);
-        setJMenuBar(menuBar);
+        return helpMenu;
     }
 
     private void startNewGame() {
@@ -117,8 +130,6 @@ public class GraphicUi extends JFrame {
     }
 
     private void handleButtonClick(JButton cellButton, MouseEvent e) {
-        final ImageIcon iconO = loadScaledImageIcon("src/main/java/graphicui/images/O.png", cellButton);
-        final ImageIcon iconX = loadScaledImageIcon("src/main/java/graphicui/images/X.png", cellButton);
         boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
         boolean isRightClick = SwingUtilities.isRightMouseButton(e);
 
@@ -149,9 +160,9 @@ public class GraphicUi extends JFrame {
         }
     }
 
-    private ImageIcon loadScaledImageIcon(String imagePath, JButton cellButton) {
+    private ImageIcon loadScaledImageIcon(String imagePath) {
         ImageIcon originalIcon = new ImageIcon(imagePath);
-        Image scaledImage = originalIcon.getImage().getScaledInstance(cellButton.getWidth(), cellButton.getHeight(), Image.SCALE_SMOOTH);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }
 

@@ -11,7 +11,7 @@ public class MoveParser {
         this.board = board;
     }
 
-    public boolean makeMove(int row, int col, CellState piece) throws InvalidMoveException {
+    public void makeMove(int row, int col, CellState piece) throws InvalidMoveException {
         if (row < 0 || row >= board.getSize() || col < 0 || col >= board.getSize()) {
             throw new InvalidMoveException("Cell coordinates are out of bounds");
         }
@@ -19,6 +19,5 @@ public class MoveParser {
             throw new InvalidMoveException("Cell is already occupied");
         }
         board.setCellState(row, col, piece);
-        return true;
     }
 }

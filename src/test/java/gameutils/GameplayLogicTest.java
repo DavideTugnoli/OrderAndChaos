@@ -36,6 +36,11 @@ class GameplayLogicTest {
         gameplayLogic.playTurn(0, 0, CellState.O);
         assertEquals(CellState.X, board.getCellState(0, 0));
         assertEquals(player2, gameplayLogic.getCurrentPlayer());
+
+        // test making an invalid move with an empty cell
+        gameplayLogic.playTurn(0, 1, CellState.EMPTY);
+        assertEquals(CellState.EMPTY, board.getCellState(0, 1));
+        assertEquals(player1, gameplayLogic.getCurrentPlayer());
     }
 
     @Test
@@ -63,6 +68,10 @@ class GameplayLogicTest {
         board.setCellState(0, 4, CellState.X);
         board.setCellState(0, 5, CellState.X);
         assertTrue(gameplayLogic.isGameOver());
+
+        // test when game is over with Chaos winner
+        playAllTurns();
+        assertTrue(gameplayLogic.isGameOver());
     }
 
     @Test
@@ -86,6 +95,18 @@ class GameplayLogicTest {
     }
 
     @Test
+    void testWinnerNotSetUntilGameOver() {
+        gameplayLogic.playTurn(0, 0, CellState.X);
+        assertNull(gameplayLogic.getWinner());
+
+        gameplayLogic.playTurn(0, 1, CellState.O);
+        assertNull(gameplayLogic.getWinner());
+
+        gameplayLogic.playTurn(0, 2, CellState.X);
+        assertNull(gameplayLogic.getWinner());
+    }
+
+    @Test
     void testGetWinnerOrder() {
         gameplayLogic.playTurn(0, 0, CellState.X);
         gameplayLogic.playTurn(0, 1, CellState.X);
@@ -102,7 +123,7 @@ class GameplayLogicTest {
         assertEquals(player2, gameplayLogic.getWinner());
     }
 
-    public void playAllTurns() {
+    private void playAllTurns() {
         gameplayLogic.playTurn(0, 0, CellState.X);
         gameplayLogic.playTurn(0, 1, CellState.O);
         gameplayLogic.playTurn(0, 2, CellState.X);
@@ -142,7 +163,7 @@ class GameplayLogicTest {
     }
 
     @Test
-    public void testGetCurrentPlayerName() {
+     void testGetCurrentPlayerName() {
         assertEquals("Player 1", gameplayLogic.getCurrentPlayerName());
         gameplayLogic.playTurn(0, 0, CellState.O);
         assertEquals("Player 2", gameplayLogic.getCurrentPlayerName());

@@ -9,7 +9,6 @@ import gameutils.MessagePrinter;
 import graphicui.GameGraphicSetup;
 import graphicui.GraphicUi;
 
-
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Locale;
@@ -22,8 +21,7 @@ public class Game {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        MessagePrinter.printLanguageChoiceRequest();
-        setCurrentLocale(getLanguageChoice(scanner));
+        setLocaleFromUserChoice(scanner);
         Board board = new Board();
         int interfaceChoice = getGameInterfaceChoice(scanner);
 
@@ -54,20 +52,20 @@ public class Game {
         return choice;
     }
 
-    private static String getLanguageChoice(Scanner scanner) {
-        String language;
+    private static void setLocaleFromUserChoice(Scanner scanner) {
+        String languageChoice;
+        MessagePrinter.printLanguageChoiceRequest();
 
         while (true) {
-            language = scanner.nextLine();
-            if (language.equals("1") || language.equals("2")) {
+            languageChoice = scanner.nextLine();
+            if (languageChoice.equals("1") || languageChoice.equals("2")) {
                 break;
             }
             MessagePrinter.printInvalidChoiceMessage();
         }
 
-        return language;
+        setCurrentLocale(languageChoice);
     }
-
 
     private static void setCurrentLocale(String languageChoice) {
         Locale locale;
@@ -99,4 +97,3 @@ public class Game {
         graphicUi.setVisible(true);
     }
 }
-

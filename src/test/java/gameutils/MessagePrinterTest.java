@@ -54,7 +54,7 @@ class MessagePrinterTest {
     }
 
     @Test
-    public void testGetInputPrompt() {
+     void testGetInputPrompt() {
         MessagePrinter.setCurrentLocale(Locale.ITALIAN);
         assertEquals("Inserisci riga,colonna: ", MessagePrinter.getInputPrompt());
         MessagePrinter.setCurrentLocale(Locale.ENGLISH);
@@ -168,4 +168,5 @@ class MessagePrinterTest {
         String expected = "Istruzioni di gioco:\n\n1. Order deve formare una sequenza di 5 simboli uguali per vincere.\n2. Il gioco termina se Order vince o Chaos glielo impedisce.";
         assertEquals(expected, MessagePrinter.getInstructionsDialogMessage());
     }
+
 }

@@ -7,22 +7,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PlayerTest {
     @Test
-    void testGetName() {
-        Player player = new Player("Alice", PlayerRole.ORDER);
-        assertEquals("Alice", player.getName());
-    }
-
-    @Test
-    void testGetRole() {
-        Player player = new Player("Bob", PlayerRole.CHAOS);
-        assertEquals(PlayerRole.CHAOS, player.getRole());
-    }
-
-    @Test
     void testConstructor() {
-        Player player = new Player("Charlie", PlayerRole.ORDER);
-        assertNotNull(player);
-        assertEquals("Charlie", player.getName());
-        assertEquals(PlayerRole.ORDER, player.getRole());
+        Player player1 = new Player("Alice", PlayerRole.ORDER);
+        assertNotNull(player1);
+        assertEquals("Alice", player1.getName());
+        assertEquals(PlayerRole.ORDER, player1.getRole());
+
+        Player player2 = new Player("Bob", PlayerRole.CHAOS);
+        assertNotNull(player2);
+        assertEquals("Bob", player2.getName());
+        assertEquals(PlayerRole.CHAOS, player2.getRole());
     }
 }

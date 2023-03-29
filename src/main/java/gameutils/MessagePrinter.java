@@ -258,7 +258,7 @@ public class MessagePrinter {
         if (currentLocale.getLanguage().equals("it")) {
             return "Inserisci il nome di Chaos: ";
         } else {
-            return "Enter Choas player name: ";
+            return "Enter Chaos player name: ";
         }
     }
 

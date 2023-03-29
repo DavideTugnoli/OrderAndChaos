@@ -26,10 +26,7 @@ public class GameplayLogic {
 
     public void playTurn(int row, int col, CellState piece) {
         try {
-            boolean moveMade = moveParser.makeMove(row, col, piece);
-            if (!moveMade) {
-                return;
-            }
+            moveParser.makeMove(row, col, piece);
         } catch (InvalidMoveException e) {
             return;
         }

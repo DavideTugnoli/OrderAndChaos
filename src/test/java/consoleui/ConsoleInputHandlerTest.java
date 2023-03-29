@@ -6,9 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,6 +69,56 @@ class ConsoleInputHandlerTest {
         System.setIn(initialIn);
     }
 
+    @Test
+    void testGetValidInputInvalid() {
+        String prompt = "Enter row and column separated by a comma: ";
+        int min = 1;
+        int max = 10;
+        int[] expected = {5, 7};
+        simulateUserInput("invalid\n5, 7");
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        int[] result = inputHandler.getValidInput(prompt, min, max);
+        assertArrayEquals(expected, result);
+    }
+
+    // getValidInput con coordinate al di fuori dei limiti
+    @Test
+    void testGetValidInputOutOfBounds() {
+        String prompt = "Enter row and column separated by a comma: ";
+        int min = 1;
+        int max = 10;
+        int[] expected = {5, 7};
+        simulateUserInput("12, 20\n5, 7");
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        int[] result = inputHandler.getValidInput(prompt, min, max);
+        assertArrayEquals(expected, result);
+    }
+
+    // getValidInput con input contenente caratteri non numerici
+    @Test
+    void testGetValidInputNonNumeric() {
+        String prompt = "Enter row and column separated by a comma: ";
+        int min = 1;
+        int max = 10;
+        int[] expected = {5, 7};
+        simulateUserInput("a, b\n5, 7");
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        int[] result = inputHandler.getValidInput(prompt, min, max);
+        assertArrayEquals(expected, result);
+    }
+
+    // getValidInput con input contenente troppi elementi
+    @Test
+    void testGetValidInputTooManyElements() {
+        String prompt = "Enter row and column separated by a comma: ";
+        int min = 1;
+        int max = 10;
+        int[] expected = {5, 7};
+        simulateUserInput("5, 7, 9\n5, 7");
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        int[] result = inputHandler.getValidInput(prompt, min, max);
+        assertArrayEquals(expected, result);
+    }
 
 
     // Helper methods to simulate user input and capture system out
@@ -78,13 +126,6 @@ class ConsoleInputHandlerTest {
         ByteArrayInputStream inContent = new ByteArrayInputStream(input.getBytes());
         System.setIn(inContent);
     }
-
-    private String systemOut() {
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        return outContent.toString();
-    }
-
 }
 
 

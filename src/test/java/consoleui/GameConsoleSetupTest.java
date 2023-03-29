@@ -56,5 +56,24 @@ class GameConsoleSetupTest {
         assertEquals(player2Name == null || player2Name.isEmpty() ? "Chaos" : player2Name, players.get(1).getName());
         assertEquals(PlayerRole.CHAOS, players.get(1).getRole());
     }
+
+    @Test
+    void testSetupPlayersWithEmptyInput() {
+        // Simulate user input
+        String input = "\n\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        // Execute the method under test
+        List<Player> players = GameConsoleSetup.setupPlayers();
+
+        // Verify the results
+        assertEquals(2, players.size());
+        assertEquals("Order", players.get(0).getName());
+        assertEquals(PlayerRole.ORDER, players.get(0).getRole());
+        assertEquals("Chaos", players.get(1).getName());
+        assertEquals(PlayerRole.CHAOS, players.get(1).getRole());
+    }
+
 }
 

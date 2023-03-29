@@ -6,6 +6,7 @@ import entities.CellState;
 public class BoardChecker {
 
     private final Board board;
+    private static final int MIN_LINE_LENGTH = 4;
 
     public BoardChecker(Board board) {
         this.board = board;
@@ -45,10 +46,10 @@ public class BoardChecker {
     }
 
     private boolean checkMinorDiagonals() {
-        for (int row = 0; row < board.getSize() - 4; row++) {
-            for (int col = 0; col < board.getSize() - 4; col++) {
+        for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
+            for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
                 if (checkLine(board.getMinorDiagonal(row, col, false)) ||
-                        checkLine(board.getMinorDiagonal(row + 4, col, true))) {
+                        checkLine(board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true))) {
                     return true;
                 }
             }

@@ -135,4 +135,79 @@ class BoardTest {
         }
     }
 
+    @Test
+    void testGetRow() {
+        try {
+            moveParser.makeMove(0, 0, CellState.X);
+            moveParser.makeMove(0, 1, CellState.O);
+            moveParser.makeMove(0, 2, CellState.X);
+
+            CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
+            CellState[] row = board.getRow(0);
+            assertArrayEquals(expected, row);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testGetCol() {
+        try {
+            moveParser.makeMove(0, 0, CellState.X);
+            moveParser.makeMove(1, 0, CellState.O);
+            moveParser.makeMove(2, 0, CellState.X);
+
+            CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
+            CellState[] col = board.getCol(0);
+            assertArrayEquals(expected, col);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testGetMainDiagonal() {
+        try {
+            moveParser.makeMove(0, 0, CellState.X);
+            moveParser.makeMove(1, 1, CellState.O);
+            moveParser.makeMove(2, 2, CellState.X);
+
+            CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
+            CellState[] diagonal = board.getMainDiagonal();
+            assertArrayEquals(expected, diagonal);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testGetSecondaryDiagonal() {
+        try {
+            moveParser.makeMove(0, 5, CellState.X);
+            moveParser.makeMove(1, 4, CellState.O);
+            moveParser.makeMove(2, 3, CellState.X);
+
+            CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
+            CellState[] diagonal = board.getSecondaryDiagonal();
+            assertArrayEquals(expected, diagonal);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testIsFull() {
+        for (int row = 0; row < board.getSize(); row++) {
+            for (int col = 0; col < board.getSize(); col++) {
+                try {
+                    board.setCellState(row, col, CellState.X);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        assertTrue(board.isFull());
+    }
+
+
 }
