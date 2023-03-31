@@ -21,10 +21,10 @@ public class ConsoleInputHandler {
 
             coordinates = parseInput(input);
 
-            if (coordinates == null || !isValidCoordinates(coordinates, min, max)) {
+            if (coordinates == null || isValidCoordinates(coordinates, min, max)) {
                 System.out.printf(MessageBundle.inputConsoleOutOfBoundMessage(), min, max);
             }
-        } while (coordinates == null || !isValidCoordinates(coordinates, min, max));
+        } while (coordinates == null || isValidCoordinates(coordinates, min, max));
 
         return coordinates;
     }
@@ -47,7 +47,7 @@ public class ConsoleInputHandler {
         int row = coordinates[0];
         int col = coordinates[1];
 
-        return row >= min && row <= max && col >= min && col <= max;
+        return row < min || row > max || col < min || col > max;
     }
 
     public CellState getPieceSelection() {

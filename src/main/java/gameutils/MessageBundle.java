@@ -68,7 +68,6 @@ public class MessageBundle {
         return scanner.nextLine();
     }
 
-    @Generated
     public static String getThanksMessage() {
         String thanksMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -79,7 +78,6 @@ public class MessageBundle {
         return thanksMessage;
     }
 
-    @Generated
     public static String getFinalBoardMessage() {
         String finalBoardMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -90,7 +88,6 @@ public class MessageBundle {
         return finalBoardMessage;
     }
 
-    @Generated
     public static String getCurrentBoardMessage() {
         String currentBoardMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -101,7 +98,6 @@ public class MessageBundle {
         return currentBoardMessage;
     }
 
-    @Generated
     public static String getCurrentPlayerTurnMessage(String playerName) {
         String currentPlayerTurnMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -173,7 +169,6 @@ public class MessageBundle {
         }
     }
 
-    @Generated
     public static String getLanguageChoiceRequestMessage() {
         String languageChoiceRequestMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -192,7 +187,6 @@ public class MessageBundle {
         return languageChoiceRequestMessage;
     }
 
-    @Generated
     public static String getGameInterfaceChoiceRequestMessage() {
         String gameInterfaceChoiceRequestMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -211,8 +205,6 @@ public class MessageBundle {
         return gameInterfaceChoiceRequestMessage;
     }
 
-
-    @Generated
     public static String getInvalidInterfaceChoiceMessage() {
         String invalidChoiceMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -223,7 +215,6 @@ public class MessageBundle {
         return invalidChoiceMessage;
     }
 
-    @Generated
     public static String getInvalidLanguageChoiceMessage() {
         String invalidChoiceMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -234,8 +225,6 @@ public class MessageBundle {
         return invalidChoiceMessage;
     }
 
-
-    @Generated
     public static String getEnterIntegerMessage() {
         String enterIntegerMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -286,7 +275,6 @@ public class MessageBundle {
         }
     }
 
-    @Generated
     public static String getOrderPlayerName() {
         if (currentLocale.getLanguage().equals("it")) {
             return "Inserisci il nome di Order: ";
@@ -295,7 +283,6 @@ public class MessageBundle {
         }
     }
 
-    @Generated
     public static String getChaosPlayerName() {
         if (currentLocale.getLanguage().equals("it")) {
             return "Inserisci il nome di Chaos: ";
@@ -304,8 +291,7 @@ public class MessageBundle {
         }
     }
 
-    @Generated
-    public static String inputConsoleOutOfBoundMessage(){
+    public static String inputConsoleOutOfBoundMessage() {
         if (currentLocale.getLanguage().equals("it")) {
             return "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d.%n";
         } else {
@@ -313,8 +299,7 @@ public class MessageBundle {
         }
     }
 
-    @Generated
-    public static String selectConsolePeaceMessage(){
+    public static String selectConsolePeaceMessage() {
         if (currentLocale.getLanguage().equals("it")) {
             return "Scegli il pezzo (O o X): ";
         } else {
@@ -322,8 +307,7 @@ public class MessageBundle {
         }
     }
 
-    @Generated
-    public static String badSelectionConsolePeaceMessage(){
+    public static String badSelectionConsolePeaceMessage() {
         if (currentLocale.getLanguage().equals("it")) {
             return "Input non valido. Inserisci O o X.";
         } else {

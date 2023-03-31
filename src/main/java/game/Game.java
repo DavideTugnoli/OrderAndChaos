@@ -70,7 +70,8 @@ public class Game {
         Locale locale = Locale.ENGLISH;
 
         switch (languageChoice) {
-            case "1" -> locale = Locale.ENGLISH;
+            case "1" -> {
+            }
             case "2" -> locale = Locale.ITALIAN;
         }
 

@@ -6,147 +6,333 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MessageBundleTest {
-    private ByteArrayOutputStream outContent;
 
     @BeforeEach
     void setUp() {
-        outContent = new ByteArrayOutputStream();
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
     }
 
-    // Questo test simula l'input dell'utente "yes" e verifica che il metodo getPlayAgainInput() restituisca effettivamente la stringa "yes".
     @Test
     void testGetPlayAgainInput() {
-        InputStream sysInBackup = System.in;
-        ByteArrayInputStream in = new ByteArrayInputStream("yes\n".getBytes());
-        System.setIn(in);
+        // Test per lingua italiana
+        MessageBundle.setCurrentLocale(new Locale("it"));
+        String expectedIt = "Sì";
+        ByteArrayInputStream inIt = new ByteArrayInputStream(expectedIt.getBytes());
+        System.setIn(inIt);
+        assertEquals(expectedIt, MessageBundle.getPlayAgainInput());
 
-        assertEquals("yes", MessageBundle.getPlayAgainInput());
-
-        System.setIn(sysInBackup);
-    }
-
-    @Test
-     void testGetInputPrompt() {
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        assertEquals("Inserisci riga,colonna: ", MessageBundle.getInputPrompt());
+        // Test per lingua inglese
         MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        assertEquals("Enter row,column: ", MessageBundle.getInputPrompt());
+        String expectedEn = "No";
+        ByteArrayInputStream inEn = new ByteArrayInputStream(expectedEn.getBytes());
+        System.setIn(inEn);
+        assertEquals(expectedEn, MessageBundle.getPlayAgainInput());
     }
 
     @Test
+    @DisplayName("Test getThanksMessage() with both languages")
+    void testGetThanksMessage() {
+        String[] expected = {"Thank you for playing! Goodbye!", "Grazie per aver giocato! Arrivederci!"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getThanksMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getFinalBoardMessage() with both languages")
+    void testGetFinalBoardMessage() {
+        String[] expected = {"Final board:", "Tabellone finale:"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getFinalBoardMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getCurrentBoardMessage() with both languages")
+    void testGetCurrentBoardMessage() {
+        String[] expected = {"Current board:", "Tabellone corrente:"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getCurrentBoardMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getCurrentPlayerTurnMessage with both languages")
+    void testGetCurrentPlayerTurnMessage() {
+        String[] expected = {"It's player's turn.", "È il turno di player."};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getCurrentPlayerTurnMessage("player"));
+        }
+    }
+
+    @Test
+    @DisplayName("Test getInputPrompt() with both languages")
+    void testGetInputPrompt() {
+        String[] expected = {"Enter row,column: ", "Inserisci riga,colonna: "};
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getInputPrompt());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getYesInput() with both languages")
     void testGetYesInput() {
-        MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        assertEquals("Yes", MessageBundle.getYesInput());
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        assertEquals("Sì", MessageBundle.getYesInput());
+        String[] expected = {"Yes", "Sì"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getYesInput());
+        }
     }
 
     @Test
+    @DisplayName("Test getGameOverMessage() with both languages")
     void testGetGameOverMessage() {
-        MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        String winnerName = "John";
-        String expectedOutput = "Do you want to play again?\nJohn won!";
-        String actualOutput = MessageBundle.getGameOverMessage(winnerName);
-        assertEquals(expectedOutput, actualOutput);
+        String[] expected = {"Do you want to play again?\nJohn won!", "Vuoi fare un'altra partita?\nHai vinto John!"};
 
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        expectedOutput = "Vuoi fare un'altra partita?\nHai vinto John!";
-        actualOutput = MessageBundle.getGameOverMessage(winnerName);
-        assertEquals(expectedOutput, actualOutput);
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getGameOverMessage("John"));
+        }
     }
 
     @Test
+    @DisplayName("Test getTurnMessage() with both languages")
     void testGetTurnMessage() {
-        String playerName = "John";
-        MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        String expectedOutput = "Player's turn: John";
-        String output = MessageBundle.getTurnMessage(playerName);
-        assertEquals(expectedOutput, output);
+        String[] expected = {"Player's turn: John", "Turno del giocatore: John"};
 
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        expectedOutput = "Turno del giocatore: John";
-        output = MessageBundle.getTurnMessage(playerName);
-        assertEquals(expectedOutput, output);
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getTurnMessage("John"));
+        }
     }
+
+    @Test
+    @DisplayName("Test getLanguageChoiceRequestMessage() with both languages")
+    void testGetLanguageChoiceRequestMessage() {
+        String[] expected = {"""
+                    Choose the language:
+                    1. English
+                    2. Italian
+                    """, """
+                    Scegli la lingua:
+                    1. Inglese
+                    2. Italiano
+                    """};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getLanguageChoiceRequestMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getGameInterfaceChoiceRequestMessage() with both languages")
+    void testGetGameInterfaceChoiceRequestMessage() {
+        String[] expected = {"""
+                    Choose the game interface:
+                    1. Console
+                    2. Graphic
+                    """, """
+                    Scegli l'interfaccia di gioco:
+                    1. Console
+                    2. Grafica
+                    """};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getGameInterfaceChoiceRequestMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getInvalidInterfaceChoiceMessage() with both languages")
+    void testGetInvalidInterfaceChoiceMessage() {
+        String[] expected = {"Invalid choice. Enter 1 for console, 2 for graphic.", "Scelta non valida. Inserisci 1 per console, 2 per grafica."};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getInvalidInterfaceChoiceMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getInvalidLanguageChoiceMessage() with both languages")
+    void testGetInvalidLanguageChoiceMessage() {
+        String[] expected = {"Invalid choice. Enter 1 for english, 2 for italian.", "Scelta non valida. Inserisci 1 per inglese, 2 per italiano."};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getInvalidLanguageChoiceMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getEnterIntegerMessage() with both languages")
+    void testGetEnterIntegerMessage() {
+        String[] expected = {"Enter an integer number.", "Inserisci un numero intero."};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getEnterIntegerMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test gameMenuLabel() with both languages")
+    void testGameMenuLabel() {
+        String[] expected = {"Game", "Gioco"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.gameMenuLabel());
+        }
+    }
+
+    @Test
+    @DisplayName("Test gameMenuNewGameLabel() with both languages")
+    void testGameMenuNewGameLabel() {
+        String[] expected = {"New game", "Nuova partita"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.gameMenuNewGameLabel());
+        }
+    }
+
+    @Test
+    @DisplayName("Test helpMenuLabel() with both languages")
+    void testHelpMenuLabel() {
+        String[] expected = {"Help", "Aiuto"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.helpMenuLabel());
+        }
+    }
+
+    @Test
+    @DisplayName("Test helpMenuInstructionsLabel() with both languages")
+    void testHelpMenuInstructionsLabel() {
+        String[] expected = {"Instructions", "Istruzioni"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.helpMenuInstructionsLabel());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getInstructionsDialogMessage() with both languages")
+    void testGetInstructionsDialogMessage() {
+        String[] expected = {"Game instructions:\n\n1. Order must form a sequence of 5 of the same symbols to win.\n2. The game is over if Order wins or Chaos prevents it.", "Istruzioni di gioco:\n\n1. Order deve formare una sequenza di 5 simboli uguali per vincere.\n2. Il gioco termina se Order vince o Chaos glielo impedisce."};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getInstructionsDialogMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getOrderPlayerName() with both languages")
+    void testGetOrderPlayerName() {
+        String[] expected = {"Enter Order player name: ", "Inserisci il nome di Order: "};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getOrderPlayerName());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getChaosPlayerName() with both languages")
+    void testGetChaosPlayerName() {
+        String[] expected = {"Enter Chaos player name: ", "Inserisci il nome di Chaos: "};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getChaosPlayerName());
+        }
+    }
+
+    @Test
+    @DisplayName("Test inputConsoleOutOfBoundMessage() with both languages")
+    void testInputConsoleOutOfBoundMessage() {
+        String[] expected = {"Invalid input. Please enter two numbers separated by a comma, each from %d to %d.%n", "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d.%n"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.inputConsoleOutOfBoundMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test selectConsolePeaceMessage() with both languages")
+    void testSelectConsolePeaceMessage() {
+        String[] expected = {"Enter piece (O or X): ", "Scegli il pezzo (O o X): "};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.selectConsolePeaceMessage());
+        }
+    }
+
+   @Test
+    @DisplayName("Test badSelectionConsolePeaceMessage() with both languages")
+    void testBadSelectionConsolePeaceMessage() {
+        String[] expected = {"Invalid input. Please enter O or X.", "Input non valido. Inserisci O o X."};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.badSelectionConsolePeaceMessage());
+        }
+    }
+
 
     @Test
     @DisplayName("Test gameMenuLabel() with default language")
     void testGameMenuLabelDefault() {
         MessageBundle.setCurrentLocale(Locale.ENGLISH);
         assertEquals("Game", MessageBundle.gameMenuLabel());
-    }
-
-    @Test
-    @DisplayName("Test gameMenuLabel() with Italian language")
-    void testGameMenuLabelItalian() {
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        assertEquals("Gioco", MessageBundle.gameMenuLabel());
-    }
-
-    @Test
-    @DisplayName("Test gameMenuNewGameLabel() with default language")
-    void testGameMenuNewGameLabelDefault() {
-        MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        assertEquals("New game", MessageBundle.gameMenuNewGameLabel());
-    }
-
-    @Test
-    @DisplayName("Test gameMenuNewGameLabel() with Italian language")
-    void testGameMenuNewGameLabelItalian() {
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        assertEquals("Nuova partita", MessageBundle.gameMenuNewGameLabel());
-    }
-
-    @Test
-    @DisplayName("Test helpMenuLabel() with default language")
-    void testHelpMenuLabelDefault() {
-        MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        assertEquals("Help", MessageBundle.helpMenuLabel());
-    }
-
-    @Test
-    @DisplayName("Test helpMenuLabel() with Italian language")
-    void testHelpMenuLabelEnglish() {
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        assertEquals("Aiuto", MessageBundle.helpMenuLabel());
-    }
-
-    @Test
-    @DisplayName("Test helpMenuInstructionsLabel() with default language")
-    void testHelpMenuInstructionsLabelDefault() {
-        MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        assertEquals("Instructions", MessageBundle.helpMenuInstructionsLabel());
-    }
-
-    @Test
-    @DisplayName("Test helpMenuInstructionsLabel() with Italian language")
-    void testHelpMenuInstructionsLabelItalian() {
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        assertEquals("Istruzioni", MessageBundle.helpMenuInstructionsLabel());
-    }
-
-    @Test
-    @DisplayName("Test getInstructionsDialogMessage() with default language")
-    void testGetInstructionsDialogMessageDefault() {
-        MessageBundle.setCurrentLocale(Locale.ENGLISH);
-        String expected = "Game instructions:\n\n1. Order must form a sequence of 5 of the same symbols to win.\n2. The game is over if Order wins or Chaos prevents it.";
-        assertEquals(expected, MessageBundle.getInstructionsDialogMessage());
-    }
-
-    @Test
-    @DisplayName("Test getInstructionsDialogMessage() with Italian language")
-    void testGetInstructionsDialogMessageItalian() {
-        MessageBundle.setCurrentLocale(Locale.ITALIAN);
-        String expected = "Istruzioni di gioco:\n\n1. Order deve formare una sequenza di 5 simboli uguali per vincere.\n2. Il gioco termina se Order vince o Chaos glielo impedisce.";
-        assertEquals(expected, MessageBundle.getInstructionsDialogMessage());
     }
 
 }
