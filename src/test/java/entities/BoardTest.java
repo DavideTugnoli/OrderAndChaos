@@ -37,7 +37,7 @@ class BoardTest {
     @Test
     void testMakeMove() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
             assertEquals(CellState.X, board.getCell(0, 0).getState());
         } catch (InvalidMoveException e) {
             e.printStackTrace();
@@ -48,8 +48,8 @@ class BoardTest {
     @Test
     void testInvalidMove() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(0, 0, CellState.O));
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(0, 0, CellState.O)));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -58,8 +58,8 @@ class BoardTest {
     @Test
     void testOccupiedCellMove() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(0, 0, CellState.O));
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(0, 0, CellState.O)));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -69,10 +69,10 @@ class BoardTest {
 
     @Test
     void testOutOfBoundsMove() {
-        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(-1, 0, CellState.X));
-        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(0, -1, CellState.X));
-        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(board.getSize(), 0, CellState.X));
-        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(0, board.getSize(), CellState.X));
+        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(-1, 0, CellState.X)));
+        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(0, -1, CellState.X)));
+        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(board.getSize(), 0, CellState.X)));
+        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(0, board.getSize(), CellState.X)));
     }
 
 
@@ -92,7 +92,7 @@ class BoardTest {
 
     @Test
     void testMakeMoveNotEmpty() throws InvalidMoveException {
-        moveParser.makeMove(0, 0, CellState.X);
+        moveParser.makeMove(new Cell(0, 0, CellState.X));
         assertFalse(board.isCellEmpty(0, 0));
     }
 
@@ -104,11 +104,11 @@ class BoardTest {
     @Test
     void testGetMinorDiagonalDescending() {
         try {
-            moveParser.makeMove(1, 1, CellState.O);
-            moveParser.makeMove(2, 2, CellState.O);
-            moveParser.makeMove(3, 3, CellState.O);
-            moveParser.makeMove(4, 4, CellState.O);
-            moveParser.makeMove(5, 5, CellState.O);
+            moveParser.makeMove(new Cell(1, 1, CellState.O));
+            moveParser.makeMove(new Cell(2, 2, CellState.O));
+            moveParser.makeMove(new Cell(3, 3, CellState.O));
+            moveParser.makeMove(new Cell(4, 4, CellState.O));
+            moveParser.makeMove(new Cell(5, 5, CellState.O));
 
             CellState[] expected = {CellState.O, CellState.O, CellState.O, CellState.O, CellState.O};
             CellState[] diagonal = board.getMinorDiagonal(1, 1, false);
@@ -121,11 +121,11 @@ class BoardTest {
     @Test
     void testGetMinorDiagonalAscending() {
         try {
-            moveParser.makeMove(4, 1, CellState.X);
-            moveParser.makeMove(3, 2, CellState.X);
-            moveParser.makeMove(2, 3, CellState.X);
-            moveParser.makeMove(1, 4, CellState.X);
-            moveParser.makeMove(0, 5, CellState.X);
+            moveParser.makeMove(new Cell(4, 1, CellState.X));
+            moveParser.makeMove(new Cell(3, 2, CellState.X));
+            moveParser.makeMove(new Cell(2, 3, CellState.X));
+            moveParser.makeMove(new Cell(1, 4, CellState.X));
+            moveParser.makeMove(new Cell(0, 5, CellState.X));
 
             CellState[] expected = {CellState.X, CellState.X, CellState.X, CellState.X, CellState.X};
             CellState[] diagonal = board.getMinorDiagonal(4, 1, true);
@@ -138,9 +138,9 @@ class BoardTest {
     @Test
     void testGetRow() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(0, 1, CellState.O);
-            moveParser.makeMove(0, 2, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.O));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
 
             CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
             CellState[] row = board.getRow(0);
@@ -153,9 +153,9 @@ class BoardTest {
     @Test
     void testGetCol() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(1, 0, CellState.O);
-            moveParser.makeMove(2, 0, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 0, CellState.O));
+            moveParser.makeMove(new Cell(2, 0, CellState.X));
 
             CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
             CellState[] col = board.getCol(0);
@@ -168,9 +168,9 @@ class BoardTest {
     @Test
     void testGetMainDiagonal() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(1, 1, CellState.O);
-            moveParser.makeMove(2, 2, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 1, CellState.O));
+            moveParser.makeMove(new Cell(2, 2, CellState.X));
 
             CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
             CellState[] diagonal = board.getMainDiagonal();
@@ -183,9 +183,9 @@ class BoardTest {
     @Test
     void testGetSecondaryDiagonal() {
         try {
-            moveParser.makeMove(0, 5, CellState.X);
-            moveParser.makeMove(1, 4, CellState.O);
-            moveParser.makeMove(2, 3, CellState.X);
+            moveParser.makeMove(new Cell(0, 5, CellState.X));
+            moveParser.makeMove(new Cell(1, 4, CellState.O));
+            moveParser.makeMove(new Cell(2, 3, CellState.X));
 
             CellState[] expected = {CellState.X, CellState.O, CellState.X, CellState.EMPTY, CellState.EMPTY, CellState.EMPTY};
             CellState[] diagonal = board.getSecondaryDiagonal();

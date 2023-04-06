@@ -1,9 +1,6 @@
 package gameutils;
 
-import entities.Board;
-import entities.CellState;
-import entities.Player;
-import entities.PlayerRole;
+import entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,17 +25,17 @@ class GameplayLogicTest {
     @Test
     void testPlayTurn() {
         // test making a valid move
-        gameplayLogic.playTurn(0, 0, CellState.X);
+        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
         assertEquals(CellState.X, board.getCellState(0, 0));
         assertEquals(player2, gameplayLogic.getCurrentPlayer());
 
         // test making an invalid move
-        gameplayLogic.playTurn(0, 0, CellState.O);
+        gameplayLogic.playTurn(new Cell(0, 0, CellState.O));
         assertEquals(CellState.X, board.getCellState(0, 0));
         assertEquals(player2, gameplayLogic.getCurrentPlayer());
 
         // test making an invalid move with an empty cell
-        gameplayLogic.playTurn(0, 1, CellState.EMPTY);
+        gameplayLogic.playTurn(new Cell(0, 1, CellState.EMPTY));
         assertEquals(CellState.EMPTY, board.getCellState(0, 1));
         assertEquals(player1, gameplayLogic.getCurrentPlayer());
     }
@@ -49,7 +46,7 @@ class GameplayLogicTest {
         assertEquals(player1, gameplayLogic.getCurrentPlayer());
 
         // test after a turn has been played
-        gameplayLogic.playTurn(0, 0, CellState.X);
+        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
         assertEquals(player2, gameplayLogic.getCurrentPlayer());
     }
 
@@ -96,24 +93,24 @@ class GameplayLogicTest {
 
     @Test
     void testWinnerNotSetUntilGameOver() {
-        gameplayLogic.playTurn(0, 0, CellState.X);
+        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
         assertNull(gameplayLogic.getWinner());
 
-        gameplayLogic.playTurn(0, 1, CellState.O);
+        gameplayLogic.playTurn(new Cell(0, 1, CellState.O));
         assertNull(gameplayLogic.getWinner());
 
-        gameplayLogic.playTurn(0, 2, CellState.X);
+        gameplayLogic.playTurn(new Cell(0, 2, CellState.X));
         assertNull(gameplayLogic.getWinner());
     }
 
     @Test
     void testGetWinnerOrder() {
-        gameplayLogic.playTurn(0, 0, CellState.X);
-        gameplayLogic.playTurn(0, 1, CellState.X);
-        gameplayLogic.playTurn(0, 2, CellState.X);
-        gameplayLogic.playTurn(0, 3, CellState.X);
-        gameplayLogic.playTurn(0, 4, CellState.X);
-        gameplayLogic.playTurn(0, 5, CellState.X);
+        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 1, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 2, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 3, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 4, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 5, CellState.X));
         assertEquals(player1, gameplayLogic.getWinner());
     }
 
@@ -124,51 +121,52 @@ class GameplayLogicTest {
     }
 
     private void playAllTurns() {
-        gameplayLogic.playTurn(0, 0, CellState.X);
-        gameplayLogic.playTurn(0, 1, CellState.O);
-        gameplayLogic.playTurn(0, 2, CellState.X);
-        gameplayLogic.playTurn(0, 3, CellState.O);
-        gameplayLogic.playTurn(0, 4, CellState.X);
-        gameplayLogic.playTurn(0, 5, CellState.X);
-        gameplayLogic.playTurn(1, 0, CellState.X);
-        gameplayLogic.playTurn(1, 1, CellState.O);
-        gameplayLogic.playTurn(1, 2, CellState.X);
-        gameplayLogic.playTurn(1, 3, CellState.O);
-        gameplayLogic.playTurn(1, 4, CellState.X);
-        gameplayLogic.playTurn(1, 5, CellState.O);
-        gameplayLogic.playTurn(2, 0, CellState.O);
-        gameplayLogic.playTurn(2, 1, CellState.X);
-        gameplayLogic.playTurn(2, 2, CellState.X);
-        gameplayLogic.playTurn(2, 3, CellState.X);
-        gameplayLogic.playTurn(2, 4, CellState.X);
-        gameplayLogic.playTurn(2, 5, CellState.O);
-        gameplayLogic.playTurn(3, 0, CellState.X);
-        gameplayLogic.playTurn(3, 1, CellState.O);
-        gameplayLogic.playTurn(3, 2, CellState.X);
-        gameplayLogic.playTurn(3, 3, CellState.O);
-        gameplayLogic.playTurn(3, 4, CellState.O);
-        gameplayLogic.playTurn(3, 5, CellState.O);
-        gameplayLogic.playTurn(4, 0, CellState.X);
-        gameplayLogic.playTurn(4, 1, CellState.O);
-        gameplayLogic.playTurn(4, 2, CellState.O);
-        gameplayLogic.playTurn(4, 3, CellState.O);
-        gameplayLogic.playTurn(4, 4, CellState.X);
-        gameplayLogic.playTurn(4, 5, CellState.O);
-        gameplayLogic.playTurn(5, 0, CellState.X);
-        gameplayLogic.playTurn(5, 1, CellState.O);
-        gameplayLogic.playTurn(5, 2, CellState.X);
-        gameplayLogic.playTurn(5, 3, CellState.O);
-        gameplayLogic.playTurn(5, 4, CellState.X);
-        gameplayLogic.playTurn(5, 5, CellState.X);
+        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 1, CellState.O));
+        gameplayLogic.playTurn(new Cell(0, 2, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 3, CellState.O));
+        gameplayLogic.playTurn(new Cell(0, 4, CellState.X));
+        gameplayLogic.playTurn(new Cell(0, 5, CellState.X));
+        gameplayLogic.playTurn(new Cell(1, 0, CellState.X));
+        gameplayLogic.playTurn(new Cell(1, 1, CellState.O));
+        gameplayLogic.playTurn(new Cell(1, 2, CellState.X));
+        gameplayLogic.playTurn(new Cell(1, 3, CellState.O));
+        gameplayLogic.playTurn(new Cell(1, 4, CellState.X));
+        gameplayLogic.playTurn(new Cell(1, 5, CellState.O));
+        gameplayLogic.playTurn(new Cell(2, 0, CellState.O));
+        gameplayLogic.playTurn(new Cell(2, 1, CellState.X));
+        gameplayLogic.playTurn(new Cell(2, 2, CellState.X));
+        gameplayLogic.playTurn(new Cell(2, 3, CellState.X));
+        gameplayLogic.playTurn(new Cell(2, 4, CellState.X));
+        gameplayLogic.playTurn(new Cell(2, 5, CellState.O));
+        gameplayLogic.playTurn(new Cell(3, 0, CellState.X));
+        gameplayLogic.playTurn(new Cell(3, 1, CellState.O));
+        gameplayLogic.playTurn(new Cell(3, 2, CellState.X));
+        gameplayLogic.playTurn(new Cell(3, 3, CellState.O));
+        gameplayLogic.playTurn(new Cell(3, 4, CellState.O));
+        gameplayLogic.playTurn(new Cell(3, 5, CellState.O));
+        gameplayLogic.playTurn(new Cell(4, 0, CellState.X));
+        gameplayLogic.playTurn(new Cell(4, 1, CellState.O));
+        gameplayLogic.playTurn(new Cell(4, 2, CellState.O));
+        gameplayLogic.playTurn(new Cell(4, 3, CellState.O));
+        gameplayLogic.playTurn(new Cell(4, 4, CellState.X));
+        gameplayLogic.playTurn(new Cell(4, 5, CellState.O));
+        gameplayLogic.playTurn(new Cell(5, 0, CellState.X));
+        gameplayLogic.playTurn(new Cell(5, 1, CellState.O));
+        gameplayLogic.playTurn(new Cell(5, 2, CellState.X));
+        gameplayLogic.playTurn(new Cell(5, 3, CellState.O));
+        gameplayLogic.playTurn(new Cell(5, 4, CellState.X));
+        gameplayLogic.playTurn(new Cell(5, 5, CellState.X));
     }
 
     @Test
      void testGetCurrentPlayerName() {
         assertEquals("Player 1", gameplayLogic.getCurrentPlayerName());
-        gameplayLogic.playTurn(0, 0, CellState.O);
+        gameplayLogic.playTurn(new Cell(0, 0, CellState.O));
         assertEquals("Player 2", gameplayLogic.getCurrentPlayerName());
-        gameplayLogic.playTurn(1, 1, CellState.X);
+        gameplayLogic.playTurn(new Cell(1, 1, CellState.X));
         assertEquals("Player 1", gameplayLogic.getCurrentPlayerName());
     }
+
 
 }

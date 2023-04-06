@@ -1,5 +1,6 @@
 package gameutils;
 
+import entities.Cell;
 import org.junit.jupiter.api.Test;
 import entities.Board;
 import entities.CellState;
@@ -25,11 +26,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerHorizontal() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(0, 1, CellState.X);
-            moveParser.makeMove(0, 2, CellState.X);
-            moveParser.makeMove(0, 3, CellState.X);
-            moveParser.makeMove(0, 4, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+            moveParser.makeMove(new Cell(0, 3, CellState.X));
+            moveParser.makeMove(new Cell(0, 4, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -39,11 +40,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerVertical() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(1, 0, CellState.X);
-            moveParser.makeMove(2, 0, CellState.X);
-            moveParser.makeMove(3, 0, CellState.X);
-            moveParser.makeMove(4, 0, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 0, CellState.X));
+            moveParser.makeMove(new Cell(2, 0, CellState.X));
+            moveParser.makeMove(new Cell(3, 0, CellState.X));
+            moveParser.makeMove(new Cell(4, 0, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -53,11 +54,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerDiagonal() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(1, 1, CellState.X);
-            moveParser.makeMove(2, 2, CellState.X);
-            moveParser.makeMove(3, 3, CellState.X);
-            moveParser.makeMove(4, 4, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 1, CellState.X));
+            moveParser.makeMove(new Cell(2, 2, CellState.X));
+            moveParser.makeMove(new Cell(3, 3, CellState.X));
+            moveParser.makeMove(new Cell(4, 4, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -68,12 +69,12 @@ class BoardCheckerTest {
     @Test
     void testIsNotChaosWinner() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(0, 1, CellState.X);
-            moveParser.makeMove(0, 2, CellState.X);
-            moveParser.makeMove(0, 3, CellState.X);
-            moveParser.makeMove(0, 4, CellState.X);
-            moveParser.makeMove(0, 5, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+            moveParser.makeMove(new Cell(0, 3, CellState.X));
+            moveParser.makeMove(new Cell(0, 4, CellState.X));
+            moveParser.makeMove(new Cell(0, 5, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -83,11 +84,11 @@ class BoardCheckerTest {
     @Test
     void isNotChaosWinner() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(0, 1, CellState.X);
-            moveParser.makeMove(0, 2, CellState.X);
-            moveParser.makeMove(0, 3, CellState.X);
-            moveParser.makeMove(0, 4, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+            moveParser.makeMove(new Cell(0, 3, CellState.X));
+            moveParser.makeMove(new Cell(0, 4, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -97,11 +98,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerInRow() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(0, 1, CellState.X);
-            moveParser.makeMove(0, 2, CellState.X);
-            moveParser.makeMove(0, 3, CellState.X);
-            moveParser.makeMove(0, 4, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+            moveParser.makeMove(new Cell(0, 3, CellState.X));
+            moveParser.makeMove(new Cell(0, 4, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -111,11 +112,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerInCol() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(1, 0, CellState.X);
-            moveParser.makeMove(2, 0, CellState.X);
-            moveParser.makeMove(3, 0, CellState.X);
-            moveParser.makeMove(4, 0, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 0, CellState.X));
+            moveParser.makeMove(new Cell(2, 0, CellState.X));
+            moveParser.makeMove(new Cell(3, 0, CellState.X));
+            moveParser.makeMove(new Cell(4, 0, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -125,11 +126,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerInDiagonal() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(1, 1, CellState.X);
-            moveParser.makeMove(2, 2, CellState.X);
-            moveParser.makeMove(3, 3, CellState.X);
-            moveParser.makeMove(4, 4, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 1, CellState.X));
+            moveParser.makeMove(new Cell(2, 2, CellState.X));
+            moveParser.makeMove(new Cell(3, 3, CellState.X));
+            moveParser.makeMove(new Cell(4, 4, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -139,11 +140,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerInAntiDiagonal() {
         try {
-            moveParser.makeMove(0, 5, CellState.X);
-            moveParser.makeMove(1, 4, CellState.X);
-            moveParser.makeMove(2, 3, CellState.X);
-            moveParser.makeMove(3, 2, CellState.X);
-            moveParser.makeMove(4, 1, CellState.X);
+            moveParser.makeMove(new Cell(0, 5, CellState.X));
+            moveParser.makeMove(new Cell(1, 4, CellState.X));
+            moveParser.makeMove(new Cell(2, 3, CellState.X));
+            moveParser.makeMove(new Cell(3, 2, CellState.X));
+            moveParser.makeMove(new Cell(4, 1, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -161,11 +162,11 @@ class BoardCheckerTest {
     @Test
     void testIsOrderWinnerInMinorDiagonal() {
         try {
-            moveParser.makeMove(0, 1, CellState.X);
-            moveParser.makeMove(1, 2, CellState.X);
-            moveParser.makeMove(2, 3, CellState.X);
-            moveParser.makeMove(3, 4, CellState.X);
-            moveParser.makeMove(4, 5, CellState.X);
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(1, 2, CellState.X));
+            moveParser.makeMove(new Cell(2, 3, CellState.X));
+            moveParser.makeMove(new Cell(3, 4, CellState.X));
+            moveParser.makeMove(new Cell(4, 5, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
@@ -182,42 +183,42 @@ class BoardCheckerTest {
 
     public void fillBoardWithMovesWithoutOrderWin() {
         try {
-            moveParser.makeMove(0, 0, CellState.X);
-            moveParser.makeMove(0, 1, CellState.O);
-            moveParser.makeMove(0, 2, CellState.X);
-            moveParser.makeMove(0, 3, CellState.O);
-            moveParser.makeMove(0, 4, CellState.X);
-            moveParser.makeMove(0, 5, CellState.X);
-            moveParser.makeMove(1, 0, CellState.X);
-            moveParser.makeMove(1, 1, CellState.O);
-            moveParser.makeMove(1, 2, CellState.X);
-            moveParser.makeMove(1, 3, CellState.O);
-            moveParser.makeMove(1, 4, CellState.X);
-            moveParser.makeMove(1, 5, CellState.O);
-            moveParser.makeMove(2, 0, CellState.O);
-            moveParser.makeMove(2, 1, CellState.X);
-            moveParser.makeMove(2, 2, CellState.X);
-            moveParser.makeMove(2, 3, CellState.X);
-            moveParser.makeMove(2, 4, CellState.X);
-            moveParser.makeMove(2, 5, CellState.O);
-            moveParser.makeMove(3, 0, CellState.X);
-            moveParser.makeMove(3, 1, CellState.O);
-            moveParser.makeMove(3, 2, CellState.X);
-            moveParser.makeMove(3, 3, CellState.O);
-            moveParser.makeMove(3, 4, CellState.O);
-            moveParser.makeMove(3, 5, CellState.O);
-            moveParser.makeMove(4, 0, CellState.X);
-            moveParser.makeMove(4, 1, CellState.O);
-            moveParser.makeMove(4, 2, CellState.O);
-            moveParser.makeMove(4, 3, CellState.O);
-            moveParser.makeMove(4, 4, CellState.X);
-            moveParser.makeMove(4, 5, CellState.O);
-            moveParser.makeMove(5, 0, CellState.X);
-            moveParser.makeMove(5, 1, CellState.O);
-            moveParser.makeMove(5, 2, CellState.X);
-            moveParser.makeMove(5, 3, CellState.O);
-            moveParser.makeMove(5, 4, CellState.X);
-            moveParser.makeMove(5, 5, CellState.X);
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.O));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+            moveParser.makeMove(new Cell(0, 3, CellState.O));
+            moveParser.makeMove(new Cell(0, 4, CellState.X));
+            moveParser.makeMove(new Cell(0, 5, CellState.X));
+            moveParser.makeMove(new Cell(1, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 1, CellState.O));
+            moveParser.makeMove(new Cell(1, 2, CellState.X));
+            moveParser.makeMove(new Cell(1, 3, CellState.O));
+            moveParser.makeMove(new Cell(1, 4, CellState.X));
+            moveParser.makeMove(new Cell(1, 5, CellState.O));
+            moveParser.makeMove(new Cell(2, 0, CellState.O));
+            moveParser.makeMove(new Cell(2, 1, CellState.X));
+            moveParser.makeMove(new Cell(2, 2, CellState.X));
+            moveParser.makeMove(new Cell(2, 3, CellState.X));
+            moveParser.makeMove(new Cell(2, 4, CellState.X));
+            moveParser.makeMove(new Cell(2, 5, CellState.O));
+            moveParser.makeMove(new Cell(3, 0, CellState.X));
+            moveParser.makeMove(new Cell(3, 1, CellState.O));
+            moveParser.makeMove(new Cell(3, 2, CellState.X));
+            moveParser.makeMove(new Cell(3, 3, CellState.O));
+            moveParser.makeMove(new Cell(3, 4, CellState.O));
+            moveParser.makeMove(new Cell(3, 5, CellState.O));
+            moveParser.makeMove(new Cell(4, 0, CellState.X));
+            moveParser.makeMove(new Cell(4, 1, CellState.O));
+            moveParser.makeMove(new Cell(4, 2, CellState.O));
+            moveParser.makeMove(new Cell(4, 3, CellState.O));
+            moveParser.makeMove(new Cell(4, 4, CellState.X));
+            moveParser.makeMove(new Cell(4, 5, CellState.O));
+            moveParser.makeMove(new Cell(5, 0, CellState.X));
+            moveParser.makeMove(new Cell(5, 1, CellState.O));
+            moveParser.makeMove(new Cell(5, 2, CellState.X));
+            moveParser.makeMove(new Cell(5, 3, CellState.O));
+            moveParser.makeMove(new Cell(5, 4, CellState.X));
+            moveParser.makeMove(new Cell(5, 5, CellState.X));
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }

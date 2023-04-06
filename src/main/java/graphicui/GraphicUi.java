@@ -1,6 +1,7 @@
 package graphicui;
 
 import annotations.Generated;
+import entities.Cell;
 import gameutils.MessageBundle;
 import entities.Board;
 import entities.CellState;
@@ -152,7 +153,7 @@ public class GraphicUi extends JFrame {
         int col = coords[1];
 
         CellState piece = isLeftClick ? CellState.O : CellState.X;
-        gameplayLogic.playTurn(row, col, piece);
+        gameplayLogic.playTurn(new Cell(row, col, piece));
         updateTurnLabel();
 
         if (gameplayLogic.isGameOver()) {

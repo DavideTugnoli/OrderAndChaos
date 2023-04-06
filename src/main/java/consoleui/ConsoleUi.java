@@ -44,7 +44,7 @@ public class ConsoleUi {
         int col = input[1] - 1;
 
         CellState piece = consoleInputHandler.getPieceSelection();
-        gameplayLogic.playTurn(row, col, piece);
+        gameplayLogic.playTurn(new Cell(row, col, piece)); // TO-DO
     }
 
     private void endGame() {

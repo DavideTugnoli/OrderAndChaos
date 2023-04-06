@@ -1,8 +1,6 @@
 package gameutils;
 
-import entities.Board;
-import entities.CellState;
-import entities.Player;
+import entities.*;
 import exceptions.InvalidMoveException;
 
 public class GameplayLogic {
@@ -21,12 +19,16 @@ public class GameplayLogic {
         this.checker = new BoardChecker(board);
         this.player1 = player1;
         this.player2 = player2;
-        this.currentPlayer = player1;
+        if(player1.getRole() == PlayerRole.ORDER) {
+            this.currentPlayer = player1;
+        } else {
+            this.currentPlayer = player2;
+        }
     }
 
-    public void playTurn(int row, int col, CellState piece) {
+    public void playTurn(Cell cell) {
         try {
-            moveParser.makeMove(row, col, piece);
+            moveParser.makeMove(cell);
         } catch (InvalidMoveException e) {
             return;
         }

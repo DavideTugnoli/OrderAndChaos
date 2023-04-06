@@ -13,6 +13,12 @@ public class Cell {
         this.state = CellState.EMPTY;
     }
 
+    public Cell(int row, int col, CellState state) {
+        this.row = row;
+        this.col = col;
+        this.state = Objects.requireNonNullElse(state, CellState.EMPTY);
+    }
+
     public int getRow() {
         return row;
     }
