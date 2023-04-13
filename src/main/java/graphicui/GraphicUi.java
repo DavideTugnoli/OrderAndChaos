@@ -1,10 +1,9 @@
 package graphicui;
 
 import annotations.Generated;
-import entities.Cell;
+import entities.*;
+import gameutils.GameEventListener;
 import gameutils.MessageBundle;
-import entities.Board;
-import entities.CellState;
 import gameutils.GameplayLogic;
 
 import javax.swing.*;
@@ -12,28 +11,90 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 @Generated
-public class GraphicUi extends JFrame {
-    private final transient GameplayLogic gameplayLogic;
+public class GraphicUi extends JFrame implements GameEventListener {
+    private transient GameplayLogic gameplayLogic;
     private final JButton[][] cellButtons;
     private final JLabel turnLabel;
 
     private final ImageIcon iconO;
     private final ImageIcon iconX;
 
-    public GraphicUi(GameplayLogic gameplayLogic) {
+    private boolean isWaitingForComputer;
+
+    private boolean userInputAllowed = true;
+
+    private final OverlayPanel overlayPanel;
+
+
+    public GraphicUi() {
         super("Order and Chaos");
-        this.gameplayLogic = gameplayLogic;
         iconO = loadScaledImageIcon("src/main/java/graphicui/images/O.png");
         iconX = loadScaledImageIcon("src/main/java/graphicui/images/X.png");
         turnLabel = createTurnLabel();
         getContentPane().add(turnLabel, BorderLayout.NORTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        JLayeredPane gameLayeredPane = new JLayeredPane();
+        gameLayeredPane.setPreferredSize(new Dimension(600, 600));
+        getContentPane().add(gameLayeredPane);
+
         JPanel gamePanel = new JPanel(new GridLayout(6, 6));
+        gamePanel.setBounds(0, 0, 600, 600);
+        gameLayeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
+
         cellButtons = new JButton[6][6];
         createCellButtons(gamePanel);
         createMenu();
-        setWindowProperties(gamePanel);
+        setWindowProperties();
+        overlayPanel = new OverlayPanel();
+        overlayPanel.setBounds(0, 0, 600, 600);
+        gameLayeredPane.add(overlayPanel, JLayeredPane.POPUP_LAYER);
+        setUserInputAllowed(true);
+    }
+
+    @Override
+    public void onGameStarted() {
+        // Aggiorna l'interfaccia Swing per mostrare il messaggio di benvenuto (se necessario)
+    }
+
+    @Override
+    public void onTurnPlayed(Cell cell) {
+        updateBoardUI(cell);
+    }
+
+    @Override
+    public void onGameOver(Player winner) {
+        showGameOverDialog();
+    }
+
+    @Override
+    public void onComputerTurnPlayed(Cell cell) {
+        // delay of 1 second
+        Timer timer = new Timer(1000, e -> {
+            updateBoardUI(cell);
+            setUserInputAllowed(true);
+            isWaitingForComputer = false;
+        });
+        timer.setRepeats(false);
+        timer.start();
+
+        turnLabel.setText("Turno del computer...");
+        setUserInputAllowed(false);
+        isWaitingForComputer = true;
+    }
+
+    private void showOverlay(boolean show) {
+        SwingUtilities.invokeLater(() -> {
+            overlayPanel.setVisible(show);
+            overlayPanel.setBounds(0, 0, this.getContentPane().getWidth(), this.getContentPane().getHeight());
+        });
+    }
+
+    private void setUserInputAllowed(boolean allowed) {
+        userInputAllowed = allowed;
+        showOverlay(!allowed);
     }
 
     private void createMenu() {
@@ -62,7 +123,9 @@ public class GraphicUi extends JFrame {
     private void startNewGame() {
         Point windowLocation = getLocation();
         dispose();
-        GraphicUi newGame = new GraphicUi(new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2()));
+        GraphicUi newGame = new GraphicUi();
+        GameplayLogic newGameplayLogic = new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2(), newGame);
+        newGame.setGameplayLogic(newGameplayLogic);
         newGame.setLocation(windowLocation);
         newGame.setVisible(true);
     }
@@ -100,8 +163,8 @@ public class GraphicUi extends JFrame {
         JLabel turnLabel = new JLabel();
         turnLabel.setHorizontalAlignment(JLabel.CENTER);
         turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        String currentPlayerName = gameplayLogic.getCurrentPlayer().getName();
-        turnLabel.setText(MessageBundle.getTurnMessage(currentPlayerName));
+        // Inizializza il testo del turno con una stringa vuota o un messaggio di attesa
+        turnLabel.setText("");
         return turnLabel;
     }
 
@@ -115,10 +178,9 @@ public class GraphicUi extends JFrame {
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                JButton cellButton = new JButton();
+                CellButton cellButton = new CellButton(i, j);
                 cellButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 cellButton.addMouseListener(new MouseAdapter() {
-
                     @Override
                     public void mousePressed(MouseEvent e) {
                         handleButtonClick(cellButton, e);
@@ -130,41 +192,46 @@ public class GraphicUi extends JFrame {
         }
     }
 
-    private void handleButtonClick(JButton cellButton, MouseEvent e) {
-        boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
-        boolean isRightClick = SwingUtilities.isRightMouseButton(e);
-
-        if (isLeftClick && !cellButton.isEnabled()) {
+    private void handleButtonClick(CellButton cellButton, MouseEvent e) {
+        if (isWaitingForComputer || !userInputAllowed ) {
             return;
         }
 
-        if (isLeftClick) {
-            updateButtonIcon(cellButton, iconO);
-        } else if (isRightClick) {
-            if (cellButton.isEnabled()) {
-                updateButtonIcon(cellButton, iconX);
-            }
+        if (!cellButton.isEnabled()) {
+            return;
         }
 
-        disableButton(cellButton);
+        boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
 
-        int[] coords = getRowAndColForButton(cellButton);
-        int row = coords[0];
-        int col = coords[1];
+        int row = cellButton.getRow();
+        int col = cellButton.getCol();
 
         CellState piece = isLeftClick ? CellState.O : CellState.X;
-        gameplayLogic.playTurn(new Cell(row, col, piece));
-        updateTurnLabel();
 
-        if (gameplayLogic.isGameOver()) {
-            showGameOverDialog();
-        }
+        ImageIcon icon = piece == CellState.O ? iconO : iconX;
+        updateButtonIcon(cellButton, icon);
+        disableButton(cellButton);
+
+        gameplayLogic.playTurn(new Cell(row, col, piece));
     }
 
     private ImageIcon loadScaledImageIcon(String imagePath) {
         ImageIcon originalIcon = new ImageIcon(imagePath);
         Image scaledImage = originalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
+    }
+
+    private void updateBoardUI(Cell cell) {
+        int row = cell.getRow();
+        int col = cell.getCol();
+        CellState piece = cell.getState();
+        JButton cellButton = cellButtons[row][col];
+
+        ImageIcon icon = piece == CellState.O ? iconO : iconX;
+        updateButtonIcon(cellButton, icon);
+
+        disableButton(cellButton);
+        updateTurnLabel();
     }
 
     private void updateButtonIcon(JButton button, ImageIcon icon) {
@@ -176,25 +243,9 @@ public class GraphicUi extends JFrame {
         button.setEnabled(false);
     }
 
-
-    private int[] getRowAndColForButton(JButton button) {
-        int[] rowAndCol = new int[2];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                if (cellButtons[i][j] == button) {
-                    rowAndCol[0] = i;
-                    rowAndCol[1] = j;
-                    return rowAndCol;
-                }
-            }
-        }
-        return new int[0];
-    }
-
-    private void setWindowProperties(JPanel gamePanel) {
-        setSize(500, 500);
+    private void setWindowProperties() {
+        setSize(600, 600);
         setResizable(false);
-        getContentPane().add(gamePanel);
         pack();
         setVisible(true);
     }
@@ -207,6 +258,12 @@ public class GraphicUi extends JFrame {
                 dispose();
             }
         }
+    }
+
+    public void setGameplayLogic(GameplayLogic gameplayLogic) {
+        this.gameplayLogic = new GameplayLogic(gameplayLogic.getBoard(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2(), this);
+        // Aggiorna il testo del turno dopo aver inizializzato gameplayLogic
+        updateTurnLabel();
     }
 
 }

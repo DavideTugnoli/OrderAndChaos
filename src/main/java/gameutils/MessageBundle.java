@@ -315,4 +315,12 @@ public class MessageBundle {
         }
     }
 
+    public static String getComputerTurnMessage(String playerName, int row, int col) {
+        if (currentLocale.getLanguage().equals("it")) {
+            return String.format("%s ha giocato in (%d, %d)", playerName, row, col);
+        } else {
+            return String.format("%s played at (%d, %d)", playerName, row, col);
+        }
+    }
+
 }

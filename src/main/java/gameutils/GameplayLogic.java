@@ -13,13 +13,20 @@ public class GameplayLogic {
 
     private Player winner;
 
-    public GameplayLogic(Board board, Player player1, Player player2) {
+    private final GameEventListener gameEventListener;
+
+    public GameplayLogic(Board board, Player player1, Player player2, GameEventListener gameEventListener) {
         this.board = board;
         this.moveParser = new MoveParser(board);
         this.checker = new BoardChecker(board);
+        this.gameEventListener = gameEventListener;
         this.player1 = player1;
         this.player2 = player2;
-        if(player1.getRole() == PlayerRole.ORDER) {
+        determineFirstPlayer();
+    }
+
+    private void determineFirstPlayer() {
+        if (player1.getRole() == PlayerRole.ORDER) {
             this.currentPlayer = player1;
         } else {
             this.currentPlayer = player2;
@@ -27,20 +34,51 @@ public class GameplayLogic {
     }
 
     public void playTurn(Cell cell) {
+        if (isGameOver()) {
+            return;
+        }
         try {
             moveParser.makeMove(cell);
         } catch (InvalidMoveException e) {
             return;
         }
 
-        if (checker.isOrderWinner()) {
-            winner = player1;
-        } else if (checker.isChaosWinner()) {
-            winner = player2;
-        } else {
-            currentPlayer = (currentPlayer == player1) ? player2 : player1;
+        updateGameState(cell);
+
+        if (currentPlayer instanceof ComputerPlayer) {
+            playComputerTurn();
         }
     }
+
+
+    private void nextPlayer() {
+        currentPlayer = (currentPlayer == player1) ? player2 : player1;
+    }
+
+    private void playComputerTurn() {
+        if (getCurrentPlayer() instanceof ComputerPlayer computerPlayer) {
+            Cell computerMove = computerPlayer.makeMove(getBoard());
+            playTurn(computerMove);
+        }
+    }
+
+    private void updateGameState(Cell cell) {
+        if (checker.isOrderWinner()) {
+            winner = player1;
+            gameEventListener.onGameOver(winner);
+        } else if (checker.isChaosWinner()) {
+            winner = player2;
+            gameEventListener.onGameOver(winner);
+        } else {
+            if (currentPlayer instanceof HumanPlayer) {
+                gameEventListener.onTurnPlayed(cell);
+            } else if (currentPlayer instanceof ComputerPlayer) {
+                gameEventListener.onComputerTurnPlayed(cell);
+            }
+            nextPlayer();
+        }
+    }
+
 
     public Player getCurrentPlayer() {
         return currentPlayer;
@@ -69,5 +107,10 @@ public class GameplayLogic {
     public Player getWinner() {
         return winner;
     }
+
+    public boolean isComputerPlayer() {
+        return getCurrentPlayer() instanceof ComputerPlayer;
+    }
+
 }
 

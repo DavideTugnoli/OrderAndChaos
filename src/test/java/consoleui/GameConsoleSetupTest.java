@@ -23,7 +23,7 @@ class GameConsoleSetupTest {
         System.setIn(in);
 
         // Execute the method under test
-        List<Player> players = GameConsoleSetup.setupPlayers();
+        List<Player> players = GameConsoleSetup.setupPlayers(false);
 
         // Verify the results
         assertEquals(2, players.size());
@@ -45,7 +45,7 @@ class GameConsoleSetupTest {
         System.setIn(in);
 
         // Execute the method under test
-        List<Player> players = GameConsoleSetup.setupPlayers();
+        List<Player> players = GameConsoleSetup.setupPlayers(false);
 
         // Verify the results
         assertEquals(2, players.size());
@@ -65,7 +65,7 @@ class GameConsoleSetupTest {
         System.setIn(in);
 
         // Execute the method under test
-        List<Player> players = GameConsoleSetup.setupPlayers();
+        List<Player> players = GameConsoleSetup.setupPlayers(false);
 
         // Verify the results
         assertEquals(2, players.size());

@@ -1,7 +1,6 @@
 package consoleui;
 
-import entities.Player;
-import entities.PlayerRole;
+import entities.*;
 import gameutils.MessageBundle;
 
 import java.util.Scanner;
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.Arrays;
 
 public class GameConsoleSetup {
-    public static List<Player> setupPlayers() {
+    public static List<Player> setupPlayers(boolean singlePlayer) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print(MessageBundle.getOrderPlayerName());
@@ -17,15 +16,19 @@ public class GameConsoleSetup {
         if (name1.isEmpty()) {
             name1 = "Order";
         }
-        Player player1 = new Player(name1, PlayerRole.ORDER);
+        Player player1 = new HumanPlayer(name1, PlayerRole.ORDER);
 
-        System.out.print(MessageBundle.getChaosPlayerName());
-        String name2 = scanner.nextLine().trim();
-        if (name2.isEmpty()) {
-            name2 = "Chaos";
+        if (singlePlayer) {
+            Player player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
+            return Arrays.asList(player1, player2);
+        } else {
+            System.out.print(MessageBundle.getChaosPlayerName());
+            String name2 = scanner.nextLine().trim();
+            if (name2.isEmpty()) {
+                name2 = "Chaos";
+            }
+            Player player2 = new HumanPlayer(name2, PlayerRole.CHAOS);
+            return Arrays.asList(player1, player2);
         }
-        Player player2 = new Player(name2, PlayerRole.CHAOS);
-
-        return Arrays.asList(player1, player2);
     }
 }

@@ -37,3 +37,5 @@
 - [X] Istruzioni per versione grafica
 - [X] Inserire nomi di default quando non si inseriscono i nomi dei giocatori in console
 - [ ] Comandi personalizzati per avviare direttamente consle o GUI con la lingua desiderata
+
+- [ ] l'interfaccia grafica conclude senza mostrare il quinto pezzo piazzato

@@ -2,31 +2,56 @@ package consoleui;
 
 import annotations.Generated;
 import entities.*;
+import gameutils.GameEventListener;
 import gameutils.GameplayLogic;
 import gameutils.MessageBundle;
 
 @Generated
-public class ConsoleUi {
-    private final GameplayLogic gameplayLogic;
+public class ConsoleUi implements GameEventListener {
+    private GameplayLogic gameplayLogic;
     private final BoardPrinter printer;
     private final ConsoleInputHandler consoleInputHandler;
 
-    public ConsoleUi(GameplayLogic gameplayLogic, ConsoleInputHandler consoleInputHandler) {
-        this.gameplayLogic = gameplayLogic;
+    public ConsoleUi(ConsoleInputHandler consoleInputHandler) {
         this.printer = new BoardPrinter();
         this.consoleInputHandler = consoleInputHandler;
     }
 
+    @Override
+    public void onGameStarted() {
+        printCurrentBoard();
+    }
+
+    @Override
+    public void onTurnPlayed(Cell cell) {
+        System.out.println("Qua");
+        printCurrentBoard();
+    }
+
+    @Override
+    public void onGameOver(Player winner) {
+        endGame();
+    }
+
+    @Override
+    public void onComputerTurnPlayed(Cell cell) {
+        System.out.println(MessageBundle.getComputerTurnMessage(gameplayLogic.getPlayer2().getName(), cell.getRow() + 1, cell.getCol() + 1));
+        printCurrentBoard();
+    }
+
     public void play() {
-        System.out.println(MessageBundle.getWelcomeMessage());
+        onGameStarted();
 
         while (!gameplayLogic.isGameOver()) {
-            printCurrentBoard();
             printCurrentPlayerTurn();
-            executeTurn();
+            if (!gameplayLogic.isComputerPlayer()) {
+                int[] input = consoleInputHandler.getValidInput(MessageBundle.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
+                int row = input[0] - 1;
+                int col = input[1] - 1;
+                CellState piece = consoleInputHandler.getPieceSelection();
+                gameplayLogic.playTurn(new Cell(row, col, piece));
+            }
         }
-
-        endGame();
     }
 
     private void printCurrentBoard() {
@@ -36,15 +61,6 @@ public class ConsoleUi {
 
     private void printCurrentPlayerTurn() {
         System.out.println(MessageBundle.getCurrentPlayerTurnMessage(gameplayLogic.getCurrentPlayerName()));
-    }
-
-    private void executeTurn() {
-        int[] input = consoleInputHandler.getValidInput(MessageBundle.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
-        int row = input[0] - 1;
-        int col = input[1] - 1;
-
-        CellState piece = consoleInputHandler.getPieceSelection();
-        gameplayLogic.playTurn(new Cell(row, col, piece)); // TO-DO
     }
 
     private void endGame() {
@@ -74,8 +90,12 @@ public class ConsoleUi {
 
     private void restartGame() {
         Board newBoard = new Board();
-        GameplayLogic newGameplayLogic = new GameplayLogic(newBoard, gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2());
-        ConsoleUi newConsoleUi = new ConsoleUi(newGameplayLogic, consoleInputHandler);
-        newConsoleUi.play();
+        GameplayLogic newGameplayLogic = new GameplayLogic(newBoard, gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2(), this);
+        this.setGameplayLogic(newGameplayLogic);
+        this.play();
+    }
+
+    public void setGameplayLogic(GameplayLogic gameplayLogic) {
+        this.gameplayLogic = gameplayLogic;
     }
 }

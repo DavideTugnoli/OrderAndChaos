@@ -1,171 +1,271 @@
 package gameutils;
 
+import consoleui.BoardPrinter;
 import entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GameplayLogicTest {
-
+public class GameplayLogicTest {
     private Board board;
     private Player player1;
     private Player player2;
-
+    private GameEventListener gameEventListener;
     private GameplayLogic gameplayLogic;
+    private GameplayLogic gameplayLogicWithComputer;
 
     @BeforeEach
-    void setUp() {
-        board = new Board();
-        player1 = new Player("Player 1", PlayerRole.ORDER);
-        player2 = new Player("Player 2", PlayerRole.CHAOS);
-        gameplayLogic = new GameplayLogic(board, player1, player2);
+    public void setUp() {
+        board = new Board(6);
     }
 
     @Test
-    void testPlayTurn() {
-        // test making a valid move
-        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
-        assertEquals(CellState.X, board.getCellState(0, 0));
-        assertEquals(player2, gameplayLogic.getCurrentPlayer());
+    public void testGetCurrentPlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        Player currentPlayer = gameplayLogic.getCurrentPlayer();
+        assertEquals(player1, currentPlayer);
+    }
 
-        // test making an invalid move
-        gameplayLogic.playTurn(new Cell(0, 0, CellState.O));
-        assertEquals(CellState.X, board.getCellState(0, 0));
-        assertEquals(player2, gameplayLogic.getCurrentPlayer());
+    @Test
+    public void testPlayTurn() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        Cell cell = new Cell(0, 0, CellState.X);
+        gameplayLogic.playTurn(cell);
 
-        // test making an invalid move with an empty cell
-        gameplayLogic.playTurn(new Cell(0, 1, CellState.EMPTY));
-        assertEquals(CellState.EMPTY, board.getCellState(0, 1));
+        assertFalse(board.isCellEmpty(0, 0));
+    }
+
+    @Test
+    public void testDetermineFirstPlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
         assertEquals(player1, gameplayLogic.getCurrentPlayer());
     }
 
     @Test
-    void testGetCurrentPlayer() {
-        GameplayLogic gameplayLogic = new GameplayLogic(board, player1, player2);
-        assertEquals(player1, gameplayLogic.getCurrentPlayer());
+    public void testNextPlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        Cell cell = new Cell(0, 0);
+        gameplayLogic.playTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
 
-        // test after a turn has been played
-        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
         assertEquals(player2, gameplayLogic.getCurrentPlayer());
     }
 
     @Test
-    void testIsGameOver() {
-        GameplayLogic gameplayLogic = new GameplayLogic(board, player1, player2);
+    public void testGetCurrentPlayerName() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        String currentPlayerName = gameplayLogic.getCurrentPlayerName();
+        assertEquals("Player 1", currentPlayerName);
+    }
 
-        // test when game is not over
+    @Test
+    public void testIsGameOver() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
         assertFalse(gameplayLogic.isGameOver());
+    }
 
-        // test when game is over
-        board.setCellState(0, 0, CellState.X);
-        board.setCellState(0, 1, CellState.X);
-        board.setCellState(0, 2, CellState.X);
-        board.setCellState(0, 3, CellState.X);
-        board.setCellState(0, 4, CellState.X);
-        board.setCellState(0, 5, CellState.X);
+    @Test
+    public void testGetBoard() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        Board currentBoard = gameplayLogic.getBoard();
+        assertEquals(board, currentBoard);
+    }
+
+    @Test
+    public void testGetPlayer1() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        Player player = gameplayLogic.getPlayer1();
+        assertEquals(player1, player);
+    }
+
+    @Test
+    public void testGetPlayer2() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        Player player = gameplayLogic.getPlayer2();
+        assertEquals(player2, player);
+    }
+
+    @Test
+    public void testGetWinner() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        assertNull(gameplayLogic.getWinner());
+    }
+
+    @Test
+    public void testIsComputerPlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+
+        player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
+        gameplayLogicWithComputer = new GameplayLogic(board, player1, player2, gameEventListener);
+        assertFalse(gameplayLogic.isComputerPlayer());
+    }
+
+    @Test
+    public void testPlayTurnWithComputerPlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+
+        player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
+        gameplayLogicWithComputer = new GameplayLogic(board, player1, player2, gameEventListener);
+        Cell cell = new Cell(0, 0, CellState.X);
+        gameplayLogicWithComputer.playTurn(cell);
+
+        assertFalse(board.isCellEmpty(0, 0));
+        // Controlla che il ComputerPlayer abbia effettivamente giocato un turno
+        assertTrue(hasComputerPlayedTurn(board));
+    }
+
+    @Test
+    public void testNextPlayerWithComputerPlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+
+        player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
+        gameplayLogicWithComputer = new GameplayLogic(board, player1, player2, gameEventListener);
+        Cell cell = new Cell(0, 0, CellState.X);
+        gameplayLogicWithComputer.playTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
+
+        // Se il ComputerPlayer ha effettivamente giocato un turno, il giocatore corrente dovrebbe essere nuovamente il player1
+        assertEquals(player1, gameplayLogicWithComputer.getCurrentPlayer());
+    }
+
+    private boolean hasComputerPlayedTurn(Board board) {
+        int occupiedCells = 0;
+        for (int row = 0; row < board.getSize(); row++) {
+            for (int col = 0; col < board.getSize(); col++) {
+                if (board.getCellState(row, col) != CellState.EMPTY) {
+                    occupiedCells++;
+                }
+            }
+        }
+        // Controlla se ci sono almeno due celle occupate (una dall'utente e una dal ComputerPlayer)
+        return occupiedCells >= 2;
+    }
+
+    @Test
+    public void testPlayTurnInvalidMove() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        Cell cell = new Cell(0, 0, CellState.X);
+        gameplayLogic.playTurn(cell);
+        gameplayLogic.playTurn(cell); // Dovrebbe ignorare questa mossa perché è stata già occupata la cella (0, 0)
+
+        assertEquals(player2.getName(), gameplayLogic.getCurrentPlayer().getName()); // Il giocatore corrente non dovrebbe cambiare
+    }
+
+    @Test
+    public void testGameOverWithOrderWinner() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        fillBoardWithOrderWinner(gameplayLogic);
+
         assertTrue(gameplayLogic.isGameOver());
-
-        // test when game is over with Chaos winner
-        playAllTurns();
-        assertTrue(gameplayLogic.isGameOver());
-    }
-
-    @Test
-    void testGetBoard() {
-        assertEquals(board, gameplayLogic.getBoard());
-    }
-
-    @Test
-    void testGetPlayer1() {
-        assertEquals(player1, gameplayLogic.getPlayer1());
-    }
-
-    @Test
-    void testGetPlayer2() {
-        assertEquals(player2, gameplayLogic.getPlayer2());
-    }
-
-    @Test
-    void testGetNoWinner() {
-        assertNull(gameplayLogic.getWinner());
-    }
-
-    @Test
-    void testWinnerNotSetUntilGameOver() {
-        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
-        assertNull(gameplayLogic.getWinner());
-
-        gameplayLogic.playTurn(new Cell(0, 1, CellState.O));
-        assertNull(gameplayLogic.getWinner());
-
-        gameplayLogic.playTurn(new Cell(0, 2, CellState.X));
-        assertNull(gameplayLogic.getWinner());
-    }
-
-    @Test
-    void testGetWinnerOrder() {
-        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 1, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 2, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 3, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 4, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 5, CellState.X));
         assertEquals(player1, gameplayLogic.getWinner());
     }
 
     @Test
-    void testGetWinnerNotOrder() {
-        playAllTurns();
-        assertEquals(player2, gameplayLogic.getWinner());
+    public void testGameOverWithChaosWinner() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        fillBoardWithChaosWinner(gameplayLogic);
+
+
+        assertTrue(gameplayLogic.isGameOver());
+        System.out.println(gameplayLogic.getWinner().getName());
+        assertEquals(gameplayLogic.getPlayer2(), gameplayLogic.getWinner());
     }
 
-    private void playAllTurns() {
-        gameplayLogic.playTurn(new Cell(0, 0, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 1, CellState.O));
-        gameplayLogic.playTurn(new Cell(0, 2, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 3, CellState.O));
-        gameplayLogic.playTurn(new Cell(0, 4, CellState.X));
-        gameplayLogic.playTurn(new Cell(0, 5, CellState.X));
-        gameplayLogic.playTurn(new Cell(1, 0, CellState.X));
-        gameplayLogic.playTurn(new Cell(1, 1, CellState.O));
-        gameplayLogic.playTurn(new Cell(1, 2, CellState.X));
-        gameplayLogic.playTurn(new Cell(1, 3, CellState.O));
-        gameplayLogic.playTurn(new Cell(1, 4, CellState.X));
-        gameplayLogic.playTurn(new Cell(1, 5, CellState.O));
-        gameplayLogic.playTurn(new Cell(2, 0, CellState.O));
-        gameplayLogic.playTurn(new Cell(2, 1, CellState.X));
-        gameplayLogic.playTurn(new Cell(2, 2, CellState.X));
-        gameplayLogic.playTurn(new Cell(2, 3, CellState.X));
-        gameplayLogic.playTurn(new Cell(2, 4, CellState.X));
-        gameplayLogic.playTurn(new Cell(2, 5, CellState.O));
-        gameplayLogic.playTurn(new Cell(3, 0, CellState.X));
-        gameplayLogic.playTurn(new Cell(3, 1, CellState.O));
-        gameplayLogic.playTurn(new Cell(3, 2, CellState.X));
-        gameplayLogic.playTurn(new Cell(3, 3, CellState.O));
-        gameplayLogic.playTurn(new Cell(3, 4, CellState.O));
-        gameplayLogic.playTurn(new Cell(3, 5, CellState.O));
-        gameplayLogic.playTurn(new Cell(4, 0, CellState.X));
-        gameplayLogic.playTurn(new Cell(4, 1, CellState.O));
-        gameplayLogic.playTurn(new Cell(4, 2, CellState.O));
-        gameplayLogic.playTurn(new Cell(4, 3, CellState.O));
-        gameplayLogic.playTurn(new Cell(4, 4, CellState.X));
-        gameplayLogic.playTurn(new Cell(4, 5, CellState.O));
-        gameplayLogic.playTurn(new Cell(5, 0, CellState.X));
-        gameplayLogic.playTurn(new Cell(5, 1, CellState.O));
-        gameplayLogic.playTurn(new Cell(5, 2, CellState.X));
-        gameplayLogic.playTurn(new Cell(5, 3, CellState.O));
-        gameplayLogic.playTurn(new Cell(5, 4, CellState.X));
-        gameplayLogic.playTurn(new Cell(5, 5, CellState.X));
+    private void fillBoardWithOrderWinner(GameplayLogic gameplayLogic) {
+
+        // fill board of 5 O in a row
+        for (int i = 0; i < 5; i++) {
+            Cell cell = new Cell(0, i, CellState.O);
+            gameplayLogic.playTurn(cell);
+        }
+
     }
+
+    private void fillBoardWithChaosWinner(GameplayLogic gameplayLogic) {
+        int[][] pattern = {
+                {0, 0, 1, 0, 1, 0},
+                {1, 1, 0, 1, 0, 1},
+                {0, 1, 1, 1, 1, 0},
+                {1, 0, 1, 0, 0, 0},
+                {1, 1, 0, 0, 1, 0},
+                {1, 0, 1, 0, 1, 1}
+        };
+
+        for (int row = 0; row < pattern.length; row++) {
+            for (int col = 0; col < pattern[row].length; col++) {
+                CellState cellState = (pattern[row][col] == 0) ? CellState.X : CellState.O;
+                Cell cell = new Cell(row, col, cellState);
+                gameplayLogic.playTurn(cell);
+            }
+        }
+        BoardPrinter printer = new BoardPrinter();
+        printer.printBoard(gameplayLogic.getBoard());
+    }
+
 
     @Test
-     void testGetCurrentPlayerName() {
-        assertEquals("Player 1", gameplayLogic.getCurrentPlayerName());
-        gameplayLogic.playTurn(new Cell(0, 0, CellState.O));
-        assertEquals("Player 2", gameplayLogic.getCurrentPlayerName());
-        gameplayLogic.playTurn(new Cell(1, 1, CellState.X));
-        assertEquals("Player 1", gameplayLogic.getCurrentPlayerName());
+    public void testPlayTurnWithGameAlreadyOver() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+
+        Cell[] cells = new Cell[5];
+        for (int i = 0; i < 5; i++) {
+            cells[i] = new Cell(0, i, CellState.X);
+            gameplayLogic.playTurn(cells[i]);
+        }
+
+        Cell cell = new Cell(1, 0, CellState.O);
+        gameplayLogic.playTurn(cell); // La mossa dovrebbe essere ignorata perché il gioco è già finito
+
+        assertTrue(gameplayLogic.isGameOver());
+        assertEquals(player1, gameplayLogic.getWinner());
+        assertTrue(board.isCellEmpty(1, 0));
     }
 
 
