@@ -155,9 +155,9 @@ public class MessageBundle {
 
     public static String getGameOverMessage(String winnerName) {
         if (currentLocale.getLanguage().equals("it")) {
-            return "Vuoi fare un'altra partita?\nHai vinto " + winnerName + "!";
+            return "Hai vinto " + winnerName + "!\n" + "Vuoi fare un'altra partita?";
         } else {
-            return "Do you want to play again?\n" + winnerName + " won!";
+            return winnerName + " won!\n" + "Do you want to play again?";
         }
     }
 
@@ -325,7 +325,7 @@ public class MessageBundle {
 
     public static String gameMenuSwitchModeLabel() {
         if (currentLocale.getLanguage().equals("it")) {
-            return "Cambia modalità";
+            return "Cambia modalit\u00E0";
         } else {
             return "Switch mode";
         }

@@ -71,11 +71,12 @@ public class GameplayLogic {
             gameEventListener.onGameOver(winner);
         } else {
             if (currentPlayer instanceof HumanPlayer) {
+                nextPlayer();
                 gameEventListener.onTurnPlayed(cell);
             } else if (currentPlayer instanceof ComputerPlayer) {
                 gameEventListener.onComputerTurnPlayed(cell);
+                nextPlayer();
             }
-            nextPlayer();
         }
     }
 

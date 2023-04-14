@@ -52,13 +52,14 @@ public class GameGraphicSetup {
     private static JPanel createPlayerNamesPanel(boolean singlePlayer) {
         JPanel panel = new JPanel(new GridLayout(singlePlayer ? 1 : 2, 2));
         JTextField orderPlayerNameField = new JTextField();
+        panel.add(new JLabel(MessageBundle.getOrderPlayerName()));
+        panel.add(orderPlayerNameField);
         if (!singlePlayer) {
             JTextField chaosPlayerNameField = new JTextField();
             panel.add(new JLabel(MessageBundle.getChaosPlayerName()));
             panel.add(chaosPlayerNameField);
         }
-        panel.add(new JLabel(MessageBundle.getOrderPlayerName()));
-        panel.add(orderPlayerNameField);
+
         return panel;
     }
 
