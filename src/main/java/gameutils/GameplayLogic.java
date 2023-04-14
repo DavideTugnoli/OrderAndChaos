@@ -112,5 +112,9 @@ public class GameplayLogic {
         return getCurrentPlayer() instanceof ComputerPlayer;
     }
 
+    public boolean isSinglePlayer() {
+        return player1 instanceof ComputerPlayer || player2 instanceof ComputerPlayer;
+    }
+
 }
 

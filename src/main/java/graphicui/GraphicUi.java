@@ -109,7 +109,36 @@ public class GraphicUi extends JFrame implements GameEventListener {
         JMenuItem newGameItem = new JMenuItem(MessageBundle.gameMenuNewGameLabel());
         newGameItem.addActionListener(e -> startNewGame());
         gameMenu.add(newGameItem);
+
+        JMenuItem changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel());
+        changeModeItem.addActionListener(e -> switchGameMode());
+        gameMenu.add(changeModeItem);
+
+        JMenuItem exitItem = new JMenuItem(MessageBundle.gameMenuExitLabel());
+        exitItem.addActionListener(e -> System.exit(0));
+        gameMenu.add(exitItem);
+
         return gameMenu;
+    }
+
+    private void switchGameMode() {
+        Point windowLocation = getLocation();
+        dispose();
+
+        Player newPlayer1 = gameplayLogic.getPlayer1();
+        Player newPlayer2 = gameplayLogic.getPlayer2();
+
+        if (gameplayLogic.isSinglePlayer()) {
+            newPlayer2 = new HumanPlayer(newPlayer2.getName(), newPlayer2.getRole());
+        } else {
+            newPlayer2 = new ComputerPlayer(newPlayer2.getName(), newPlayer2.getRole());
+        }
+
+        GraphicUi newGame = new GraphicUi();
+        GameplayLogic newGameplayLogic = new GameplayLogic(new Board(), newPlayer1, newPlayer2, newGame);
+        newGame.setGameplayLogic(newGameplayLogic);
+        newGame.setLocation(windowLocation);
+        newGame.setVisible(true);
     }
 
     private JMenu createHelpMenu() {

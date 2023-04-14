@@ -268,5 +268,22 @@ public class GameplayLogicTest {
         assertTrue(board.isCellEmpty(1, 0));
     }
 
+    @Test
+    public void testIsSinglePlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        assertFalse(gameplayLogic.isSinglePlayer());
+    }
+
+    @Test
+    public void testIsSinglePlayerWithComputerPlayer() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        assertTrue(gameplayLogic.isSinglePlayer());
+    }
 
 }

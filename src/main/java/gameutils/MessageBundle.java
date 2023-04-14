@@ -323,4 +323,21 @@ public class MessageBundle {
         }
     }
 
+    public static String gameMenuSwitchModeLabel() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Cambia modalità";
+        } else {
+            return "Switch mode";
+        }
+    }
+
+    public static String gameMenuExitLabel() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Esci";
+        } else {
+            return "Exit";
+        }
+    }
+
+
 }
