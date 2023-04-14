@@ -110,7 +110,7 @@ class MessageBundleTest {
     @Test
     @DisplayName("Test getGameOverMessage() with both languages")
     void testGetGameOverMessage() {
-        String[] expected = {"Do you want to play again?\nJohn won!", "Vuoi fare un'altra partita?\nHai vinto John!"};
+        String[] expected = {"John won!\nDo you want to play again?", "Hai vinto John!\nVuoi fare un'altra partita?"};
 
         for (int i = 0; i < 2; i++) {
             Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
