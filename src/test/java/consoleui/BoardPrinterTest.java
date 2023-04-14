@@ -48,7 +48,7 @@ class BoardPrinterTest {
                    -------------------------
                      1   2   3   4   5   6\s
                 """;
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput, outContent.toString().replace("\r", ""));
     }
 
     @Test
@@ -72,7 +72,7 @@ class BoardPrinterTest {
                            -------------------------
                              1   2   3   4   5   6\s
                         """;
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput, outContent.toString().replace("\r", ""));
     }
 
     @Test
@@ -97,7 +97,7 @@ class BoardPrinterTest {
                            -------------------------
                              1   2   3   4   5   6\s
                         """;
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput, outContent.toString().replace("\r", ""));
     }
 
     @Test
@@ -145,7 +145,7 @@ class BoardPrinterTest {
                            -------------------------
                              1   2   3   4   5   6\s
                         """;
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput, outContent.toString().replace("\r", ""));
     }
 
 }
