@@ -50,14 +50,34 @@ public class GameGraphicSetup {
     }
 
     private static JPanel createPlayerNamesPanel(boolean singlePlayer) {
-        JPanel panel = new JPanel(new GridLayout(singlePlayer ? 1 : 2, 2));
-        JTextField orderPlayerNameField = new JTextField();
-        panel.add(new JLabel(MessageBundle.getOrderPlayerName()));
-        panel.add(orderPlayerNameField);
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.insets = new Insets(5, 5, 5, 5);
+
+        // Order Player Name
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(new JLabel(MessageBundle.getOrderPlayerName()), constraints);
+
+        JTextField orderPlayerNameField = new JTextField(10);
+        orderPlayerNameField.setPreferredSize(new Dimension(orderPlayerNameField.getPreferredSize().width, 30));
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(orderPlayerNameField, constraints);
+
         if (!singlePlayer) {
-            JTextField chaosPlayerNameField = new JTextField();
-            panel.add(new JLabel(MessageBundle.getChaosPlayerName()));
-            panel.add(chaosPlayerNameField);
+            // Chaos Player Name
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            panel.add(new JLabel(MessageBundle.getChaosPlayerName()), constraints);
+
+            JTextField chaosPlayerNameField = new JTextField(10);
+            chaosPlayerNameField.setPreferredSize(new Dimension(chaosPlayerNameField.getPreferredSize().width, 30));
+            constraints.gridx = 1;
+            constraints.gridy = 1;
+            panel.add(chaosPlayerNameField, constraints);
         }
 
         return panel;

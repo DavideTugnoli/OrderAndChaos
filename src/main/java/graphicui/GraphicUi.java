@@ -20,13 +20,9 @@ public class GraphicUi extends JFrame implements GameEventListener {
 
     private final ImageIcon iconO;
     private final ImageIcon iconX;
-
     private boolean isWaitingForComputer;
-
     private boolean userInputAllowed = true;
-
     private final OverlayPanel overlayPanel;
-
 
     public GraphicUi() {
         super("Order and Chaos");
@@ -226,7 +222,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
     }
 
     private void handleButtonClick(CellButton cellButton, MouseEvent e) {
-        if (isWaitingForComputer || !userInputAllowed ) {
+        if (isWaitingForComputer || !userInputAllowed) {
             return;
         }
 
@@ -277,9 +273,15 @@ public class GraphicUi extends JFrame implements GameEventListener {
     }
 
     private void setWindowProperties() {
-        setSize(600, 600);
+        int menuHeight = getJMenuBar().getPreferredSize().height;
+        int turnLabelHeight = turnLabel.getPreferredSize().height;
+
+        int windowWidth = 600;
+        int windowHeight = 600 + menuHeight + turnLabelHeight + 50;
+
+        setSize(windowWidth, windowHeight);
         setResizable(false);
-        pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

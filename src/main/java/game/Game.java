@@ -9,108 +9,52 @@ import gameutils.MessageBundle;
 import graphicui.GameGraphicSetup;
 import graphicui.GraphicUi;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
 
 @Generated
 public class Game {
-    private static final int CONSOLE_CHOICE = 1;
-    private static final int GRAPHIC_CHOICE = 2;
+    private static final String CONSOLE_ARG = "--console";
+    private static final String GRAPHIC_ARG = "--graphic";
+    private static final String SINGLE_PLAYER_ARG = "--single-player";
+    private static final String MULTI_PLAYER_ARG = "--multi-player";
+    private static final String ENGLISH_ARG = "--english";
+    private static final String ITALIAN_ARG = "--italian";
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        setLocaleFromUserChoice(scanner);
-        Board board = new Board();
-        int interfaceChoice = getGameInterfaceChoice(scanner);
-        boolean singlePlayer = isSinglePlayerGame(scanner);
-
-        switch (interfaceChoice) {
-            case CONSOLE_CHOICE -> startGameWithConsoleInterface(board, singlePlayer);
-            case GRAPHIC_CHOICE -> startGameWithGraphicInterface(board, singlePlayer);
-        }
-    }
-
-
-    private static boolean isSinglePlayerGame(Scanner scanner) {
-        int choice;
-
-        while (true) {
-           // System.out.println(MessageBundle.getGameModeChoiceRequestMessage());
-            System.out.println("1. Single Player \n2. Multiplayer");
-            try {
-                choice = scanner.nextInt();
-                if (choice == 1 || choice == 2) {
-                    break;
-                }
-               // System.out.println(MessageBundle.getInvalidGameModeChoiceMessage());
-                System.out.println("Invalid Choice");
-            } catch (InputMismatchException e) {
-                System.out.println(MessageBundle.getEnterIntegerMessage());
-                scanner.nextLine();
-            }
-        }
-
-        return choice == 1;
-    }
-
-
-    private static int getGameInterfaceChoice(Scanner scanner) {
-        int choice;
-
-        while (true) {
-            System.out.println(MessageBundle.getGameInterfaceChoiceRequestMessage());
-            try {
-                choice = scanner.nextInt();
-                if (choice == CONSOLE_CHOICE || choice == GRAPHIC_CHOICE) {
-                    break;
-                }
-                System.out.println(MessageBundle.getInvalidInterfaceChoiceMessage());
-            } catch (InputMismatchException e) {
-                System.out.println(MessageBundle.getEnterIntegerMessage());
-                scanner.nextLine();
-            }
-        }
-
-        return choice;
-    }
-
-    private static void setLocaleFromUserChoice(Scanner scanner) {
-        String languageChoice;
-        System.out.println(MessageBundle.getLanguageChoiceRequestMessage());
-
-        while (true) {
-            languageChoice = scanner.nextLine();
-            if (languageChoice.equals("1") || languageChoice.equals("2")) {
-                break;
-            }
-            System.out.println(MessageBundle.getInvalidLanguageChoiceMessage());
-        }
-
-        setCurrentLocale(languageChoice);
-    }
-
-    private static void setCurrentLocale(String languageChoice) {
+        boolean consoleMode = false;
+        boolean singlePlayer = false;
         Locale locale = Locale.ENGLISH;
 
-        switch (languageChoice) {
-            case "1" -> {
+        for (String arg : args) {
+            switch (arg) {
+                case CONSOLE_ARG -> consoleMode = true;
+                case GRAPHIC_ARG -> consoleMode = false;
+                case SINGLE_PLAYER_ARG -> singlePlayer = true;
+                case MULTI_PLAYER_ARG -> singlePlayer = false;
+                case ENGLISH_ARG -> locale = Locale.ENGLISH;
+                case ITALIAN_ARG -> locale = Locale.ITALIAN;
             }
-            case "2" -> locale = Locale.ITALIAN;
         }
 
         MessageBundle.setCurrentLocale(locale);
+        Board board = new Board();
+
+        if (consoleMode) {
+            startGameWithConsoleInterface(board, singlePlayer);
+        } else {
+            startGameWithGraphicInterface(board, singlePlayer);
+        }
     }
 
     private static void startGameWithConsoleInterface(Board board, boolean singlePlayer) {
         System.out.println(MessageBundle.getWelcomeMessage());
         System.out.println(MessageBundle.getInstructionsMessage());
         List<Player> players = GameConsoleSetup.setupPlayers(singlePlayer);
-        ConsoleUi consoleui = new ConsoleUi(new ConsoleInputHandler());
-        GameplayLogic gameplayLogic = new GameplayLogic(board, players.get(0), players.get(1), consoleui);
-        consoleui.setGameplayLogic(gameplayLogic);
-        consoleui.play();
+        ConsoleUi consoleUi = new ConsoleUi(new ConsoleInputHandler());
+        GameplayLogic gameplayLogic = new GameplayLogic(board, players.get(0), players.get(1), consoleUi);
+        consoleUi.setGameplayLogic(gameplayLogic);
+        consoleUi.play();
     }
 
     private static void startGameWithGraphicInterface(Board board, boolean singlePlayer) {
@@ -120,5 +64,4 @@ public class Game {
         graphicUi.setGameplayLogic(gameplayLogic);
         graphicUi.setVisible(true);
     }
-
 }
