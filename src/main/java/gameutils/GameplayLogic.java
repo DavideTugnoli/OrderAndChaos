@@ -3,6 +3,10 @@ package gameutils;
 import entities.*;
 import exceptions.InvalidMoveException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class GameplayLogic {
     private final Board board;
     private final MoveParser moveParser;
@@ -56,8 +60,8 @@ public class GameplayLogic {
     }
 
     private void playComputerTurn() {
-        if (getCurrentPlayer() instanceof ComputerPlayer computerPlayer) {
-            Cell computerMove = computerPlayer.makeMove(getBoard());
+        if (getCurrentPlayer() instanceof ComputerPlayer) {
+            Cell computerMove = makeComputerMove(getBoard());
             playTurn(computerMove);
         }
     }
@@ -80,6 +84,28 @@ public class GameplayLogic {
         }
     }
 
+    private Cell makeComputerMove(Board board) {
+        List<Cell> availableCells = getAvailableCells(board);
+        Random random = new Random();
+        Cell chosenCell = availableCells.get(random.nextInt(availableCells.size()));
+        CellState chosenState = random.nextBoolean() ? CellState.X : CellState.O;
+        return new Cell(chosenCell.getRow(), chosenCell.getCol(), chosenState);
+    }
+
+    private List<Cell> getAvailableCells(Board board) {
+        List<Cell> availableCells = new ArrayList<>();
+        int size = board.getSize();
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (board.isCellEmpty(row, col)) {
+                    availableCells.add(new Cell(row, col));
+                }
+            }
+        }
+
+        return availableCells;
+    }
 
     public Player getCurrentPlayer() {
         return currentPlayer;
