@@ -67,20 +67,23 @@ public class GameplayLogic {
     }
 
     private void updateGameState(Cell cell) {
+        if (currentPlayer instanceof HumanPlayer) {
+            nextPlayer();
+            gameEventListener.onTurnPlayed(cell);
+        } else if (currentPlayer instanceof ComputerPlayer) {
+            gameEventListener.onComputerTurnPlayed(cell);
+            nextPlayer();
+        }
+        checkWinner();
+    }
+
+    private void checkWinner() {
         if (checker.isOrderWinner()) {
             winner = player1;
             gameEventListener.onGameOver(winner);
         } else if (checker.isChaosWinner()) {
             winner = player2;
             gameEventListener.onGameOver(winner);
-        } else {
-            if (currentPlayer instanceof HumanPlayer) {
-                nextPlayer();
-                gameEventListener.onTurnPlayed(cell);
-            } else if (currentPlayer instanceof ComputerPlayer) {
-                gameEventListener.onComputerTurnPlayed(cell);
-                nextPlayer();
-            }
         }
     }
 
