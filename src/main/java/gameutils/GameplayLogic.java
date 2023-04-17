@@ -6,6 +6,9 @@ import exceptions.InvalidMoveException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class GameplayLogic {
     private final Board board;
@@ -19,6 +22,10 @@ public class GameplayLogic {
 
     private final GameEventListener gameEventListener;
 
+    private final Random random;
+
+    private final ScheduledExecutorService executorService;
+
     public GameplayLogic(Board board, Player player1, Player player2, GameEventListener gameEventListener) {
         this.board = board;
         this.moveParser = new MoveParser(board);
@@ -26,7 +33,13 @@ public class GameplayLogic {
         this.gameEventListener = gameEventListener;
         this.player1 = player1;
         this.player2 = player2;
+        this.random = new Random();
         determineFirstPlayer();
+        if (player1 instanceof ComputerPlayer || player2 instanceof ComputerPlayer) {
+            executorService = Executors.newSingleThreadScheduledExecutor();
+        } else {
+            executorService = null;
+        }
     }
 
     private void determineFirstPlayer() {
@@ -38,9 +51,15 @@ public class GameplayLogic {
     }
 
     public void playTurn(Cell cell) {
-        if (isGameOver()) {
-            return;
+        if (isGameOver()) return;
+        if (currentPlayer instanceof HumanPlayer) {
+            playHumanTurn(cell);
+        } else if (currentPlayer instanceof ComputerPlayer) {
+            playComputerTurn();
         }
+    }
+
+    private void playHumanTurn(Cell cell) {
         try {
             moveParser.makeMove(cell);
         } catch (InvalidMoveException e) {
@@ -48,33 +67,35 @@ public class GameplayLogic {
         }
 
         updateGameState(cell);
-
-        if (currentPlayer instanceof ComputerPlayer) {
-            playComputerTurn();
-        }
     }
 
+    private void playComputerTurn() {
+        Cell computerMove = makeComputerMove(getBoard());
+        try {
+            moveParser.makeMove(computerMove);
+        } catch (InvalidMoveException e) {
+            return;
+        }
+        updateGameState(computerMove);
+    }
 
     private void nextPlayer() {
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
     }
 
-    private void playComputerTurn() {
-        if (getCurrentPlayer() instanceof ComputerPlayer) {
-            Cell computerMove = makeComputerMove(getBoard());
-            playTurn(computerMove);
-        }
-    }
-
     private void updateGameState(Cell cell) {
         if (currentPlayer instanceof HumanPlayer) {
-            nextPlayer();
             gameEventListener.onTurnPlayed(cell);
         } else if (currentPlayer instanceof ComputerPlayer) {
             gameEventListener.onComputerTurnPlayed(cell);
-            nextPlayer();
         }
+        nextPlayer();
+        gameEventListener.onTurnChanged();
         checkWinner();
+        if (!isGameOver() && currentPlayer instanceof ComputerPlayer) {
+            // Ritardo di 500 millisecondi (0,5 secondi) prima di far giocare il computer
+            executorService.schedule(this::playComputerTurn, 500, TimeUnit.MILLISECONDS);
+        }
     }
 
     private void checkWinner() {
@@ -89,7 +110,6 @@ public class GameplayLogic {
 
     private Cell makeComputerMove(Board board) {
         List<Cell> availableCells = getAvailableCells(board);
-        Random random = new Random();
         Cell chosenCell = availableCells.get(random.nextInt(availableCells.size()));
         CellState chosenState = random.nextBoolean() ? CellState.X : CellState.O;
         return new Cell(chosenCell.getRow(), chosenCell.getCol(), chosenState);

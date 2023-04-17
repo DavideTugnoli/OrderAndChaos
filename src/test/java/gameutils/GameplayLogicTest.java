@@ -144,6 +144,12 @@ public class GameplayLogicTest {
         gameplayLogicWithComputer.playTurn(cell);
 
         assertFalse(board.isCellEmpty(0, 0));
+        // timer of 1 second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Controlla che il ComputerPlayer abbia effettivamente giocato un turno
         assertTrue(hasComputerPlayedTurn(board));
     }
@@ -159,6 +165,12 @@ public class GameplayLogicTest {
         Cell cell = new Cell(0, 0, CellState.X);
         gameplayLogicWithComputer.playTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
 
+        // timer of 1 second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Se il ComputerPlayer ha effettivamente giocato un turno, il giocatore corrente dovrebbe essere nuovamente il player1
         assertEquals(player1, gameplayLogicWithComputer.getCurrentPlayer());
     }

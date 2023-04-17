@@ -66,19 +66,23 @@ public class GraphicUi extends JFrame implements GameEventListener {
     }
 
     @Override
-    public void onComputerTurnPlayed(Cell cell) {
-        // delay of 1 second
-        Timer timer = new Timer(1000, e -> {
-            updateBoardUI(cell);
-            setUserInputAllowed(true);
-            isWaitingForComputer = false;
-        });
-        timer.setRepeats(false);
-        timer.start();
+    public void onTurnChanged() {
+        String currentPlayerName = gameplayLogic.getCurrentPlayerName();
+        System.out.println("Qua:" + currentPlayerName);
+        if (gameplayLogic.getCurrentPlayer() instanceof ComputerPlayer) {
+            turnLabel.setText("Turno del computer...");
+            setUserInputAllowed(false);
+            isWaitingForComputer = true;
+        } else {
+            turnLabel.setText(MessageBundle.getTurnMessage(currentPlayerName));
+        }
+    }
 
-        turnLabel.setText("Turno del computer...");
-        setUserInputAllowed(false);
-        isWaitingForComputer = true;
+    @Override
+    public void onComputerTurnPlayed(Cell cell) {
+        updateBoardUI(cell);
+        setUserInputAllowed(true);
+        isWaitingForComputer = false;
     }
 
     private void showOverlay(boolean show) {
@@ -260,7 +264,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
         updateButtonIcon(cellButton, icon);
 
         disableButton(cellButton);
-        updateTurnLabel();
+        //updateTurnLabel();
     }
 
     private void updateButtonIcon(JButton button, ImageIcon icon) {
@@ -291,6 +295,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
                 startNewGame();
             } else {
                 dispose();
+                System.exit(0);
             }
         }
     }

@@ -20,4 +20,8 @@ public class GameEventListenerStub implements GameEventListener {
     public void onGameOver(Player winner) {
     }
 
+    @Override
+    public void onTurnChanged() {
+    }
+
 }

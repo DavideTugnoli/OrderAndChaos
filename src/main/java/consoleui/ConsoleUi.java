@@ -24,7 +24,6 @@ public class ConsoleUi implements GameEventListener {
 
     @Override
     public void onTurnPlayed(Cell cell) {
-        System.out.println("Qua");
         printCurrentBoard();
     }
 
@@ -39,11 +38,16 @@ public class ConsoleUi implements GameEventListener {
         printCurrentBoard();
     }
 
+    @Override
+    public void onTurnChanged() {
+        printCurrentPlayerTurn();
+    }
+
     public void play() {
         onGameStarted();
 
         while (!gameplayLogic.isGameOver()) {
-            printCurrentPlayerTurn();
+           // printCurrentPlayerTurn();
             if (!gameplayLogic.isComputerPlayer()) {
                 int[] input = consoleInputHandler.getValidInput(MessageBundle.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
                 int row = input[0] - 1;
@@ -85,6 +89,7 @@ public class ConsoleUi implements GameEventListener {
         } else {
             System.out.println(MessageBundle.getThanksMessage());
             consoleInputHandler.close();
+            System.exit(0);
         }
     }
 
