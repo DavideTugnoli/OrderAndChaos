@@ -142,7 +142,6 @@ public class GameplayLogic {
         return null;
     }
 
-
     private CellState getOppoCellState(CellState state) {
         return state == CellState.X ? CellState.O : CellState.X;
     }

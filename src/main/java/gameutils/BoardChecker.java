@@ -82,83 +82,17 @@ public class BoardChecker {
         return isOrderWinner() || isChaosWinner();
     }
 
-    // method findThreeInARow to find three cells with same state in a row
-    // and return the empty Cell that complete the sequence
     public CellSequence findThreeInSequence() {
-        CellSequence result;
-
-        // Check rows
-        for (int i = 0; i < board.getSize(); i++) {
-            result = findSequenceInLine(3, board.getRow(i), i, 0, 0, 1);
-            if (result != null) {
-                return result;
-            }
-        }
-
-        // Check columns
-        for (int i = 0; i < board.getSize(); i++) {
-            result = findSequenceInLine(3, board.getCol(i), 0, i, 1, 0);
-            if (result != null) {
-                return result;
-            }
-        }
-
-        // Check main diagonal
-        result = findSequenceInLine(3, board.getMainDiagonal(), 0, 0, 1, 1);
-        if (result != null) {
-            return result;
-        }
-
-        // Check secondary diagonal
-        result = findSequenceInLine(3, board.getSecondaryDiagonal(), 0, board.getSize() - 1, 1, -1);
-        if (result != null) {
-            return result;
-        }
-
-        // Check minor diagonals
-        result = findThreeInMinorDiagonals();
-        return result;
+        return findSequenceInBoard(3);
     }
 
-
-    // method findTwoInSequence to find two cells with same state in a row
-// and return the empty Cell that complete the sequence
     public CellSequence findTwoInSequence() {
-        CellSequence result;
-
-        // Check rows
-        for (int i = 0; i < board.getSize(); i++) {
-            result = findSequenceInLine(2, board.getRow(i), i, 0, 0, 1);
-            if (result != null) {
-                return result;
-            }
-        }
-
-        // Check columns
-        for (int i = 0; i < board.getSize(); i++) {
-            result = findSequenceInLine(2, board.getCol(i), 0, i, 1, 0);
-            if (result != null) {
-                return result;
-            }
-        }
-
-        // Check main diagonal
-        result = findSequenceInLine(2, board.getMainDiagonal(), 0, 0, 1, 1);
-        if (result != null) {
-            return result;
-        }
-
-        // Check secondary diagonal
-        result = findSequenceInLine(2, board.getSecondaryDiagonal(), 0, board.getSize() - 1, 1, -1);
-        if (result != null) {
-            return result;
-        }
-
-        // Check minor diagonals
-        result = findTwoInMinorDiagonals();
-        return result;
+        return findSequenceInBoard(2);
     }
 
+    public CellSequence findFourInSequence() {
+        return findSequenceInBoard(4);
+    }
 
     private CellSequence findSequenceInLine(int sequenceLength, CellState[] cells, int startRow, int startCol, int rowIncrement, int colIncrement) {
         for (int i = 0; i < cells.length - sequenceLength + 1; i++) {
@@ -234,43 +168,6 @@ public class BoardChecker {
         return null;
     }
 
-    // Method to find four cells with the same state in a sequence
-    // and return the empty Cell that completes the sequence
-    public CellSequence findFourInSequence() {
-        CellSequence result;
-
-        // Check rows
-        for (int i = 0; i < board.getSize(); i++) {
-            result = findSequenceInLine(4, board.getRow(i), i, 0, 0, 1);
-            if (result != null) {
-                return result;
-            }
-        }
-
-        // Check columns
-        for (int i = 0; i < board.getSize(); i++) {
-            result = findSequenceInLine(4, board.getCol(i), 0, i, 1, 0);
-            if (result != null) {
-                return result;
-            }
-        }
-
-        // Check main diagonal
-        result = findSequenceInLine(4, board.getMainDiagonal(), 0, 0, 1, 1);
-        if (result != null) {
-            return result;
-        }
-
-        // Check secondary diagonal
-        result = findSequenceInLine(4, board.getSecondaryDiagonal(), 0, board.getSize() - 1, 1, -1);
-        if (result != null) {
-            return result;
-        }
-
-        // Check minor diagonals
-        result = findFourInMinorDiagonals();
-        return result;
-    }
 
     private CellSequence findFourInMinorDiagonals() {
         CellSequence result;
@@ -288,5 +185,49 @@ public class BoardChecker {
         }
         return null;
     }
+
+    private CellSequence findSequenceInBoard(int sequenceLength) {
+        CellSequence result;
+
+        // Check rows
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(sequenceLength, board.getRow(i), i, 0, 0, 1);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check columns
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(sequenceLength, board.getCol(i), 0, i, 1, 0);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check main diagonal
+        result = findSequenceInLine(sequenceLength, board.getMainDiagonal(), 0, 0, 1, 1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check secondary diagonal
+        result = findSequenceInLine(sequenceLength, board.getSecondaryDiagonal(), 0, board.getSize() - 1, 1, -1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check minor diagonals
+        if (sequenceLength == 2) {
+            result = findTwoInMinorDiagonals();
+        } else if (sequenceLength == 3) {
+            result = findThreeInMinorDiagonals();
+        } else if (sequenceLength == 4) {
+            result = findFourInMinorDiagonals();
+        }
+
+        return result;
+    }
+
 
 }
