@@ -1,6 +1,7 @@
 package gameutils;
 
 import entities.Cell;
+import entities.CellSequence;
 import org.junit.jupiter.api.Test;
 import entities.Board;
 import entities.CellState;
@@ -223,6 +224,55 @@ class BoardCheckerTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    void testFindTwoInSequence() {
+        try {
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        CellSequence result = checker.findTwoInSequence();
+        assertNotNull(result);
+        assertEquals(CellState.X, result.sequenceState());
+        assertEquals(0, result.lastCell().getRow());
+        assertEquals(2, result.lastCell().getCol());
+    }
+
+    @Test
+    void testFindThreeInSequence() {
+        try {
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        CellSequence result = checker.findThreeInSequence();
+        assertNotNull(result);
+        assertEquals(CellState.X, result.sequenceState());
+        assertEquals(0, result.lastCell().getRow());
+        assertEquals(3, result.lastCell().getCol());
+    }
+
+    @Test
+    void testFindFourInSequence() {
+        try {
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+            moveParser.makeMove(new Cell(0, 3, CellState.X));
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        CellSequence result = checker.findFourInSequence();
+        assertNotNull(result);
+        assertEquals(CellState.X, result.sequenceState());
+        assertEquals(0, result.lastCell().getRow());
+        assertEquals(4, result.lastCell().getCol());
+    }
+
 
 }
 

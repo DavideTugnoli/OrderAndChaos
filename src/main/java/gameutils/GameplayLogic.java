@@ -2,7 +2,6 @@ package gameutils;
 
 import entities.*;
 import exceptions.InvalidMoveException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -111,8 +110,41 @@ public class GameplayLogic {
     private Cell makeComputerMove(Board board) {
         List<Cell> availableCells = getAvailableCells(board);
         Cell chosenCell = availableCells.get(random.nextInt(availableCells.size()));
+
+        CellSequence sequence = selectBestMove();
+        if (sequence != null) {
+            return new Cell(sequence.lastCell().getRow(), sequence.lastCell().getCol(), getOppoCellState(sequence.sequenceState()));
+        }
+
         CellState chosenState = random.nextBoolean() ? CellState.X : CellState.O;
         return new Cell(chosenCell.getRow(), chosenCell.getCol(), chosenState);
+    }
+
+    private CellSequence selectBestMove() {
+        CellSequence fourSequence = checker.findFourInSequence();
+        if (fourSequence != null) {
+            System.out.println("Blocking four in a row");
+            return fourSequence;
+        }
+
+        CellSequence threeSequence = checker.findThreeInSequence();
+        if (threeSequence != null) {
+            System.out.println("Blocking three in a row");
+            return threeSequence;
+        }
+
+        CellSequence twoSequence = checker.findTwoInSequence();
+        if (twoSequence != null) {
+            System.out.println("Creating two in a row");
+            return twoSequence;
+        }
+
+        return null;
+    }
+
+
+    private CellState getOppoCellState(CellState state) {
+        return state == CellState.X ? CellState.O : CellState.X;
     }
 
     private List<Cell> getAvailableCells(Board board) {

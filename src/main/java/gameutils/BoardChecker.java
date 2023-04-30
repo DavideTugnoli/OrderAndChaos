@@ -1,6 +1,7 @@
 package gameutils;
 
 import entities.Board;
+import entities.CellSequence;
 import entities.CellState;
 
 public class BoardChecker {
@@ -80,4 +81,212 @@ public class BoardChecker {
     public boolean isGameOver() {
         return isOrderWinner() || isChaosWinner();
     }
+
+    // method findThreeInARow to find three cells with same state in a row
+    // and return the empty Cell that complete the sequence
+    public CellSequence findThreeInSequence() {
+        CellSequence result;
+
+        // Check rows
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(3, board.getRow(i), i, 0, 0, 1);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check columns
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(3, board.getCol(i), 0, i, 1, 0);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check main diagonal
+        result = findSequenceInLine(3, board.getMainDiagonal(), 0, 0, 1, 1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check secondary diagonal
+        result = findSequenceInLine(3, board.getSecondaryDiagonal(), 0, board.getSize() - 1, 1, -1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check minor diagonals
+        result = findThreeInMinorDiagonals();
+        return result;
+    }
+
+
+    // method findTwoInSequence to find two cells with same state in a row
+// and return the empty Cell that complete the sequence
+    public CellSequence findTwoInSequence() {
+        CellSequence result;
+
+        // Check rows
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(2, board.getRow(i), i, 0, 0, 1);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check columns
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(2, board.getCol(i), 0, i, 1, 0);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check main diagonal
+        result = findSequenceInLine(2, board.getMainDiagonal(), 0, 0, 1, 1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check secondary diagonal
+        result = findSequenceInLine(2, board.getSecondaryDiagonal(), 0, board.getSize() - 1, 1, -1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check minor diagonals
+        result = findTwoInMinorDiagonals();
+        return result;
+    }
+
+
+    private CellSequence findSequenceInLine(int sequenceLength, CellState[] cells, int startRow, int startCol, int rowIncrement, int colIncrement) {
+        for (int i = 0; i < cells.length - sequenceLength + 1; i++) {
+            boolean sequenceFound = true;
+            for (int j = 1; j < sequenceLength; j++) {
+                if (cells[i] != cells[i + j] || cells[i] == CellState.EMPTY) {
+                    sequenceFound = false;
+                    break;
+                }
+            }
+            if (sequenceFound) {
+                int row, col;
+                if (i == 0) {
+                    row = startRow + rowIncrement * (i + sequenceLength);
+                    col = startCol + colIncrement * (i + sequenceLength);
+                    if (board.isCellEmpty(row, col)) {
+                        return new CellSequence(board.getCell(row, col), cells[i]);
+                    }
+                } else if (i == cells.length - sequenceLength) {
+                    row = startRow + rowIncrement * (i - 1);
+                    col = startCol + colIncrement * (i - 1);
+                    if (board.isCellEmpty(row, col)) {
+                        return new CellSequence(board.getCell(row, col), cells[i]);
+                    }
+                } else {
+                    row = startRow + rowIncrement * (i - 1);
+                    col = startCol + colIncrement * (i - 1);
+                    if (board.isCellEmpty(row, col)) {
+                        return new CellSequence(board.getCell(row, col), cells[i]);
+                    }
+                    row = startRow + rowIncrement * (i + sequenceLength);
+                    col = startCol + colIncrement * (i + sequenceLength);
+                    if (board.isCellEmpty(row, col)) {
+                        return new CellSequence(board.getCell(row, col), cells[i]);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private CellSequence findTwoInMinorDiagonals() {
+        CellSequence result;
+        for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
+            for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
+                result = findSequenceInLine(2, board.getMinorDiagonal(row, col, false), row, col, 1, 1);
+                if (result != null) {
+                    return result;
+                }
+                result = findSequenceInLine(2, board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true), row + MIN_LINE_LENGTH, col, -1, 1);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+    private CellSequence findThreeInMinorDiagonals() {
+        CellSequence result;
+        for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
+            for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
+                result = findSequenceInLine(3, board.getMinorDiagonal(row, col, false), row, col, 1, 1);
+                if (result != null) {
+                    return result;
+                }
+                result = findSequenceInLine(3, board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true), row + MIN_LINE_LENGTH, col, -1, 1);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Method to find four cells with the same state in a sequence
+    // and return the empty Cell that completes the sequence
+    public CellSequence findFourInSequence() {
+        CellSequence result;
+
+        // Check rows
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(4, board.getRow(i), i, 0, 0, 1);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check columns
+        for (int i = 0; i < board.getSize(); i++) {
+            result = findSequenceInLine(4, board.getCol(i), 0, i, 1, 0);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        // Check main diagonal
+        result = findSequenceInLine(4, board.getMainDiagonal(), 0, 0, 1, 1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check secondary diagonal
+        result = findSequenceInLine(4, board.getSecondaryDiagonal(), 0, board.getSize() - 1, 1, -1);
+        if (result != null) {
+            return result;
+        }
+
+        // Check minor diagonals
+        result = findFourInMinorDiagonals();
+        return result;
+    }
+
+    private CellSequence findFourInMinorDiagonals() {
+        CellSequence result;
+        for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
+            for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
+                result = findSequenceInLine(4, board.getMinorDiagonal(row, col, false), row, col, 1, 1);
+                if (result != null) {
+                    return result;
+                }
+                result = findSequenceInLine(4, board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true), row + MIN_LINE_LENGTH, col, -1, 1);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
 }
