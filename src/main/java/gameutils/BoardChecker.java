@@ -81,19 +81,6 @@ public class BoardChecker {
     public boolean isGameOver() {
         return isOrderWinner() || isChaosWinner();
     }
-
-    public CellSequence findThreeInSequence() {
-        return findSequenceInBoard(3);
-    }
-
-    public CellSequence findTwoInSequence() {
-        return findSequenceInBoard(2);
-    }
-
-    public CellSequence findFourInSequence() {
-        return findSequenceInBoard(4);
-    }
-
     private CellSequence findSequenceInLine(int sequenceLength, CellState[] cells, int startRow, int startCol, int rowIncrement, int colIncrement) {
         for (int i = 0; i < cells.length - sequenceLength + 1; i++) {
             boolean sequenceFound = true;
@@ -186,7 +173,7 @@ public class BoardChecker {
         return null;
     }
 
-    private CellSequence findSequenceInBoard(int sequenceLength) {
+    public CellSequence findSequenceInBoard(int sequenceLength) {
         CellSequence result;
 
         // Check rows

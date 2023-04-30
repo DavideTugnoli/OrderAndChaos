@@ -233,7 +233,7 @@ class BoardCheckerTest {
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
-        CellSequence result = checker.findTwoInSequence();
+        CellSequence result = checker.findSequenceInBoard(2);
         assertNotNull(result);
         assertEquals(CellState.X, result.sequenceState());
         assertEquals(0, result.lastCell().getRow());
@@ -249,7 +249,7 @@ class BoardCheckerTest {
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
-        CellSequence result = checker.findThreeInSequence();
+        CellSequence result = checker.findSequenceInBoard(3);
         assertNotNull(result);
         assertEquals(CellState.X, result.sequenceState());
         assertEquals(0, result.lastCell().getRow());
@@ -266,7 +266,7 @@ class BoardCheckerTest {
         } catch (InvalidMoveException e) {
             e.printStackTrace();
         }
-        CellSequence result = checker.findFourInSequence();
+        CellSequence result = checker.findSequenceInBoard(4);
         assertNotNull(result);
         assertEquals(CellState.X, result.sequenceState());
         assertEquals(0, result.lastCell().getRow());

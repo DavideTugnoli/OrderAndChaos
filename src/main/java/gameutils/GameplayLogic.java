@@ -121,19 +121,19 @@ public class GameplayLogic {
     }
 
     private CellSequence selectBestMove() {
-        CellSequence fourSequence = checker.findFourInSequence();
+        CellSequence fourSequence = checker.findSequenceInBoard(4);
         if (fourSequence != null) {
             System.out.println("Blocking four in a row");
             return fourSequence;
         }
 
-        CellSequence threeSequence = checker.findThreeInSequence();
+        CellSequence threeSequence = checker.findSequenceInBoard(3);
         if (threeSequence != null) {
             System.out.println("Blocking three in a row");
             return threeSequence;
         }
 
-        CellSequence twoSequence = checker.findTwoInSequence();
+        CellSequence twoSequence = checker.findSequenceInBoard(2);
         if (twoSequence != null) {
             System.out.println("Creating two in a row");
             return twoSequence;
