@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.GridBagConstraints;
 
 
 @Generated
@@ -17,7 +18,6 @@ public class GraphicUi extends JFrame implements GameEventListener {
     private transient GameplayLogic gameplayLogic;
     private final JButton[][] cellButtons;
     private final JLabel turnLabel;
-
     private final ImageIcon iconO;
     private final ImageIcon iconX;
     private boolean isWaitingForComputer;
@@ -36,7 +36,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
         gameLayeredPane.setPreferredSize(new Dimension(600, 600));
         getContentPane().add(gameLayeredPane);
 
-        JPanel gamePanel = new JPanel(new GridLayout(6, 6));
+        JPanel gamePanel = new JPanel(new GridBagLayout());
         gamePanel.setBounds(0, 0, 600, 600);
         gameLayeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
 
@@ -208,6 +208,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
 
     private void createCellButtons(JPanel gamePanel) {
         final int BUTTON_SIZE = 100;
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
@@ -220,7 +221,9 @@ public class GraphicUi extends JFrame implements GameEventListener {
                     }
                 });
                 cellButtons[i][j] = cellButton;
-                gamePanel.add(cellButton);
+                gridBagConstraints.gridx = j;
+                gridBagConstraints.gridy = i;
+                gamePanel.add(cellButton, gridBagConstraints);
             }
         }
     }
@@ -264,7 +267,6 @@ public class GraphicUi extends JFrame implements GameEventListener {
         updateButtonIcon(cellButton, icon);
 
         disableButton(cellButton);
-        //updateTurnLabel();
     }
 
     private void updateButtonIcon(JButton button, ImageIcon icon) {
@@ -283,7 +285,15 @@ public class GraphicUi extends JFrame implements GameEventListener {
         int windowWidth = 600;
         int windowHeight = 600 + menuHeight + turnLabelHeight + 50;
 
-        setSize(windowWidth, windowHeight);
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("mac")) {
+            setSize(windowWidth, windowHeight);
+        } else if (os.contains("win")) {
+            setSize(windowWidth + 14, windowHeight + 7); // offset per Windows
+        } else {
+            setSize(windowWidth, windowHeight);
+        }
+
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
