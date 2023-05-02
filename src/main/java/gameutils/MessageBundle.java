@@ -339,5 +339,13 @@ public class MessageBundle {
         }
     }
 
+    public static String getEnterPlayerNamesMessage() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Inserisci i nomi dei giocatori";
+        } else {
+            return "Enter player names";
+        }
+    }
+
 
 }

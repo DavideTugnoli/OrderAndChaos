@@ -26,7 +26,7 @@ public class GameGraphicSetup {
 
     private static Player[] showPlayerNamesDialog(boolean singlePlayer) {
         JPanel panel = createPlayerNamesPanel(singlePlayer);
-        int result = JOptionPane.showConfirmDialog(null, panel, "Enter player names", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(null, panel, MessageBundle.getEnterPlayerNamesMessage(), JOptionPane.OK_CANCEL_OPTION);
         if (result != JOptionPane.OK_OPTION) {
             return null; // Handle cancel button click
         }
