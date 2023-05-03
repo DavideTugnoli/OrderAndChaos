@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.GridBagConstraints;
+import java.net.URL;
+import java.util.Objects;
 
 
 @Generated
@@ -26,8 +28,8 @@ public class GraphicUi extends JFrame implements GameEventListener {
 
     public GraphicUi() {
         super("Order and Chaos");
-        iconO = loadScaledImageIcon("src/main/java/graphicui/images/O.png");
-        iconX = loadScaledImageIcon("src/main/java/graphicui/images/X.png");
+        iconO = loadScaledImageIcon("/graphicui/images/O.png");
+        iconX = loadScaledImageIcon("/graphicui/images/X.png");
         turnLabel = createTurnLabel();
         getContentPane().add(turnLabel, BorderLayout.NORTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -68,9 +70,8 @@ public class GraphicUi extends JFrame implements GameEventListener {
     @Override
     public void onTurnChanged() {
         String currentPlayerName = gameplayLogic.getCurrentPlayerName();
-        System.out.println("Qua:" + currentPlayerName);
         if (gameplayLogic.getCurrentPlayer() instanceof ComputerPlayer) {
-            turnLabel.setText("Turno del computer...");
+            turnLabel.setText(MessageBundle.getComputerTurnMessage());
             setUserInputAllowed(false);
             isWaitingForComputer = true;
         } else {
@@ -179,7 +180,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
         panel.add(textArea, BorderLayout.NORTH);
 
         // Load the instructions image and add it to the panel
-        ImageIcon instructionsImage = new ImageIcon("src/main/java/graphicui/images/mouse-instructions.png");
+        ImageIcon instructionsImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/graphicui/images/mouse-instructions.png")));
         JLabel instructionsLabel = new JLabel(instructionsImage);
         panel.add(instructionsLabel, BorderLayout.CENTER);
 
@@ -252,7 +253,11 @@ public class GraphicUi extends JFrame implements GameEventListener {
     }
 
     private ImageIcon loadScaledImageIcon(String imagePath) {
-        ImageIcon originalIcon = new ImageIcon(imagePath);
+        URL imageUrl = getClass().getResource(imagePath);
+        if (imageUrl == null) {
+            return null;
+        }
+        ImageIcon originalIcon = new ImageIcon(imageUrl);
         Image scaledImage = originalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }

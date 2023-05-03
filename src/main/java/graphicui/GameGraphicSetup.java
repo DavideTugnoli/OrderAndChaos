@@ -6,6 +6,7 @@ import gameutils.MessageBundle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
 public class GameGraphicSetup {
 
     public static List<Player> setupPlayers(boolean singlePlayer) {
+        ImageIcon customIcon = loadCustomIcon();
+        setCustomIconForDialogs(customIcon);
         List<Player> players = new ArrayList<>();
         Player[] selectedPlayers = showPlayerNamesDialog(singlePlayer);
         if (selectedPlayers == null) {
@@ -87,5 +90,33 @@ public class GameGraphicSetup {
         JTextField playerNameField = (JTextField) panel.getComponent(playerIndex * 2 + 1
         );
         return playerNameField.getText().trim();
+    }
+
+    public static ImageIcon loadCustomIcon() {
+        URL iconURL = GameGraphicSetup.class.getResource("/graphicui/images/game_icon.png");
+        // check if the icon is loaded
+        if (iconURL == null) {
+            System.err.println("Couldn't find file: " + null);
+        }
+        if (iconURL != null) {
+            ImageIcon originalIcon = new ImageIcon(iconURL);
+            return resizeIcon(originalIcon); // Sostituisci 32, 32 con le dimensioni desiderate
+        }
+        return null;
+    }
+
+    private static void setCustomIconForDialogs(ImageIcon customIcon) {
+        if (customIcon != null) {
+            UIManager.put("OptionPane.informationIcon", customIcon);
+            UIManager.put("OptionPane.warningIcon", customIcon);
+            UIManager.put("OptionPane.errorIcon", customIcon);
+            UIManager.put("OptionPane.questionIcon", customIcon);
+        }
+    }
+
+    private static ImageIcon resizeIcon(ImageIcon icon) {
+        Image img = icon.getImage();
+        Image resizedImage = img.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
     }
 }

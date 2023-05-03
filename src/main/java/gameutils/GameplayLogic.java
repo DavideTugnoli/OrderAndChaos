@@ -135,7 +135,7 @@ public class GameplayLogic {
 
         CellSequence twoSequence = checker.findSequenceInBoard(2);
         if (twoSequence != null) {
-            System.out.println("Creating two in a row");
+            System.out.println("Blocking two in a row");
             return twoSequence;
         }
 

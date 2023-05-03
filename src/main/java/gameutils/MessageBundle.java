@@ -347,5 +347,13 @@ public class MessageBundle {
         }
     }
 
+    // get "Turno del computer..." message
+    public static String getComputerTurnMessage() {
+        if (currentLocale.getLanguage().equals("it")) {
+            return "Turno del computer...";
+        } else {
+            return "Computer's turn...";
+        }
+    }
 
 }
