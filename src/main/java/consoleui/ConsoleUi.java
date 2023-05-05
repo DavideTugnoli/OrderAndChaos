@@ -47,7 +47,6 @@ public class ConsoleUi implements GameEventListener {
         onGameStarted();
 
         while (!gameplayLogic.isGameOver()) {
-           // printCurrentPlayerTurn();
             if (!gameplayLogic.isComputerPlayer()) {
                 int[] input = consoleInputHandler.getValidInput(MessageBundle.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
                 int row = input[0] - 1;

@@ -14,12 +14,17 @@ import java.util.List;
 @Generated
 public class GameGraphicSetup {
 
+    private GameGraphicSetup() {
+        // This class should not be instantiated
+        throw new UnsupportedOperationException();
+    }
+
     public static List<Player> setupPlayers(boolean singlePlayer) {
         ImageIcon customIcon = loadCustomIcon();
         setCustomIconForDialogs(customIcon);
         List<Player> players = new ArrayList<>();
         Player[] selectedPlayers = showPlayerNamesDialog(singlePlayer);
-        if (selectedPlayers == null) {
+        if (selectedPlayers.length == 0) {
             System.exit(0); // Terminates the program when the cancel button is clicked
         } else {
             players.addAll(Arrays.asList(selectedPlayers));
@@ -31,7 +36,7 @@ public class GameGraphicSetup {
         JPanel panel = createPlayerNamesPanel(singlePlayer);
         int result = JOptionPane.showConfirmDialog(null, panel, MessageBundle.getEnterPlayerNamesMessage(), JOptionPane.OK_CANCEL_OPTION);
         if (result != JOptionPane.OK_OPTION) {
-            return null; // Handle cancel button click
+            return new Player[0];
         }
         String orderPlayerName = getPlayerName(panel, 0);
         if (orderPlayerName.isEmpty()) {
@@ -94,10 +99,6 @@ public class GameGraphicSetup {
 
     public static ImageIcon loadCustomIcon() {
         URL iconURL = GameGraphicSetup.class.getResource("/graphicui/images/game_icon.png");
-        // check if the icon is loaded
-        if (iconURL == null) {
-            System.err.println("Couldn't find file: " + null);
-        }
         if (iconURL != null) {
             ImageIcon originalIcon = new ImageIcon(iconURL);
             return resizeIcon(originalIcon); // Sostituisci 32, 32 con le dimensioni desiderate

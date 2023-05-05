@@ -34,6 +34,7 @@ public class Game {
                 case MULTI_PLAYER_ARG -> singlePlayer = false;
                 case ENGLISH_ARG -> locale = Locale.ENGLISH;
                 case ITALIAN_ARG -> locale = Locale.ITALIAN;
+                default -> System.out.println("Unrecognized argument: " + arg);
             }
         }
 

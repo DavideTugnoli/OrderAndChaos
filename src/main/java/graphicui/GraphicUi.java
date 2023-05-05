@@ -194,12 +194,12 @@ public class GraphicUi extends JFrame implements GameEventListener {
     }
 
     private JLabel createTurnLabel() {
-        JLabel turnLabel = new JLabel();
-        turnLabel.setHorizontalAlignment(JLabel.CENTER);
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel newTurnLabel = new JLabel();
+        newTurnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        newTurnLabel.setFont(new Font("Arial", Font.BOLD, 16));
         // Inizializza il testo del turno con una stringa vuota o un messaggio di attesa
-        turnLabel.setText("");
-        return turnLabel;
+        newTurnLabel.setText("");
+        return newTurnLabel;
     }
 
     private void updateTurnLabel() {

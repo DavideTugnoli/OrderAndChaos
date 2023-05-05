@@ -81,45 +81,51 @@ public class BoardChecker {
     public boolean isGameOver() {
         return isOrderWinner() || isChaosWinner();
     }
+
+    private boolean isSequenceFound(int sequenceLength, CellState[] cells, int i) {
+        for (int j = 1; j < sequenceLength; j++) {
+            if (cells[i] != cells[i + j] || cells[i] == CellState.EMPTY) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private CellSequence handleSequenceFound(int sequenceLength, CellState[] cells, int i, int startRow, int startCol, int rowIncrement, int colIncrement) {
+        int row, col;
+        if (i == 0) {
+            row = startRow + rowIncrement * (i + sequenceLength);
+            col = startCol + colIncrement * (i + sequenceLength);
+        } else if (i == cells.length - sequenceLength) {
+            row = startRow + rowIncrement * (i - 1);
+            col = startCol + colIncrement * (i - 1);
+        } else {
+            row = startRow + rowIncrement * (i - 1);
+            col = startCol + colIncrement * (i - 1);
+            if (board.isCellEmpty(row, col)) {
+                return new CellSequence(board.getCell(row, col), cells[i]);
+            }
+            row = startRow + rowIncrement * (i + sequenceLength);
+            col = startCol + colIncrement * (i + sequenceLength);
+        }
+        if (board.isCellEmpty(row, col)) {
+            return new CellSequence(board.getCell(row, col), cells[i]);
+        }
+        return null;
+    }
+
     private CellSequence findSequenceInLine(int sequenceLength, CellState[] cells, int startRow, int startCol, int rowIncrement, int colIncrement) {
         for (int i = 0; i < cells.length - sequenceLength + 1; i++) {
-            boolean sequenceFound = true;
-            for (int j = 1; j < sequenceLength; j++) {
-                if (cells[i] != cells[i + j] || cells[i] == CellState.EMPTY) {
-                    sequenceFound = false;
-                    break;
-                }
-            }
-            if (sequenceFound) {
-                int row, col;
-                if (i == 0) {
-                    row = startRow + rowIncrement * (i + sequenceLength);
-                    col = startCol + colIncrement * (i + sequenceLength);
-                    if (board.isCellEmpty(row, col)) {
-                        return new CellSequence(board.getCell(row, col), cells[i]);
-                    }
-                } else if (i == cells.length - sequenceLength) {
-                    row = startRow + rowIncrement * (i - 1);
-                    col = startCol + colIncrement * (i - 1);
-                    if (board.isCellEmpty(row, col)) {
-                        return new CellSequence(board.getCell(row, col), cells[i]);
-                    }
-                } else {
-                    row = startRow + rowIncrement * (i - 1);
-                    col = startCol + colIncrement * (i - 1);
-                    if (board.isCellEmpty(row, col)) {
-                        return new CellSequence(board.getCell(row, col), cells[i]);
-                    }
-                    row = startRow + rowIncrement * (i + sequenceLength);
-                    col = startCol + colIncrement * (i + sequenceLength);
-                    if (board.isCellEmpty(row, col)) {
-                        return new CellSequence(board.getCell(row, col), cells[i]);
-                    }
+            if (isSequenceFound(sequenceLength, cells, i)) {
+                CellSequence cellSequence = handleSequenceFound(sequenceLength, cells, i, startRow, startCol, rowIncrement, colIncrement);
+                if (cellSequence != null) {
+                    return cellSequence;
                 }
             }
         }
         return null;
     }
+
 
     private CellSequence findTwoInMinorDiagonals() {
         CellSequence result;

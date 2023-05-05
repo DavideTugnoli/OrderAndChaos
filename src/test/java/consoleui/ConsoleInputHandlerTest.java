@@ -3,27 +3,18 @@ package consoleui;
 import entities.CellState;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConsoleInputHandlerTest {
-
-    @Test
-    void testGetValidInputValid() {
-        String prompt = "Enter row and column separated by a comma: ";
-        int min = 1;
-        int max = 10;
-        int[] expected = {5, 7};
-        simulateUserInput("5, 7");
-        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
-        int[] result = inputHandler.getValidInput(prompt, min, max);
-        assertArrayEquals(expected, result);
-    }
     @Test
     void getPieceSelection_returnsO() {
         String input = "O\n";
@@ -69,56 +60,30 @@ class ConsoleInputHandlerTest {
         System.setIn(initialIn);
     }
 
-    @Test
-    void testGetValidInputInvalid() {
+    @ParameterizedTest
+    @MethodSource("provideInputForTesting")
+    void testGetValidInput(String simulatedInput, int[] expected) {
         String prompt = "Enter row and column separated by a comma: ";
         int min = 1;
         int max = 10;
-        int[] expected = {5, 7};
-        simulateUserInput("invalid\n5, 7");
+
+        simulateUserInput(simulatedInput);
         ConsoleInputHandler inputHandler = new ConsoleInputHandler();
         int[] result = inputHandler.getValidInput(prompt, min, max);
+
         assertArrayEquals(expected, result);
     }
 
-    // getValidInput con coordinate al di fuori dei limiti
-    @Test
-    void testGetValidInputOutOfBounds() {
-        String prompt = "Enter row and column separated by a comma: ";
-        int min = 1;
-        int max = 10;
-        int[] expected = {5, 7};
-        simulateUserInput("12, 20\n5, 7");
-        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
-        int[] result = inputHandler.getValidInput(prompt, min, max);
-        assertArrayEquals(expected, result);
+    private static Stream<Arguments> provideInputForTesting() {
+        return Stream.of(
+                Arguments.of("5, 7", new int[]{5, 7}),
+                Arguments.of("invalid\n5, 7", new int[]{5, 7}),
+                Arguments.of("12, 20\n5, 7", new int[]{5, 7}),
+                Arguments.of("a, b\n5, 7", new int[]{5, 7}),
+                Arguments.of("5, 7, 9\n5, 7", new int[]{5, 7})
+        );
     }
 
-    // getValidInput con input contenente caratteri non numerici
-    @Test
-    void testGetValidInputNonNumeric() {
-        String prompt = "Enter row and column separated by a comma: ";
-        int min = 1;
-        int max = 10;
-        int[] expected = {5, 7};
-        simulateUserInput("a, b\n5, 7");
-        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
-        int[] result = inputHandler.getValidInput(prompt, min, max);
-        assertArrayEquals(expected, result);
-    }
-
-    // getValidInput con input contenente troppi elementi
-    @Test
-    void testGetValidInputTooManyElements() {
-        String prompt = "Enter row and column separated by a comma: ";
-        int min = 1;
-        int max = 10;
-        int[] expected = {5, 7};
-        simulateUserInput("5, 7, 9\n5, 7");
-        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
-        int[] result = inputHandler.getValidInput(prompt, min, max);
-        assertArrayEquals(expected, result);
-    }
 
 
     // Helper methods to simulate user input and capture system out

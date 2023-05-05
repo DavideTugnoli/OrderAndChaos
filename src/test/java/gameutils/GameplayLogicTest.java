@@ -16,12 +16,12 @@ public class GameplayLogicTest {
     private GameplayLogic gameplayLogicWithComputer;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         board = new Board(6);
     }
 
     @Test
-    public void testGetCurrentPlayer() {
+    void testGetCurrentPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -31,7 +31,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testPlayTurn() {
+    void testPlayTurn() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -43,7 +43,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testDetermineFirstPlayer() {
+    void testDetermineFirstPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -52,7 +52,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testNextPlayer() {
+    void testNextPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -64,7 +64,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testGetCurrentPlayerName() {
+    void testGetCurrentPlayerName() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -74,7 +74,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testIsGameOver() {
+    void testIsGameOver() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -83,7 +83,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testGetBoard() {
+    void testGetBoard() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -93,7 +93,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testGetPlayer1() {
+    void testGetPlayer1() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -103,7 +103,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testGetPlayer2() {
+    void testGetPlayer2() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -113,7 +113,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testGetWinner() {
+    void testGetWinner() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -122,7 +122,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testIsComputerPlayer() {
+    void testIsComputerPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
@@ -133,7 +133,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testPlayTurnWithComputerPlayer() {
+    void testPlayTurnWithComputerPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
@@ -155,7 +155,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testNextPlayerWithComputerPlayer() {
+    void testNextPlayerWithComputerPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
@@ -189,7 +189,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testPlayTurnInvalidMove() {
+    void testPlayTurnInvalidMove() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -202,7 +202,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testGameOverWithOrderWinner() {
+    void testGameOverWithOrderWinner() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -214,7 +214,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testGameOverWithChaosWinner() {
+    void testGameOverWithChaosWinner() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -260,7 +260,7 @@ public class GameplayLogicTest {
 
 
     @Test
-    public void testPlayTurnWithGameAlreadyOver() {
+    void testPlayTurnWithGameAlreadyOver() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -281,7 +281,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testIsSinglePlayer() {
+    void testIsSinglePlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -290,7 +290,7 @@ public class GameplayLogicTest {
     }
 
     @Test
-    public void testIsSinglePlayerWithComputerPlayer() {
+    void testIsSinglePlayerWithComputerPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();

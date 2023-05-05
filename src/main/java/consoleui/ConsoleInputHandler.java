@@ -21,10 +21,10 @@ public class ConsoleInputHandler {
 
             coordinates = parseInput(input);
 
-            if (coordinates == null || isValidCoordinates(coordinates, min, max)) {
+            if (coordinates.length == 0 || isNotValidCoordinates(coordinates, min, max)) {
                 System.out.printf(MessageBundle.inputConsoleOutOfBoundMessage(), min, max);
             }
-        } while (coordinates == null || isValidCoordinates(coordinates, min, max));
+        } while (coordinates.length == 0 || isNotValidCoordinates(coordinates, min, max));
 
         return coordinates;
     }
@@ -33,17 +33,21 @@ public class ConsoleInputHandler {
         try {
             String[] parts = input.split(",");
             if (parts.length != 2) {
-                return null; // input non valido, ci sono meno o più di due parti
+                return new int[0]; // input non valido, ci sono meno o più di due parti
             }
             int row = Integer.parseInt(parts[0].trim());
             int col = Integer.parseInt(parts[1].trim());
             return new int[]{row, col};
         } catch (NumberFormatException e) {
-            return null; // input non valido, una delle parti non è un intero
+            return new int[0]; // input non valido, una delle parti non è un intero
         }
     }
 
-    private boolean isValidCoordinates(int[] coordinates, int min, int max) {
+    private boolean isNotValidCoordinates(int[] coordinates, int min, int max) {
+        if (coordinates.length != 2) {
+            return true;  // array non valido, non contiene due elementi
+        }
+
         int row = coordinates[0];
         int col = coordinates[1];
 
