@@ -1,12 +1,12 @@
 package consoleui;
 
-import annotations.Generated;
+import annotations.JacocoExclude;
 import entities.*;
 import gameutils.GameEventListener;
 import gameutils.GameplayLogic;
 import gameutils.MessageBundle;
 
-@Generated
+@JacocoExclude
 public class ConsoleUi implements GameEventListener {
     private GameplayLogic gameplayLogic;
     private final BoardPrinter printer;

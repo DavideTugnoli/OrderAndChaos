@@ -1,6 +1,6 @@
 package game;
 
-import annotations.Generated;
+import annotations.JacocoExclude;
 import consoleui.*;
 import entities.Board;
 import entities.Player;
@@ -12,7 +12,7 @@ import graphicui.GraphicUi;
 import java.util.List;
 import java.util.Locale;
 
-@Generated
+@JacocoExclude
 public class Game {
     private static final String CONSOLE_ARG = "--console";
     private static final String GRAPHIC_ARG = "--graphic";

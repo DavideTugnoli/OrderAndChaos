@@ -1,6 +1,6 @@
 package gameutils;
 
-import annotations.Generated;
+import annotations.JacocoExclude;
 import entities.Player;
 
 import java.util.Locale;
@@ -14,14 +14,14 @@ public class MessageBundle {
         currentLocale = locale;
     }
 
-    @Generated
+    @JacocoExclude
     public static String getWelcomeMessage() {
         String welcomeMessage;
         if (currentLocale.getLanguage().equals("it")) {
             welcomeMessage = """
                     ******************************************************
                     *                                                    *
-                    *              BENVENUTO IN ORDINE E CAOS            *
+                    *              BENVENUTO IN ORDER AND CHAOS            *
                     *                                                    *
                     ******************************************************
                     """;
@@ -38,7 +38,7 @@ public class MessageBundle {
         return welcomeMessage;
     }
 
-    @Generated
+    @JacocoExclude
     public static String getWinnerMessage(Player player) {
         String winnerMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -122,16 +122,16 @@ public class MessageBundle {
         return "Yes";
     }
 
-    @Generated
+    @JacocoExclude
     public static String getInstructionsMessage() {
         String instructionsMessage;
         if (currentLocale.getLanguage().equals("it")) {
             instructionsMessage = """
                     ****************************************************************************************************************
                     *                                                                                                              *
-                    *            L'obiettivo di Ordine è di completare una fila di cinque pedine dello stesso colore,                *
+                    *            L'obiettivo di Order è di completare una fila di cinque pedine dello stesso colore,                *
                     *            sia in orizzontale, sia in verticale, sia in diagonale.                                            *
-                    *            L'obiettivo di Caos è di riempire il tabellone senza completare una fila di cinque pedine.         *
+                    *            L'obiettivo di Chaos è di riempire il tabellone senza completare una fila di cinque pedine.         *
                     *            Il gioco si svolge a turni.                                                                       *
                     *            Buona fortuna!                                                                                    *
                     *                                                                                                              *
@@ -347,7 +347,6 @@ public class MessageBundle {
         }
     }
 
-    // get "Turno del computer..." message
     public static String getComputerTurnMessage() {
         if (currentLocale.getLanguage().equals("it")) {
             return "Turno del computer...";

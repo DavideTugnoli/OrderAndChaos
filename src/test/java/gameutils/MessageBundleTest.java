@@ -315,7 +315,7 @@ class MessageBundleTest {
         }
     }
 
-   @Test
+    @Test
     @DisplayName("Test badSelectionConsolePeaceMessage() with both languages")
     void testBadSelectionConsolePeaceMessage() {
         String[] expected = {"Invalid input. Please enter O or X.", "Input non valido. Inserisci O o X."};
@@ -327,12 +327,59 @@ class MessageBundleTest {
         }
     }
 
-
     @Test
     @DisplayName("Test gameMenuLabel() with default language")
     void testGameMenuLabelDefault() {
         MessageBundle.setCurrentLocale(Locale.ENGLISH);
         assertEquals("Game", MessageBundle.gameMenuLabel());
+    }
+
+    @Test
+    @DisplayName("Test getComputerTurnMessage() with both languages")
+    void testGetComputerTurnMessage() {
+        String[] expected = {"Computer's turn...", "Turno del computer..."};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : new Locale("it", "IT");
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getComputerTurnMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Test gameMenuExitLabel() with both languages")
+    void testGameMenuExitLabel() {
+        String[] expected = {"Exit", "Esci"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : new Locale("it", "IT");
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.gameMenuExitLabel());
+        }
+    }
+
+    @Test
+    @DisplayName("Test gameMenuSwitchModeLabel() with both languages")
+    void testGameMenuSwitchModeLabel() {
+        String[] expected = {"Switch mode", "Cambia modalit\u00E0"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : new Locale("it", "IT");
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.gameMenuSwitchModeLabel());
+        }
+    }
+
+    @Test
+    @DisplayName("Test getEnterPlayerNamesMessage() with both languages")
+    void testGetEnterPlayerNamesMessage() {
+        String[] expected = {"Enter player names", "Inserisci i nomi dei giocatori"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : new Locale("it", "IT");
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getEnterPlayerNamesMessage());
+        }
     }
 
 }

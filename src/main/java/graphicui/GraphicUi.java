@@ -1,6 +1,6 @@
 package graphicui;
 
-import annotations.Generated;
+import annotations.JacocoExclude;
 import entities.*;
 import gameutils.GameEventListener;
 import gameutils.MessageBundle;
@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.Objects;
 
 
-@Generated
+@JacocoExclude
 public class GraphicUi extends JFrame implements GameEventListener {
     private transient GameplayLogic gameplayLogic;
     private final JButton[][] cellButtons;
