@@ -1,6 +1,6 @@
 package gameutils;
 
-import annotations.JacocoExclude;
+import annotations.Generated;
 import entities.Player;
 
 import java.util.Locale;
@@ -14,7 +14,7 @@ public class MessageBundle {
         currentLocale = locale;
     }
 
-    @JacocoExclude
+    @Generated
     public static String getWelcomeMessage() {
         String welcomeMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -38,7 +38,7 @@ public class MessageBundle {
         return welcomeMessage;
     }
 
-    @JacocoExclude
+    @Generated
     public static String getWinnerMessage(Player player) {
         String winnerMessage;
         if (currentLocale.getLanguage().equals("it")) {
@@ -122,7 +122,7 @@ public class MessageBundle {
         return "Yes";
     }
 
-    @JacocoExclude
+    @Generated
     public static String getInstructionsMessage() {
         String instructionsMessage;
         if (currentLocale.getLanguage().equals("it")) {

@@ -1,8 +1,8 @@
 package entities;
 
-import annotations.JacocoExclude;
+import annotations.Generated;
 
-@JacocoExclude
+@Generated
 public enum CellState {
     X,
     O,

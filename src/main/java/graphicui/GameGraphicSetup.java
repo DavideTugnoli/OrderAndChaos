@@ -1,6 +1,6 @@
 package graphicui;
 
-import annotations.JacocoExclude;
+import annotations.Generated;
 import entities.*;
 import gameutils.MessageBundle;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@JacocoExclude
+@Generated
 public class GameGraphicSetup {
 
     private GameGraphicSetup() {
