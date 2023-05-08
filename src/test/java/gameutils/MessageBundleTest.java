@@ -87,7 +87,7 @@ class MessageBundleTest {
     @Test
     @DisplayName("Test getInputPrompt() with both languages")
     void testGetInputPrompt() {
-        String[] expected = {"Enter row,column: ", "Inserisci riga,colonna: "};
+        String[] expected = {"Enter row,column,peace: ", "Inserisci riga,colonna,pezzo: "};
         for (int i = 0; i < 2; i++) {
             Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
             MessageBundle.setCurrentLocale(locale);

@@ -26,7 +26,7 @@ public class MessageBundle {
             welcomeMessage = """
                     ******************************************************
                     *                                                    *
-                    *              BENVENUTO IN ORDER AND CHAOS            *
+                    *              BENVENUTO IN ORDER AND CHAOS          *
                     *                                                    *
                     ******************************************************
                     """;
@@ -115,9 +115,9 @@ public class MessageBundle {
 
     public static String getInputPrompt() {
         if (currentLocale.getLanguage().equals("it")) {
-            return "Inserisci riga,colonna: ";
+            return "Inserisci riga,colonna,pezzo: ";
         }
-        return "Enter row,column: ";
+        return "Enter row,column,peace: ";
     }
 
     public static String getYesInput() {
@@ -134,9 +134,9 @@ public class MessageBundle {
             instructionsMessage = """
                     ****************************************************************************************************************
                     *                                                                                                              *
-                    *            L'obiettivo di Order è di completare una fila di cinque pedine dello stesso colore,                *
-                    *            sia in orizzontale, sia in verticale, sia in diagonale.                                            *
-                    *            L'obiettivo di Chaos è di riempire il tabellone senza completare una fila di cinque pedine.         *
+                    *            L'obiettivo di Order è di completare una fila di cinque pedine dello stesso colore,               *
+                    *            sia in orizzontale, sia in verticale, sia in diagonale.                                           *
+                    *            L'obiettivo di Chaos è di riempire il tabellone senza completare una fila di cinque pedine.       *
                     *            Il gioco si svolge a turni.                                                                       *
                     *            Buona fortuna!                                                                                    *
                     *                                                                                                              *
