@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -15,39 +14,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConsoleInputHandlerTest {
-    @Test
-    void getPieceSelection_returnsO() {
-        String input = "O\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
-
-        CellState actual = consoleInputHandler.getPieceSelection();
-
-        assertEquals(CellState.O, actual);
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"O", "X"})
-    void testGetPieceSelectionValid(String input) {
-        simulateUserInput(input);
-        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
-        CellState result = inputHandler.getPieceSelection();
-        assertEquals(input.equalsIgnoreCase("O") ? CellState.O : CellState.X, result);
-    }
-
-
-    @Test
-    void getPieceSelection_promptsUserUntilValidInputIsGiven() {
-        String input = "invalid\nO\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
-
-        CellState actual = consoleInputHandler.getPieceSelection();
-
-        assertEquals(CellState.O, actual);
-    }
 
     @Test
     void testClose() {
@@ -63,7 +29,7 @@ class ConsoleInputHandlerTest {
     @ParameterizedTest
     @MethodSource("provideInputForTesting")
     void testGetValidInput(String simulatedInput, int[] expected) {
-        String prompt = "Enter row and column separated by a comma: ";
+        String prompt = "Enter row, column, and piece (X or O) separated by commas: ";
         int min = 1;
         int max = 10;
 
@@ -76,15 +42,20 @@ class ConsoleInputHandlerTest {
 
     private static Stream<Arguments> provideInputForTesting() {
         return Stream.of(
-                Arguments.of("5, 7", new int[]{5, 7}),
-                Arguments.of("invalid\n5, 7", new int[]{5, 7}),
-                Arguments.of("12, 20\n5, 7", new int[]{5, 7}),
-                Arguments.of("a, b\n5, 7", new int[]{5, 7}),
-                Arguments.of("5, 7, 9\n5, 7", new int[]{5, 7})
+                Arguments.of("5, 7, O", new int[]{5, 7, CellState.O.ordinal()}),
+                Arguments.of("invalid\n5, 7, X", new int[]{5, 7, CellState.X.ordinal()}),
+                Arguments.of("12, 20, O\n5, 7, O", new int[]{5, 7, CellState.O.ordinal()}),
+                Arguments.of("a, b, X\n5, 7, X", new int[]{5, 7, CellState.X.ordinal()}),
+                Arguments.of("5, 7, 9, O\n5, 7, O", new int[]{5, 7, CellState.O.ordinal()}),
+                Arguments.of("5, 7, A\n5, 7, O", new int[]{5, 7, CellState.O.ordinal()}),
+                Arguments.of("  \n5, 7, O", new int[]{5, 7, CellState.O.ordinal()}),
+                Arguments.of("5 ,  7 ,  X", new int[]{5, 7, CellState.X.ordinal()}),
+                Arguments.of("11, 7, O\n5, 7, O", new int[]{5, 7, CellState.O.ordinal()}),
+                Arguments.of("5, 0, X\n5, 7, X", new int[]{5, 7, CellState.X.ordinal()}),
+                Arguments.of("5, 7, x", new int[]{5, 7, CellState.X.ordinal()}),
+                Arguments.of("5, 7, o", new int[]{5, 7, CellState.O.ordinal()})
         );
     }
-
-
 
     // Helper methods to simulate user input and capture system out
     private void simulateUserInput(String input) {
@@ -92,6 +63,3 @@ class ConsoleInputHandlerTest {
         System.setIn(inContent);
     }
 }
-
-
-

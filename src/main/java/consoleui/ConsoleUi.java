@@ -52,7 +52,7 @@ public class ConsoleUi implements GameEventListener {
                 int[] input = consoleInputHandler.getValidInput(MessageBundle.getInputPrompt(), 1, gameplayLogic.getBoard().getSize());
                 int row = input[0] - 1;
                 int col = input[1] - 1;
-                CellState piece = consoleInputHandler.getPieceSelection();
+                CellState piece = CellState.values()[input[2]];
                 gameplayLogic.playTurn(new Cell(row, col, piece));
             }
         }

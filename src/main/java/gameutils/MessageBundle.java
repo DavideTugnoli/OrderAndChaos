@@ -61,7 +61,7 @@ public class MessageBundle {
     public static String getPlayAgainInput() {
         Scanner scanner = new Scanner(System.in);
         if (currentLocale.getLanguage().equals("it")) {
-            System.out.println("Vuoi giocare di nuovo? Scrivi 'Sì' o 'No'");
+            System.out.println("Vuoi giocare di nuovo? Scrivi 'Si' o 'No'");
         } else {
             System.out.println("Do you want to play again? Write 'Yes' or 'No'");
         }
@@ -117,7 +117,7 @@ public class MessageBundle {
 
     public static String getYesInput() {
         if (currentLocale.getLanguage().equals("it")) {
-            return "Sì";
+            return "Si";
         }
         return "Yes";
     }
@@ -291,19 +291,11 @@ public class MessageBundle {
         }
     }
 
-    public static String inputConsoleOutOfBoundMessage() {
+    public static String consoleBadInputMessage() {
         if (currentLocale.getLanguage().equals("it")) {
-            return "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d.%n";
+            return "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d, seguiti dal simbolo (X o O) anch'esso separato da una virgola.%n";
         } else {
-            return "Invalid input. Please enter two numbers separated by a comma, each from %d to %d.%n";
-        }
-    }
-
-    public static String selectConsolePeaceMessage() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Scegli il pezzo (O o X): ";
-        } else {
-            return "Enter piece (O or X): ";
+            return "Invalid input. Please enter two numbers separated by a comma, each from %d to %d, followed by the symbol (X or O) also separated by a comma.%n";
         }
     }
 

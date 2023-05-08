@@ -292,26 +292,17 @@ class MessageBundleTest {
     }
 
     @Test
-    @DisplayName("Test inputConsoleOutOfBoundMessage() with both languages")
-    void testInputConsoleOutOfBoundMessage() {
-        String[] expected = {"Invalid input. Please enter two numbers separated by a comma, each from %d to %d.%n", "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d.%n"};
+    @DisplayName("Test consoleBadInputMessage() with both languages")
+    void testConsoleBadInputMessage() {
+        String[] expected = {
+                "Invalid input. Please enter two numbers separated by a comma, each from %d to %d, followed by the symbol (X or O) also separated by a comma.%n",
+                "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d, seguiti dal simbolo (X o O) anch'esso separato da una virgola.%n"
+        };
 
         for (int i = 0; i < 2; i++) {
             Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
             MessageBundle.setCurrentLocale(locale);
-            assertEquals(expected[i], MessageBundle.inputConsoleOutOfBoundMessage());
-        }
-    }
-
-    @Test
-    @DisplayName("Test selectConsolePeaceMessage() with both languages")
-    void testSelectConsolePeaceMessage() {
-        String[] expected = {"Enter piece (O or X): ", "Scegli il pezzo (O o X): "};
-
-        for (int i = 0; i < 2; i++) {
-            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
-            MessageBundle.setCurrentLocale(locale);
-            assertEquals(expected[i], MessageBundle.selectConsolePeaceMessage());
+            assertEquals(expected[i], MessageBundle.consoleBadInputMessage());
         }
     }
 
