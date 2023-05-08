@@ -98,7 +98,7 @@ class MessageBundleTest {
     @Test
     @DisplayName("Test getYesInput() with both languages")
     void testGetYesInput() {
-        String[] expected = {"Yes", "Sì"};
+        String[] expected = {"Yes", "Si"};
 
         for (int i = 0; i < 2; i++) {
             Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
