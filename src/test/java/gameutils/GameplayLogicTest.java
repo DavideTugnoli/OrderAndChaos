@@ -5,9 +5,12 @@ import entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameplayLogicTest {
+class GameplayLogicTest {
     private Board board;
     private Player player1;
     private Player player2;
@@ -132,6 +135,7 @@ public class GameplayLogicTest {
         assertFalse(gameplayLogic.isComputerPlayer());
     }
 
+
     @Test
     void testPlayTurnWithComputerPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
@@ -144,14 +148,9 @@ public class GameplayLogicTest {
         gameplayLogicWithComputer.playTurn(cell);
 
         assertFalse(board.isCellEmpty(0, 0));
-        // timer of 1 second
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        // Controlla che il ComputerPlayer abbia effettivamente giocato un turno
-        assertTrue(hasComputerPlayedTurn(board));
+
+        // Attendi fino a 2 secondi affinché il computer abbia effettivamente giocato un turno
+        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> assertTrue(hasComputerPlayedTurn(board)));
     }
 
     @Test
@@ -165,14 +164,10 @@ public class GameplayLogicTest {
         Cell cell = new Cell(0, 0, CellState.X);
         gameplayLogicWithComputer.playTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
 
-        // timer of 1 second
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        // Se il ComputerPlayer ha effettivamente giocato un turno, il giocatore corrente dovrebbe essere nuovamente il player1
-        assertEquals(player1, gameplayLogicWithComputer.getCurrentPlayer());
+        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() ->
+                // Se il ComputerPlayer ha effettivamente giocato un turno, il giocatore corrente dovrebbe essere nuovamente il player1
+                assertEquals(player1, gameplayLogicWithComputer.getCurrentPlayer())
+        );
     }
 
     private boolean hasComputerPlayedTurn(Board board) {
