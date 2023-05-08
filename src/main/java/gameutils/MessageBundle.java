@@ -8,6 +8,11 @@ import java.util.Scanner;
 
 public class MessageBundle {
 
+    private MessageBundle() {
+        // This class should not be instantiated
+        throw new UnsupportedOperationException();
+    }
+
     private static Locale currentLocale = Locale.ENGLISH;
 
     public static void setCurrentLocale(Locale locale) {

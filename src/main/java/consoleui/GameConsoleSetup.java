@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.Arrays;
 
 public class GameConsoleSetup {
+
+    private GameConsoleSetup() {
+        // This class should not be instantiated
+        throw new UnsupportedOperationException();
+    }
+
     public static List<Player> setupPlayers(boolean singlePlayer) {
         Scanner scanner = new Scanner(System.in);
 
