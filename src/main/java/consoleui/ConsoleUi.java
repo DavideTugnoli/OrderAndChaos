@@ -20,6 +20,7 @@ public class ConsoleUi implements GameEventListener {
     @Override
     public void onGameStarted() {
         printCurrentBoard();
+        printCurrentPlayerTurn();
     }
 
     @Override
