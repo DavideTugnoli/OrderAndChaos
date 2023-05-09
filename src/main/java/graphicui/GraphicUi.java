@@ -365,14 +365,14 @@ public class GraphicUi extends JFrame implements GameEventListener {
                     try {
                         playMP3.play();
                     } catch (Exception e) {
-                        LOGGER.log(Level.SEVERE, "Error playing sound: " + soundFilePath, e);
+                        LOGGER.log(Level.SEVERE, String.format("Error playing sound: %s", soundFilePath), e);
                     }
                 }).start();
             } else {
-                LOGGER.log(Level.SEVERE, "Input stream is null for sound file: " + soundFilePath);
+                LOGGER.log(Level.SEVERE, String.format("Input stream is null for sound file: %s", soundFilePath));
             }
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error playing sound: " + soundFilePath, e);
+            LOGGER.log(Level.SEVERE, String.format("Error playing sound: %s", soundFilePath), e);
         }
     }
 
