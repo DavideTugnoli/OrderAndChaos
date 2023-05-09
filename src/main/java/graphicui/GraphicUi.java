@@ -326,7 +326,20 @@ public class GraphicUi extends JFrame implements GameEventListener {
         URL iconURL = getClass().getResource("/graphicui/images/game_icon.png");
         if (iconURL != null) {
             ImageIcon icon = new ImageIcon(iconURL);
-            setIconImage(icon.getImage());
+            Image image = icon.getImage();
+            setIconImage(image);
+
+            // Impostare l'icona sulla barra delle applicazioni
+            if (Taskbar.isTaskbarSupported()) {
+                Taskbar taskbar = Taskbar.getTaskbar();
+                try {
+                    taskbar.setIconImage(image);
+                } catch (UnsupportedOperationException e) {
+                    System.err.println("The os does not support: 'taskbar.setIconImage'");
+                } catch (SecurityException e) {
+                    System.err.println("There was a security exception for: 'taskbar.setIconImage'");
+                }
+            }
         }
     }
 
