@@ -131,7 +131,6 @@ public class GraphicUi extends JFrame implements GameEventListener {
 
     private void switchGameMode() {
         Point windowLocation = getLocation();
-        dispose();
 
         Player newPlayer1 = gameplayLogic.getPlayer1();
         Player newPlayer2 = gameplayLogic.getPlayer2();
@@ -151,6 +150,8 @@ public class GraphicUi extends JFrame implements GameEventListener {
         newGame.setGameplayLogic(newGameplayLogic);
         newGame.setLocation(windowLocation);
         newGame.setVisible(true);
+
+        this.dispose();
     }
 
     private JMenu createHelpMenu() {

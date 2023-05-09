@@ -2,6 +2,7 @@ package gameutils;
 
 import entities.*;
 import exceptions.InvalidMoveException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,13 +17,9 @@ public class GameplayLogic {
     private final Player player1;
     private final Player player2;
     private Player currentPlayer;
-
     private Player winner;
-
     private final GameEventListener gameEventListener;
-
     private final Random random;
-
     private final ScheduledExecutorService executorService;
 
     public GameplayLogic(Board board, Player player1, Player player2, GameEventListener gameEventListener) {
