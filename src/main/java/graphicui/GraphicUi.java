@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.GridBagConstraints;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Objects;
 
@@ -65,6 +66,11 @@ public class GraphicUi extends JFrame implements GameEventListener {
 
     @Override
     public void onGameOver(Player winner) {
+        if (winner.getRole() == PlayerRole.ORDER) {
+            playSound("/graphicui/sounds/success_fanfare.mp3");
+        } else {
+            playSound("/graphicui/sounds/success_harmony.mp3");
+        }
         showGameOverDialog();
     }
 
@@ -250,6 +256,9 @@ public class GraphicUi extends JFrame implements GameEventListener {
         updateButtonIcon(cellButton, icon);
         disableButton(cellButton);
 
+        // Riproduci il suono qui
+        playSound("/graphicui/sounds/cartoon_jump.mp3");
+
         gameplayLogic.playTurn(new Cell(row, col, piece));
     }
 
@@ -340,6 +349,24 @@ public class GraphicUi extends JFrame implements GameEventListener {
                     System.err.println("There was a security exception for: 'taskbar.setIconImage'");
                 }
             }
+        }
+    }
+
+    private void playSound(String soundFilePath) {
+        try {
+            InputStream fis = getClass().getResourceAsStream(soundFilePath);
+            assert fis != null;
+            javazoom.jl.player.Player playMP3 = new javazoom.jl.player.Player(fis);
+            new Thread(() -> {
+                try {
+                    playMP3.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        } catch (Exception e) {
+            System.err.println("Error playing sound: " + soundFilePath);
+            e.printStackTrace();
         }
     }
 
