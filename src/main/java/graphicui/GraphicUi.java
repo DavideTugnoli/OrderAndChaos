@@ -46,6 +46,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
         createCellButtons(gamePanel);
         createMenu();
         setWindowProperties();
+        setApplicationIcon();
         overlayPanel = new OverlayPanel();
         overlayPanel.setBounds(0, 0, 600, 600);
         gameLayeredPane.add(overlayPanel, JLayeredPane.POPUP_LAYER);
@@ -319,6 +320,14 @@ public class GraphicUi extends JFrame implements GameEventListener {
         this.gameplayLogic = new GameplayLogic(gameplayLogic.getBoard(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2(), this);
         // Aggiorna il testo del turno dopo aver inizializzato gameplayLogic
         updateTurnLabel();
+    }
+
+    private void setApplicationIcon() {
+        URL iconURL = getClass().getResource("/graphicui/images/game_icon.png");
+        if (iconURL != null) {
+            ImageIcon icon = new ImageIcon(iconURL);
+            setIconImage(icon.getImage());
+        }
     }
 
 }
