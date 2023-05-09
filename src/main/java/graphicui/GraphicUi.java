@@ -14,10 +14,13 @@ import java.awt.GridBagConstraints;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Generated
 public class GraphicUi extends JFrame implements GameEventListener {
+    private static final Logger LOGGER = Logger.getLogger(GraphicUi.class.getName());
     private transient GameplayLogic gameplayLogic;
     private final JButton[][] cellButtons;
     private final JLabel turnLabel;
@@ -345,9 +348,9 @@ public class GraphicUi extends JFrame implements GameEventListener {
                 try {
                     taskbar.setIconImage(image);
                 } catch (UnsupportedOperationException e) {
-                    System.err.println("The os does not support: 'taskbar.setIconImage'");
+                    LOGGER.severe("The os does not support: 'taskbar.setIconImage'");
                 } catch (SecurityException e) {
-                    System.err.println("There was a security exception for: 'taskbar.setIconImage'");
+                    LOGGER.severe("There was a security exception for: 'taskbar.setIconImage'");
                 }
             }
         }
@@ -356,18 +359,20 @@ public class GraphicUi extends JFrame implements GameEventListener {
     private void playSound(String soundFilePath) {
         try {
             InputStream fis = getClass().getResourceAsStream(soundFilePath);
-            assert fis != null;
-            javazoom.jl.player.Player playMP3 = new javazoom.jl.player.Player(fis);
-            new Thread(() -> {
-                try {
-                    playMP3.play();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            if (fis != null) {
+                javazoom.jl.player.Player playMP3 = new javazoom.jl.player.Player(fis);
+                new Thread(() -> {
+                    try {
+                        playMP3.play();
+                    } catch (Exception e) {
+                        LOGGER.log(Level.SEVERE, "Error playing sound: " + soundFilePath, e);
+                    }
+                }).start();
+            } else {
+                LOGGER.log(Level.SEVERE, "Input stream is null for sound file: " + soundFilePath);
+            }
         } catch (Exception e) {
-            System.err.println("Error playing sound: " + soundFilePath);
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error playing sound: " + soundFilePath, e);
         }
     }
 
