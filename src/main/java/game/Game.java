@@ -59,7 +59,7 @@ public class Game {
     }
 
     private static void startGameWithGraphicInterface(Board board, boolean singlePlayer) {
-        GraphicUi graphicUi = new GraphicUi();
+        GraphicUi graphicUi = new GraphicUi(singlePlayer);
         List<Player> players = GameGraphicSetup.setupPlayers(singlePlayer);
         GameplayLogic gameplayLogic = new GameplayLogic(board, players.get(0), players.get(1), graphicUi);
         graphicUi.setGameplayLogic(gameplayLogic);

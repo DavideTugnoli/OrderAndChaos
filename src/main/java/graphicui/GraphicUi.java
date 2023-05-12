@@ -29,15 +29,16 @@ public class GraphicUi extends JFrame implements GameEventListener {
     private boolean isWaitingForComputer;
     private boolean userInputAllowed = true;
     private final OverlayPanel overlayPanel;
+    private final boolean isSinglePlayer;
 
-    public GraphicUi() {
+    public GraphicUi(boolean isSinglePlayer) {
         super("Order and Chaos");
         iconO = loadScaledImageIcon("/graphicui/images/O.png");
         iconX = loadScaledImageIcon("/graphicui/images/X.png");
         turnLabel = createTurnLabel();
         getContentPane().add(turnLabel, BorderLayout.NORTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+        this.isSinglePlayer = isSinglePlayer;
         JLayeredPane gameLayeredPane = new JLayeredPane();
         gameLayeredPane.setPreferredSize(new Dimension(600, 600));
         getContentPane().add(gameLayeredPane);
@@ -120,11 +121,14 @@ public class GraphicUi extends JFrame implements GameEventListener {
         JMenuItem newGameItem = new JMenuItem(MessageBundle.gameMenuNewGameLabel());
         newGameItem.addActionListener(e -> startNewGame());
         gameMenu.add(newGameItem);
-
-        JMenuItem changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel());
+        JMenuItem changeModeItem;
+        if (this.isSinglePlayer) {
+            changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel() + " (Single Player)");
+        } else {
+            changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel() + " (Multi Player)");
+        }
         changeModeItem.addActionListener(e -> switchGameMode());
         gameMenu.add(changeModeItem);
-
         JMenuItem exitItem = new JMenuItem(MessageBundle.gameMenuExitLabel());
         exitItem.addActionListener(e -> System.exit(0));
         gameMenu.add(exitItem);
@@ -138,7 +142,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
         Player newPlayer1 = gameplayLogic.getPlayer1();
         Player newPlayer2 = gameplayLogic.getPlayer2();
 
-        if (gameplayLogic.isSinglePlayer()) {
+        if (this.isSinglePlayer) {
             java.util.List<Player> players = GameGraphicSetup.setupPlayers(false);
             newPlayer1 = new HumanPlayer(players.get(0).getName(), newPlayer1.getRole());
             newPlayer2 = new HumanPlayer(players.get(1).getName(), newPlayer2.getRole());
@@ -148,7 +152,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
             newPlayer2 = new ComputerPlayer("Chaos", newPlayer2.getRole());
         }
 
-        GraphicUi newGame = new GraphicUi();
+        GraphicUi newGame = new GraphicUi(!this.isSinglePlayer);
         GameplayLogic newGameplayLogic = new GameplayLogic(new Board(), newPlayer1, newPlayer2, newGame);
         newGame.setGameplayLogic(newGameplayLogic);
         newGame.setLocation(windowLocation);
@@ -168,7 +172,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
     private void startNewGame() {
         Point windowLocation = getLocation();
         dispose();
-        GraphicUi newGame = new GraphicUi();
+        GraphicUi newGame = new GraphicUi(this.isSinglePlayer);
         GameplayLogic newGameplayLogic = new GameplayLogic(new Board(), gameplayLogic.getPlayer1(), gameplayLogic.getPlayer2(), newGame);
         newGame.setGameplayLogic(newGameplayLogic);
         newGame.setLocation(windowLocation);
