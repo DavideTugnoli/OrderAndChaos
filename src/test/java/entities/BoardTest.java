@@ -251,19 +251,32 @@ class BoardTest {
 
     @Test
     void testGetCellOutOfBounds() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(-1, 0));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(0, -1));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(board.getSize(), 0));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(0, board.getSize()));
+        int[][] indices = {
+                {-1, 0},
+                {0, -1},
+                {board.getSize(), 0},
+                {0, board.getSize()}
+        };
+
+        for (int[] index : indices) {
+            assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(index[0], index[1]));
+        }
     }
 
     @Test
     void testSetCellStateOutOfBounds() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(-1, 0, CellState.X));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(0, -1, CellState.X));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(board.getSize(), 0, CellState.X));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(0, board.getSize(), CellState.X));
+        int[][] indices = {
+                {-1, 0},
+                {0, -1},
+                {board.getSize(), 0},
+                {0, board.getSize()}
+        };
+
+        for (int[] index : indices) {
+            assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(index[0], index[1], CellState.X));
+        }
     }
+
 
     @Test
     void testNotFull() {

@@ -53,7 +53,7 @@ public class ConsoleUi implements GameEventListener {
                 int row = input[0] - 1;
                 int col = input[1] - 1;
                 CellState piece = CellState.values()[input[2]];
-                gameplayLogic.executeTurn(new Cell(row, col, piece));
+                gameplayLogic.handleTurn(new Cell(row, col, piece));
             }
         }
     }

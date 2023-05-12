@@ -40,7 +40,7 @@ class GameplayLogicTest {
         gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
         Cell cell = new Cell(0, 0, CellState.X);
-        gameplayLogic.executeTurn(cell);
+        gameplayLogic.handleTurn(cell);
 
         assertFalse(board.isCellEmpty(0, 0));
     }
@@ -61,7 +61,7 @@ class GameplayLogicTest {
         gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
         Cell cell = new Cell(0, 0);
-        gameplayLogic.executeTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
+        gameplayLogic.handleTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
 
         assertEquals(player2, gameplayLogic.getCurrentPlayer());
     }
@@ -145,7 +145,7 @@ class GameplayLogicTest {
         player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
         gameplayLogicWithComputer = new GameplayLogic(board, player1, player2, gameEventListener);
         Cell cell = new Cell(0, 0, CellState.X);
-        gameplayLogicWithComputer.executeTurn(cell);
+        gameplayLogicWithComputer.handleTurn(cell);
 
         assertFalse(board.isCellEmpty(0, 0));
 
@@ -162,7 +162,7 @@ class GameplayLogicTest {
         player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
         gameplayLogicWithComputer = new GameplayLogic(board, player1, player2, gameEventListener);
         Cell cell = new Cell(0, 0, CellState.X);
-        gameplayLogicWithComputer.executeTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
+        gameplayLogicWithComputer.handleTurn(cell); // Dopo questo turno, il giocatore corrente dovrebbe cambiare
 
         await().atMost(2, TimeUnit.SECONDS).untilAsserted(() ->
                 // Se il ComputerPlayer ha effettivamente giocato un turno, il giocatore corrente dovrebbe essere nuovamente il player1
@@ -190,8 +190,8 @@ class GameplayLogicTest {
         gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
         Cell cell = new Cell(0, 0, CellState.X);
-        gameplayLogic.executeTurn(cell);
-        gameplayLogic.executeTurn(cell); // Dovrebbe ignorare questa mossa perché è stata già occupata la cella (0, 0)
+        gameplayLogic.handleTurn(cell);
+        gameplayLogic.handleTurn(cell); // Dovrebbe ignorare questa mossa perché è stata già occupata la cella (0, 0)
 
         assertEquals(player2.getName(), gameplayLogic.getCurrentPlayer().getName()); // Il giocatore corrente non dovrebbe cambiare
     }
@@ -227,7 +227,7 @@ class GameplayLogicTest {
         // fill board of 5 O in a row
         for (int i = 0; i < 5; i++) {
             Cell cell = new Cell(0, i, CellState.O);
-            gameplayLogic.executeTurn(cell);
+            gameplayLogic.handleTurn(cell);
         }
 
     }
@@ -246,7 +246,7 @@ class GameplayLogicTest {
             for (int col = 0; col < pattern[row].length; col++) {
                 CellState cellState = (pattern[row][col] == 0) ? CellState.X : CellState.O;
                 Cell cell = new Cell(row, col, cellState);
-                gameplayLogic.executeTurn(cell);
+                gameplayLogic.handleTurn(cell);
             }
         }
         BoardPrinter printer = new BoardPrinter();
@@ -264,11 +264,11 @@ class GameplayLogicTest {
         Cell[] cells = new Cell[5];
         for (int i = 0; i < 5; i++) {
             cells[i] = new Cell(0, i, CellState.X);
-            gameplayLogic.executeTurn(cells[i]);
+            gameplayLogic.handleTurn(cells[i]);
         }
 
         Cell cell = new Cell(1, 0, CellState.O);
-        gameplayLogic.executeTurn(cell); // La mossa dovrebbe essere ignorata perché il gioco è già finito
+        gameplayLogic.handleTurn(cell); // La mossa dovrebbe essere ignorata perché il gioco è già finito
 
         assertTrue(gameplayLogic.isGameOver());
         assertEquals(player1, gameplayLogic.getWinner());

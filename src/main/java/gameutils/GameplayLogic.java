@@ -39,7 +39,7 @@ public class GameplayLogic {
         }
     }
 
-    public void executeTurn(Cell cell) {
+    public void handleTurn(Cell cell) {
         if (isGameOver()) return;
         Player currentPlayer = turnManager.getCurrentPlayer();
         if (currentPlayer instanceof ComputerPlayer) {
