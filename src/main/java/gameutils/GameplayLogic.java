@@ -31,7 +31,7 @@ public class GameplayLogic {
         this.player2 = player2;
         this.random = new Random();
         determineFirstPlayer();
-        if (player1 instanceof ComputerPlayer || player2 instanceof ComputerPlayer) {
+        if (isSinglePlayer()) {
             executorService = Executors.newSingleThreadScheduledExecutor();
         } else {
             executorService = null;
@@ -120,23 +120,15 @@ public class GameplayLogic {
     private CellSequence selectBestMove() {
         CellSequence fourSequence = checker.findSequenceInBoard(4);
         if (fourSequence != null) {
-            System.out.println("Blocking four in a row");
             return fourSequence;
         }
 
         CellSequence threeSequence = checker.findSequenceInBoard(3);
         if (threeSequence != null) {
-            System.out.println("Blocking three in a row");
             return threeSequence;
         }
 
-        CellSequence twoSequence = checker.findSequenceInBoard(2);
-        if (twoSequence != null) {
-            System.out.println("Blocking two in a row");
-            return twoSequence;
-        }
-
-        return null;
+        return checker.findSequenceInBoard(2);
     }
 
     private CellState getOppoCellState(CellState state) {
