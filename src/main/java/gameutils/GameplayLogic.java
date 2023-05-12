@@ -13,11 +13,11 @@ public class GameplayLogic {
     private final BoardChecker checker;
     private final Player player1;
     private final Player player2;
-    private Player currentPlayer;
     private Player winner;
     private final GameEventListener gameEventListener;
     private final ScheduledExecutorService executorService;
     private final ComputerMoveStrategy computerMoveStrategy;
+    private final TurnManager turnManager;
 
     public GameplayLogic(Board board, Player player1, Player player2, GameEventListener gameEventListener) {
         this.board = board;
@@ -26,7 +26,7 @@ public class GameplayLogic {
         this.gameEventListener = gameEventListener;
         this.player1 = player1;
         this.player2 = player2;
-        determineFirstPlayer();
+        this.turnManager = new TurnManager(player1, player2);
         if (isSinglePlayer()) {
             executorService = Executors.newSingleThreadScheduledExecutor();
             computerMoveStrategy = new ComputerMoveStrategy(board);
@@ -36,20 +36,12 @@ public class GameplayLogic {
         }
     }
 
-    private void determineFirstPlayer() {
-        if (player1.getRole() == PlayerRole.ORDER) {
-            this.currentPlayer = player1;
-        } else {
-            this.currentPlayer = player2;
-        }
-    }
-
     public void playTurn(Cell cell) {
         if (isGameOver()) return;
-        if (currentPlayer instanceof HumanPlayer) {
-            playHumanTurn(cell);
-        } else if (currentPlayer instanceof ComputerPlayer) {
+        if (turnManager.isComputerPlayer()) {
             playComputerTurn();
+        } else {
+            playHumanTurn(cell);
         }
     }
 
@@ -73,20 +65,16 @@ public class GameplayLogic {
         updateGameState(computerMove);
     }
 
-    private void nextPlayer() {
-        currentPlayer = (currentPlayer == player1) ? player2 : player1;
-    }
-
     private void updateGameState(Cell cell) {
-        if (currentPlayer instanceof HumanPlayer) {
+        if (turnManager.getCurrentPlayer() instanceof HumanPlayer) {
             gameEventListener.onTurnPlayed(cell);
-        } else if (currentPlayer instanceof ComputerPlayer) {
+        } else if (turnManager.getCurrentPlayer() instanceof ComputerPlayer) {
             gameEventListener.onComputerTurnPlayed(cell);
         }
-        nextPlayer();
+        turnManager.nextPlayer();
         gameEventListener.onTurnChanged();
         checkWinner();
-        if (!isGameOver() && currentPlayer instanceof ComputerPlayer) {
+        if (!isGameOver() && turnManager.isComputerPlayer()) {
             // Ritardo di 500 millisecondi (0,5 secondi) prima di far giocare il computer
             executorService.schedule(this::playComputerTurn, 500, TimeUnit.MILLISECONDS);
         }
@@ -103,11 +91,11 @@ public class GameplayLogic {
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        return turnManager.getCurrentPlayer();
     }
 
     public String getCurrentPlayerName() {
-        return currentPlayer.getName();
+        return turnManager.getCurrentPlayer().getName();
     }
 
     public boolean isGameOver() {
@@ -131,7 +119,7 @@ public class GameplayLogic {
     }
 
     public boolean isComputerPlayer() {
-        return getCurrentPlayer() instanceof ComputerPlayer;
+        return turnManager.isComputerPlayer();
     }
 
     public boolean isSinglePlayer() {
