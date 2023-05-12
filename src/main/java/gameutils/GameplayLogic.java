@@ -3,9 +3,6 @@ package gameutils;
 import entities.*;
 import exceptions.InvalidMoveException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -19,8 +16,8 @@ public class GameplayLogic {
     private Player currentPlayer;
     private Player winner;
     private final GameEventListener gameEventListener;
-    private final Random random;
     private final ScheduledExecutorService executorService;
+    private final ComputerMoveStrategy computerMoveStrategy;
 
     public GameplayLogic(Board board, Player player1, Player player2, GameEventListener gameEventListener) {
         this.board = board;
@@ -29,12 +26,13 @@ public class GameplayLogic {
         this.gameEventListener = gameEventListener;
         this.player1 = player1;
         this.player2 = player2;
-        this.random = new Random();
         determineFirstPlayer();
         if (isSinglePlayer()) {
             executorService = Executors.newSingleThreadScheduledExecutor();
+            computerMoveStrategy = new ComputerMoveStrategy(board);
         } else {
             executorService = null;
+            computerMoveStrategy = null;
         }
     }
 
@@ -66,7 +64,7 @@ public class GameplayLogic {
     }
 
     private void playComputerTurn() {
-        Cell computerMove = makeComputerMove(getBoard());
+        Cell computerMove = computerMoveStrategy.makeComputerMove(getBoard());
         try {
             moveParser.makeMove(computerMove);
         } catch (InvalidMoveException e) {
@@ -102,52 +100,6 @@ public class GameplayLogic {
             winner = player2;
             gameEventListener.onGameOver(winner);
         }
-    }
-
-    private Cell makeComputerMove(Board board) {
-        List<Cell> availableCells = getAvailableCells(board);
-        Cell chosenCell = availableCells.get(random.nextInt(availableCells.size()));
-
-        CellSequence sequence = selectBestMove();
-        if (sequence != null) {
-            return new Cell(sequence.lastCell().getRow(), sequence.lastCell().getCol(), getOppoCellState(sequence.sequenceState()));
-        }
-
-        CellState chosenState = random.nextBoolean() ? CellState.X : CellState.O;
-        return new Cell(chosenCell.getRow(), chosenCell.getCol(), chosenState);
-    }
-
-    private CellSequence selectBestMove() {
-        CellSequence fourSequence = checker.findSequenceInBoard(4);
-        if (fourSequence != null) {
-            return fourSequence;
-        }
-
-        CellSequence threeSequence = checker.findSequenceInBoard(3);
-        if (threeSequence != null) {
-            return threeSequence;
-        }
-
-        return checker.findSequenceInBoard(2);
-    }
-
-    private CellState getOppoCellState(CellState state) {
-        return state == CellState.X ? CellState.O : CellState.X;
-    }
-
-    private List<Cell> getAvailableCells(Board board) {
-        List<Cell> availableCells = new ArrayList<>();
-        int size = board.getSize();
-
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (board.isCellEmpty(row, col)) {
-                    availableCells.add(new Cell(row, col));
-                }
-            }
-        }
-
-        return availableCells;
     }
 
     public Player getCurrentPlayer() {

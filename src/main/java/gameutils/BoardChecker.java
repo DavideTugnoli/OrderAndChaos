@@ -126,7 +126,6 @@ public class BoardChecker {
         return null;
     }
 
-
     private CellSequence findTwoInMinorDiagonals() {
         CellSequence result;
         for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {

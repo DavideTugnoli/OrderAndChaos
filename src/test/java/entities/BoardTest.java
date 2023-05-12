@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import exceptions.InvalidMoveException;
 
+import java.util.List;
+
 class BoardTest {
     private Board board;
     private MoveParser moveParser;
@@ -34,6 +36,7 @@ class BoardTest {
             }
         }
     }
+
     @Test
     void testMakeMove() {
         try {
@@ -64,7 +67,6 @@ class BoardTest {
             e.printStackTrace();
         }
     }
-
 
 
     @Test
@@ -209,5 +211,72 @@ class BoardTest {
         assertTrue(board.isFull());
     }
 
+    @Test
+    void testGetAvailableCells() {
+        try {
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 1, CellState.O));
+
+            List<Cell> availableCells = board.getAvailableCells();
+            assertEquals((board.getSize() * board.getSize()) - 2, availableCells.size());
+            assertFalse(availableCells.contains(new Cell(0, 0)));
+            assertFalse(availableCells.contains(new Cell(1, 1)));
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testSetCellState() {
+        board.setCellState(0, 0, CellState.X);
+        assertEquals(CellState.X, board.getCellState(0, 0));
+    }
+
+    @Test
+    void testIsCellEmpty() {
+        assertTrue(board.isCellEmpty(0, 0));
+        board.setCellState(0, 0, CellState.O);
+        assertFalse(board.isCellEmpty(0, 0));
+    }
+
+    @Test
+    void testInitializeBoard() {
+        Board newBoard = new Board(3);
+        for (int row = 0; row < newBoard.getSize(); row++) {
+            for (int col = 0; col < newBoard.getSize(); col++) {
+                assertEquals(CellState.EMPTY, newBoard.getCellState(row, col));
+            }
+        }
+    }
+
+    @Test
+    void testGetCellOutOfBounds() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(-1, 0));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(0, -1));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(board.getSize(), 0));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.getCell(0, board.getSize()));
+    }
+
+    @Test
+    void testSetCellStateOutOfBounds() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(-1, 0, CellState.X));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(0, -1, CellState.X));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(board.getSize(), 0, CellState.X));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> board.setCellState(0, board.getSize(), CellState.X));
+    }
+
+    @Test
+    void testNotFull() {
+        assertFalse(board.isFull());
+        for (int row = 0; row < board.getSize(); row++) {
+            for (int col = 0; col < board.getSize(); col++) {
+                if (row == board.getSize() - 1 && col == board.getSize() - 1) {
+                    break;
+                }
+                board.setCellState(row, col, CellState.X);
+            }
+        }
+        assertFalse(board.isFull());
+    }
 
 }

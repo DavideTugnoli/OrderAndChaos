@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     private final Cell[][] gameBoard;
     private final int size;
@@ -85,6 +88,21 @@ public class Board {
             col += colIncrement;
         }
         return result;
+    }
+
+    public List<Cell> getAvailableCells() {
+        List<Cell> availableCells = new ArrayList<>();
+        int size = this.getSize();
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (this.isCellEmpty(row, col)) {
+                    availableCells.add(new Cell(row, col));
+                }
+            }
+        }
+
+        return availableCells;
     }
 
     public CellState getCellState(int row, int col) {
