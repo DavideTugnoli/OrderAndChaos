@@ -263,7 +263,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
         // Riproduci il suono qui
         playSound("/graphicui/sounds/cartoon_jump.mp3");
 
-        gameplayLogic.playTurn(new Cell(row, col, piece));
+        gameplayLogic.executeTurn(new Cell(row, col, piece));
     }
 
     private ImageIcon loadScaledImageIcon(String imagePath) {

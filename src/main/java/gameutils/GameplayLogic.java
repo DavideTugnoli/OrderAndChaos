@@ -6,8 +6,11 @@ import exceptions.InvalidMoveException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameplayLogic {
+    private static final Logger LOGGER = Logger.getLogger(GameplayLogic.class.getName());
     private final Board board;
     private final MoveParser moveParser;
     private final BoardChecker checker;
@@ -36,47 +39,40 @@ public class GameplayLogic {
         }
     }
 
-    public void playTurn(Cell cell) {
+    public void executeTurn(Cell cell) {
         if (isGameOver()) return;
-        if (turnManager.isComputerPlayer()) {
-            playComputerTurn();
+        Player currentPlayer = turnManager.getCurrentPlayer();
+        if (currentPlayer instanceof ComputerPlayer) {
+            Cell computerMove = computerMoveStrategy.makeComputerMove(getBoard());
+            executeTurn(computerMove, currentPlayer);
         } else {
-            playHumanTurn(cell);
+            executeTurn(cell, currentPlayer);
         }
     }
 
-    private void playHumanTurn(Cell cell) {
+    private void executeTurn(Cell cell, Player player) {
         try {
             moveParser.makeMove(cell);
         } catch (InvalidMoveException e) {
+            LOGGER.log(Level.SEVERE, "Invalid move", e);
             return;
         }
 
-        updateGameState(cell);
+        updateGameState(cell, player);
     }
 
-    private void playComputerTurn() {
-        Cell computerMove = computerMoveStrategy.makeComputerMove(getBoard());
-        try {
-            moveParser.makeMove(computerMove);
-        } catch (InvalidMoveException e) {
-            return;
-        }
-        updateGameState(computerMove);
-    }
 
-    private void updateGameState(Cell cell) {
-        if (turnManager.getCurrentPlayer() instanceof HumanPlayer) {
+    private void updateGameState(Cell cell, Player player) {
+        if (player instanceof HumanPlayer) {
             gameEventListener.onTurnPlayed(cell);
-        } else if (turnManager.getCurrentPlayer() instanceof ComputerPlayer) {
+        } else if (player instanceof ComputerPlayer) {
             gameEventListener.onComputerTurnPlayed(cell);
         }
         turnManager.nextPlayer();
         gameEventListener.onTurnChanged();
         checkWinner();
         if (!isGameOver() && turnManager.isComputerPlayer()) {
-            // Ritardo di 500 millisecondi (0,5 secondi) prima di far giocare il computer
-            executorService.schedule(this::playComputerTurn, 500, TimeUnit.MILLISECONDS);
+            executorService.schedule(() -> executeTurn(computerMoveStrategy.makeComputerMove(getBoard()), turnManager.getCurrentPlayer()), 500, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -84,9 +80,27 @@ public class GameplayLogic {
         if (checker.isOrderWinner()) {
             winner = player1;
             gameEventListener.onGameOver(winner);
+            shutdown();
         } else if (checker.isChaosWinner()) {
             winner = player2;
             gameEventListener.onGameOver(winner);
+            shutdown();
+        }
+    }
+
+    private void shutdown() {
+        if (executorService != null) {
+            executorService.shutdown();
+            try {
+                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                    executorService.shutdownNow();
+                    if (!executorService.awaitTermination(60, TimeUnit.SECONDS))
+                        LOGGER.log(Level.SEVERE, "Pool did not terminate");
+                }
+            } catch (InterruptedException ie) {
+                executorService.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
