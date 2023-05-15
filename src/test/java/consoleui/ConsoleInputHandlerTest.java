@@ -40,6 +40,21 @@ class ConsoleInputHandlerTest {
         assertArrayEquals(expected, result);
     }
 
+    @Test
+    void testGetValidInputAfterInvalidInput() {
+        String prompt = "Enter row, column, and piece (X or O) separated by commas: ";
+        int min = 1;
+        int max = 6;
+        String simulatedInput = "7, 7, O\n5, 5, X";  // primo input non valido, secondo valido
+        int[] expected = {5, 5, CellState.X.ordinal()};
+
+        simulateUserInput(simulatedInput);
+        ConsoleInputHandler inputHandler = new ConsoleInputHandler();
+        int[] result = inputHandler.getValidInput(prompt, min, max);
+
+        assertArrayEquals(expected, result);
+    }
+
     private static Stream<Arguments> provideInputForTesting() {
         return Stream.of(
                 Arguments.of("5, 7, O", new int[]{5, 7, CellState.O.ordinal()}),

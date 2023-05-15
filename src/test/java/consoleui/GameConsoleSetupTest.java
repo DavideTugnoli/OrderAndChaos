@@ -75,5 +75,23 @@ class GameConsoleSetupTest {
         assertEquals(PlayerRole.CHAOS, players.get(1).getRole());
     }
 
+    @Test
+    void testSetupSinglePlayer() {
+        // Simulate user input
+        String input = "Alice\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        // Execute the method under test
+        List<Player> players = GameConsoleSetup.setupPlayers(true);
+
+        // Verify the results
+        assertEquals(2, players.size());
+        assertEquals("Alice", players.get(0).getName());
+        assertEquals(PlayerRole.ORDER, players.get(0).getRole());
+        assertEquals("Computer", players.get(1).getName());
+        assertEquals(PlayerRole.CHAOS, players.get(1).getRole());
+    }
+
 }
 

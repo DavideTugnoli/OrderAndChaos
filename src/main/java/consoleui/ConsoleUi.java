@@ -17,8 +17,7 @@ public class ConsoleUi implements GameEventListener {
         this.consoleInputHandler = consoleInputHandler;
     }
 
-    @Override
-    public void onGameStarted() {
+    private void onGameStarted() {
         printCurrentBoard();
         printCurrentPlayerTurn();
     }

@@ -14,7 +14,7 @@ class GameplayLogicTest {
     private Board board;
     private Player player1;
     private Player player2;
-    private GameEventListener gameEventListener;
+    private GameEventListenerStub gameEventListener;
     private GameplayLogic gameplayLogic;
     private GameplayLogic gameplayLogicWithComputer;
 
@@ -151,6 +151,7 @@ class GameplayLogicTest {
 
         // Attendi fino a 2 secondi affinché il computer abbia effettivamente giocato un turno
         await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> assertTrue(hasComputerPlayedTurn(board)));
+        assertTrue(gameEventListener.isOnComputerTurnPlayedCalled());
     }
 
     @Test
@@ -279,7 +280,6 @@ class GameplayLogicTest {
     void testIsSinglePlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
-        gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
         assertFalse(gameplayLogic.isSinglePlayer());
     }
@@ -288,9 +288,39 @@ class GameplayLogicTest {
     void testIsSinglePlayerWithComputerPlayer() {
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
-        gameEventListener = new GameEventListenerStub();
         gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
         assertTrue(gameplayLogic.isSinglePlayer());
+    }
+
+    @Test
+    void testGameEventListenerCalledOnGameOver() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player1 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        fillBoardWithOrderWinner(gameplayLogic);
+        assertTrue(gameplayLogic.isGameOver());
+        assertTrue(gameEventListener.isGameOverCalled());
+    }
+
+    @Test
+    void testGameEventListenerCalledOnTurnPlayed() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        gameplayLogic.handleTurn(new Cell(0, 0));
+        assertTrue(gameEventListener.isOnTurnPlayedCalled());
+    }
+
+    @Test
+    void testGameEventListenerCalledOnTurnChanged() {
+        player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
+        player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
+        gameEventListener = new GameEventListenerStub();
+        gameplayLogic = new GameplayLogic(board, player1, player2, gameEventListener);
+        gameplayLogic.handleTurn(new Cell(0, 0));
+        assertTrue(gameEventListener.isOnTurnChangedCalled());
     }
 
 }

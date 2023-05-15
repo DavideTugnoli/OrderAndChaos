@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id "jacoco"
     id "org.sonarqube" version "3.5.0.2730"
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 group 'org.example'
@@ -9,6 +10,7 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -54,6 +56,18 @@ sonarqube {
 }
 
 jar {
+    manifest {
+        attributes 'Main-Class': 'game.Game'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+shadowJar {
+    archiveBaseName.set('OrderAndChaos')
+    archiveVersion.set('1.0-SNAPSHOT')
+    archiveClassifier.set('')
     manifest {
         attributes 'Main-Class': 'game.Game'
     }

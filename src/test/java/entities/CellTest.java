@@ -66,4 +66,21 @@ class CellTest {
         assertEquals("X", cell.toString());
     }
 
+    @Test
+    void testConstructorWithState() {
+        Cell newCell = new Cell(1, 1, CellState.O);
+        assertEquals(1, newCell.getRow());
+        assertEquals(1, newCell.getCol());
+        assertEquals(CellState.O, newCell.getState());
+    }
+
+    @Test
+    void testConstructorWithNullState() {
+        Cell newCell = new Cell(1, 1, null);
+        assertEquals(1, newCell.getRow());
+        assertEquals(1, newCell.getCol());
+        assertEquals(CellState.EMPTY, newCell.getState());
+    }
+
+
 }

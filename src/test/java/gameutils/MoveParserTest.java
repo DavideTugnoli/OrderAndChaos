@@ -53,5 +53,11 @@ class MoveParserTest {
         assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(-1, -1, CellState.X)));
     }
 
+    @Test
+    void testInvalidMoveDuplicateCell() throws InvalidMoveException {
+        moveParser.makeMove(new Cell(0, 0, CellState.X)); // Occupying the cell
+        assertThrows(InvalidMoveException.class, () -> moveParser.makeMove(new Cell(0, 0, CellState.X)));
+        assertEquals(CellState.X, board.getCell(0, 0).getState());
+    }
 
 }

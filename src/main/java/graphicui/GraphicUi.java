@@ -59,11 +59,6 @@ public class GraphicUi extends JFrame implements GameEventListener {
     }
 
     @Override
-    public void onGameStarted() {
-        // Aggiorna l'interfaccia Swing per mostrare il messaggio di benvenuto (se necessario)
-    }
-
-    @Override
     public void onTurnPlayed(Cell cell) {
         updateBoardUI(cell);
     }
@@ -123,9 +118,9 @@ public class GraphicUi extends JFrame implements GameEventListener {
         gameMenu.add(newGameItem);
         JMenuItem changeModeItem;
         if (this.isSinglePlayer) {
-            changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel() + " (Single Player)");
+            changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel() + " (Multiplayer)");
         } else {
-            changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel() + " (Multi Player)");
+            changeModeItem = new JMenuItem(MessageBundle.gameMenuSwitchModeLabel() + " (Singleplayer)");
         }
         changeModeItem.addActionListener(e -> switchGameMode());
         gameMenu.add(changeModeItem);
