@@ -92,10 +92,10 @@ public class Board {
 
     public List<Cell> getAvailableCells() {
         List<Cell> availableCells = new ArrayList<>();
-        int size = this.getSize();
+        int boardSize = this.getSize();
 
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
                 if (this.isCellEmpty(row, col)) {
                     availableCells.add(new Cell(row, col));
                 }
