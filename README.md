@@ -6,7 +6,7 @@ Order And Chaos è un gioco da tavolo strategico, ispirato al Tris, in cui due g
 ## Obiettivo del gioco
 
 - **Obiettivo dell'Order**: Posizionare 5 pezzi uguali (X o O) in fila, colonna o diagonale.
-- **Obiettivo del Chaos**: Riempire l'intera griglia senza permettere all'Ordine di realizzare una sequenza di 5 pezzi uguali.
+- **Obiettivo del Chaos**: Riempire l'intera griglia senza permettere ad Order di realizzare una sequenza di 5 pezzi uguali.
 
 ## Caratteristiche
 
