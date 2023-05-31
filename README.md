@@ -40,6 +40,6 @@ java -jar OrderAndChaos-1.0-SNAPSHOT.jar --italian --console --multi-player
 ## Regole
 
 1. I giocatori si alternano nel posizionare un pezzo X o O sulla griglia.
-2. La partita termina quando l'Ordine posiziona 5 pezzi uguali in fila, colonna o diagonale, oppure quando il Chaos riempie la griglia senza che l'Order realizzi questa configurazione.
+2. La partita termina quando Order posiziona 5 pezzi uguali in fila, colonna o diagonale, oppure quando Chaos riempie la griglia senza che Order realizzi questa configurazione.
 
 Buon divertimento!
