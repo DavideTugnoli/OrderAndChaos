@@ -126,15 +126,15 @@ public class BoardChecker {
         return null;
     }
 
-    private CellSequence findTwoInMinorDiagonals() {
+    private CellSequence findSequenceInMinorDiagonals(int sequenceLength) {
         CellSequence result;
         for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
             for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
-                result = findSequenceInLine(2, board.getMinorDiagonal(row, col, false), row, col, 1, 1);
+                result = findSequenceInLine(sequenceLength, board.getMinorDiagonal(row, col, false), row, col, 1, 1);
                 if (result != null) {
                     return result;
                 }
-                result = findSequenceInLine(2, board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true), row + MIN_LINE_LENGTH, col, -1, 1);
+                result = findSequenceInLine(sequenceLength, board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true), row + MIN_LINE_LENGTH, col, -1, 1);
                 if (result != null) {
                     return result;
                 }
@@ -143,40 +143,6 @@ public class BoardChecker {
         return null;
     }
 
-    private CellSequence findThreeInMinorDiagonals() {
-        CellSequence result;
-        for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
-            for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
-                result = findSequenceInLine(3, board.getMinorDiagonal(row, col, false), row, col, 1, 1);
-                if (result != null) {
-                    return result;
-                }
-                result = findSequenceInLine(3, board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true), row + MIN_LINE_LENGTH, col, -1, 1);
-                if (result != null) {
-                    return result;
-                }
-            }
-        }
-        return null;
-    }
-
-
-    private CellSequence findFourInMinorDiagonals() {
-        CellSequence result;
-        for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
-            for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
-                result = findSequenceInLine(4, board.getMinorDiagonal(row, col, false), row, col, 1, 1);
-                if (result != null) {
-                    return result;
-                }
-                result = findSequenceInLine(4, board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true), row + MIN_LINE_LENGTH, col, -1, 1);
-                if (result != null) {
-                    return result;
-                }
-            }
-        }
-        return null;
-    }
 
     public CellSequence findSequenceInBoard(int sequenceLength) {
         CellSequence result;
@@ -211,11 +177,11 @@ public class BoardChecker {
 
         // Check minor diagonals
         if (sequenceLength == 2) {
-            result = findTwoInMinorDiagonals();
+            result = findSequenceInMinorDiagonals(2);
         } else if (sequenceLength == 3) {
-            result = findThreeInMinorDiagonals();
+            result = findSequenceInMinorDiagonals(3);
         } else if (sequenceLength == 4) {
-            result = findFourInMinorDiagonals();
+            result = findSequenceInMinorDiagonals(4);
         }
 
         return result;
