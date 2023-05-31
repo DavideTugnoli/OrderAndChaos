@@ -72,23 +72,6 @@ public class MessageBundle {
         return String.format(messages.getString("turnMessage"), playerName);
     }
 
-    public static String getLanguageChoiceRequestMessage() {
-        return messages.getString("languageChoiceRequestMessage");
-    }
-
-    public static String getGameInterfaceChoiceRequestMessage() {
-        return messages.getString("gameInterfaceChoiceRequestMessage");
-    }
-
-    public static String getInvalidInterfaceChoiceMessage() {
-        return messages.getString("invalidInterfaceChoiceMessage");
-    }
-
-
-    public static String getInvalidLanguageChoiceMessage() {
-        return messages.getString("invalidLanguageChoiceMessage");
-    }
-
     public static String getEnterIntegerMessage() {
         return messages.getString("enterIntegerMessage");
     }

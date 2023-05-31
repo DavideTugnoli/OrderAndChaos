@@ -132,70 +132,6 @@ class MessageBundleTest {
     }
 
     @Test
-    @DisplayName("Test getLanguageChoiceRequestMessage() with both languages")
-    void testGetLanguageChoiceRequestMessage() {
-        String[] expected = {"""
-                    Choose the language:
-                    1. English
-                    2. Italian
-                    """, """
-                    Scegli la lingua:
-                    1. Inglese
-                    2. Italiano
-                    """};
-
-        for (int i = 0; i < 2; i++) {
-            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
-            MessageBundle.setCurrentLocale(locale);
-            assertEquals(expected[i], MessageBundle.getLanguageChoiceRequestMessage());
-        }
-    }
-
-    @Test
-    @DisplayName("Test getGameInterfaceChoiceRequestMessage() with both languages")
-    void testGetGameInterfaceChoiceRequestMessage() {
-        String[] expected = {"""
-                    Choose the game interface:
-                    1. Console
-                    2. Graphic
-                    """, """
-                    Scegli l'interfaccia di gioco:
-                    1. Console
-                    2. Grafica
-                    """};
-
-        for (int i = 0; i < 2; i++) {
-            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
-            MessageBundle.setCurrentLocale(locale);
-            assertEquals(expected[i], MessageBundle.getGameInterfaceChoiceRequestMessage());
-        }
-    }
-
-    @Test
-    @DisplayName("Test getInvalidInterfaceChoiceMessage() with both languages")
-    void testGetInvalidInterfaceChoiceMessage() {
-        String[] expected = {"Invalid choice. Enter 1 for console, 2 for graphic.", "Scelta non valida. Inserisci 1 per console, 2 per grafica."};
-
-        for (int i = 0; i < 2; i++) {
-            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
-            MessageBundle.setCurrentLocale(locale);
-            assertEquals(expected[i], MessageBundle.getInvalidInterfaceChoiceMessage());
-        }
-    }
-
-    @Test
-    @DisplayName("Test getInvalidLanguageChoiceMessage() with both languages")
-    void testGetInvalidLanguageChoiceMessage() {
-        String[] expected = {"Invalid choice. Enter 1 for english, 2 for italian.", "Scelta non valida. Inserisci 1 per inglese, 2 per italiano."};
-
-        for (int i = 0; i < 2; i++) {
-            Locale locale = i == 0 ? Locale.ENGLISH : Locale.ITALIAN;
-            MessageBundle.setCurrentLocale(locale);
-            assertEquals(expected[i], MessageBundle.getInvalidLanguageChoiceMessage());
-        }
-    }
-
-    @Test
     @DisplayName("Test getEnterIntegerMessage() with both languages")
     void testGetEnterIntegerMessage() {
         String[] expected = {"Enter an integer number.", "Inserisci un numero intero."};
@@ -295,8 +231,8 @@ class MessageBundleTest {
     @DisplayName("Test consoleBadInputMessage() with both languages")
     void testConsoleBadInputMessage() {
         String[] expected = {
-                "Invalid input. Please enter two numbers separated by a comma, each from %d to %d, followed by the symbol (X or O) also separated by a comma.%n",
-                "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d, seguiti dal simbolo (X o O) anch'esso separato da una virgola.%n"
+                "Invalid input. Please enter two numbers separated by a comma, each from %d to %d, followed by the symbol (X or O) also separated by a comma.",
+                "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d, seguiti dal simbolo (X o O) anch'esso separato da una virgola."
         };
 
         for (int i = 0; i < 2; i++) {
