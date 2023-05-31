@@ -4,6 +4,7 @@ import annotations.Generated;
 import entities.Player;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class MessageBundle {
@@ -13,343 +14,139 @@ public class MessageBundle {
         throw new UnsupportedOperationException();
     }
 
-    private static Locale currentLocale = Locale.ENGLISH;
+    private static ResourceBundle messages = ResourceBundle.getBundle("languages/messages", Locale.ENGLISH);
 
     public static void setCurrentLocale(Locale locale) {
-        currentLocale = locale;
+        messages = ResourceBundle.getBundle("languages/messages", locale);
     }
 
     @Generated
     public static String getWelcomeMessage() {
-        String welcomeMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            welcomeMessage = """
-                    ******************************************************
-                    *                                                    *
-                    *              BENVENUTO IN ORDER AND CHAOS          *
-                    *                                                    *
-                    ******************************************************
-                    """;
-        } else {
-            welcomeMessage = """
-                    ******************************************************
-                    *                                                    *
-                    *            WELCOME TO ORDER AND CHAOS              *
-                    *                                                    *
-                    ******************************************************
-                    """;
-        }
-        welcomeMessage += "\n";
-        return welcomeMessage;
+        return messages.getString("welcome") + "\n";
     }
 
     @Generated
     public static String getWinnerMessage(Player player) {
-        String winnerMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            winnerMessage = "************************************************************************************************************\n" +
-                    "                                                    \n" +
-                    "                 " + player.getName().toUpperCase() + " VINCE!                      \n" +
-                    "                                                      \n" +
-                    "************************************************************************************************************\n";
-        } else {
-            winnerMessage = "************************************************************************************************************\n" +
-                    "                                                    \n" +
-                    "                 " + player.getName().toUpperCase() + " WINS!                      \n" +
-                    "                                                      \n" +
-                    "************************************************************************************************************\n";
-        }
-        winnerMessage += "\n";
-        return winnerMessage;
+        return String.format(messages.getString("winner"), player.getName().toUpperCase()) + "\n";
     }
 
     public static String getPlayAgainInput() {
         Scanner scanner = new Scanner(System.in);
-        if (currentLocale.getLanguage().equals("it")) {
-            System.out.println("Vuoi giocare di nuovo? Scrivi 'Si' o 'No'");
-        } else {
-            System.out.println("Do you want to play again? Write 'Yes' or 'No'");
-        }
+        System.out.println(messages.getString("playagain"));
         return scanner.nextLine();
     }
 
     public static String getThanksMessage() {
-        String thanksMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            thanksMessage = "Grazie per aver giocato! Arrivederci!";
-        } else {
-            thanksMessage = "Thank you for playing! Goodbye!";
-        }
-        return thanksMessage;
+        return messages.getString("thanks");
     }
 
     public static String getFinalBoardMessage() {
-        String finalBoardMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            finalBoardMessage = "Tabellone finale:";
-        } else {
-            finalBoardMessage = "Final board:";
-        }
-        return finalBoardMessage;
+        return messages.getString("finalboard");
     }
 
     public static String getCurrentBoardMessage() {
-        String currentBoardMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            currentBoardMessage = "Tabellone corrente:";
-        } else {
-            currentBoardMessage = "Current board:";
-        }
-        return currentBoardMessage;
+        return messages.getString("currentboard");
     }
 
     public static String getCurrentPlayerTurnMessage(String playerName) {
-        String currentPlayerTurnMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            currentPlayerTurnMessage = "È il turno di " + playerName + ".";
-        } else {
-            currentPlayerTurnMessage = "It's " + playerName + "'s turn.";
-        }
-        return currentPlayerTurnMessage;
+        return String.format(messages.getString("currentPlayerTurnMessage"), playerName);
     }
 
     public static String getInputPrompt() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Inserisci riga,colonna,pezzo: ";
-        }
-        return "Enter row,column,peace: ";
+        return messages.getString("inputPrompt");
     }
 
     public static String getYesInput() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Si";
-        }
-        return "Yes";
+        return messages.getString("yesInput");
     }
 
-    @Generated
     public static String getInstructionsMessage() {
-        String instructionsMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            instructionsMessage = """
-                    ****************************************************************************************************************
-                    *                                                                                                              *
-                    *            L'obiettivo di Order è di completare una fila di cinque pedine dello stesso colore,               *
-                    *            sia in orizzontale, sia in verticale, sia in diagonale.                                           *
-                    *            L'obiettivo di Chaos è di riempire il tabellone senza completare una fila di cinque pedine.       *
-                    *            Il gioco si svolge a turni.                                                                       *
-                    *            Buona fortuna!                                                                                    *
-                    *                                                                                                              *
-                    ****************************************************************************************************************
-                    """;
-        } else {
-            instructionsMessage = """
-                    ****************************************************************************************************************
-                    *                                                                                                              *
-                    *            Order aims to get five similar pieces in a row, vertically, horizontally or diagonally.           *
-                    *            Chaos aims to fill the board without completing a row of five similar pieces.                     *
-                    *            It is played in turns.                                                                            *
-                    *            Good luck!                                                                                        *
-                    *                                                                                                              *
-                    ****************************************************************************************************************
-                    """;
-        }
-        instructionsMessage += "\n";
-        return instructionsMessage;
+        return messages.getString("instructionsMessage");
     }
 
     public static String getGameOverMessage(String winnerName) {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Hai vinto " + winnerName + "!\n" + "Vuoi fare un'altra partita?";
-        } else {
-            return winnerName + " won!\n" + "Do you want to play again?";
-        }
+        return String.format(messages.getString("gameOverMessage"), winnerName);
     }
 
     public static String getTurnMessage(String playerName) {
-        if (currentLocale.getLanguage().equals("it")) {
-            return String.format("Turno del giocatore: %s", playerName);
-        } else {
-            return String.format("Player's turn: %s", playerName);
-        }
+        return String.format(messages.getString("turnMessage"), playerName);
     }
 
     public static String getLanguageChoiceRequestMessage() {
-        String languageChoiceRequestMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            languageChoiceRequestMessage = """
-                    Scegli la lingua:
-                    1. Inglese
-                    2. Italiano
-                    """;
-        } else {
-            languageChoiceRequestMessage = """
-                    Choose the language:
-                    1. English
-                    2. Italian
-                    """;
-        }
-        return languageChoiceRequestMessage;
+        return messages.getString("languageChoiceRequestMessage");
     }
 
     public static String getGameInterfaceChoiceRequestMessage() {
-        String gameInterfaceChoiceRequestMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            gameInterfaceChoiceRequestMessage = """
-                    Scegli l'interfaccia di gioco:
-                    1. Console
-                    2. Grafica
-                    """;
-        } else {
-            gameInterfaceChoiceRequestMessage = """
-                    Choose the game interface:
-                    1. Console
-                    2. Graphic
-                    """;
-        }
-        return gameInterfaceChoiceRequestMessage;
+        return messages.getString("gameInterfaceChoiceRequestMessage");
     }
 
     public static String getInvalidInterfaceChoiceMessage() {
-        String invalidChoiceMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            invalidChoiceMessage = "Scelta non valida. Inserisci 1 per console, 2 per grafica.";
-        } else {
-            invalidChoiceMessage = "Invalid choice. Enter 1 for console, 2 for graphic.";
-        }
-        return invalidChoiceMessage;
+        return messages.getString("invalidInterfaceChoiceMessage");
     }
 
+
     public static String getInvalidLanguageChoiceMessage() {
-        String invalidChoiceMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            invalidChoiceMessage = "Scelta non valida. Inserisci 1 per inglese, 2 per italiano.";
-        } else {
-            invalidChoiceMessage = "Invalid choice. Enter 1 for english, 2 for italian.";
-        }
-        return invalidChoiceMessage;
+        return messages.getString("invalidLanguageChoiceMessage");
     }
 
     public static String getEnterIntegerMessage() {
-        String enterIntegerMessage;
-        if (currentLocale.getLanguage().equals("it")) {
-            enterIntegerMessage = "Inserisci un numero intero.";
-        } else {
-            enterIntegerMessage = "Enter an integer number.";
-        }
-        return enterIntegerMessage;
+        return messages.getString("enterIntegerMessage");
     }
 
     public static String gameMenuLabel() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Gioco";
-        } else {
-            return "Game";
-        }
+        return messages.getString("gameMenuLabel");
     }
 
     public static String gameMenuNewGameLabel() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Nuova partita";
-        } else {
-            return "New game";
-        }
+        return messages.getString("gameMenuNewGameLabel");
     }
 
     public static String helpMenuLabel() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Aiuto";
-        } else {
-            return "Help";
-        }
+        return messages.getString("helpMenuLabel");
     }
 
     public static String helpMenuInstructionsLabel() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Istruzioni";
-        } else {
-            return "Instructions";
-        }
+        return messages.getString("helpMenuInstructionsLabel");
     }
 
     public static String getInstructionsDialogMessage() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Istruzioni di gioco:\n\n1. Order deve formare una sequenza di 5 simboli uguali per vincere.\n2. Il gioco termina se Order vince o Chaos glielo impedisce.";
-        } else {
-            return "Game instructions:\n\n1. Order must form a sequence of 5 of the same symbols to win.\n2. The game is over if Order wins or Chaos prevents it.";
-        }
+        return messages.getString("instructionsDialogMessage");
     }
 
     public static String getOrderPlayerName() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Inserisci il nome di Order: ";
-        } else {
-            return "Enter Order player name: ";
-        }
+        return messages.getString("orderPlayerName");
     }
 
     public static String getChaosPlayerName() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Inserisci il nome di Chaos: ";
-        } else {
-            return "Enter Chaos player name: ";
-        }
+        return messages.getString("chaosPlayerName");
     }
 
     public static String consoleBadInputMessage() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Input non valido. Inserisci due numeri separati da una virgola, ciascuno da %d a %d, seguiti dal simbolo (X o O) anch'esso separato da una virgola.%n";
-        } else {
-            return "Invalid input. Please enter two numbers separated by a comma, each from %d to %d, followed by the symbol (X or O) also separated by a comma.%n";
-        }
+        return messages.getString("consoleBadInputMessage");
     }
 
     public static String badSelectionConsolePeaceMessage() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Input non valido. Inserisci O o X.";
-        } else {
-            return "Invalid input. Please enter O or X.";
-        }
+        return messages.getString("badSelectionConsolePeaceMessage");
     }
 
     public static String getComputerTurnMessage(String playerName, int row, int col) {
-        if (currentLocale.getLanguage().equals("it")) {
-            return String.format("%s ha giocato in (%d, %d)", playerName, row, col);
-        } else {
-            return String.format("%s played at (%d, %d)", playerName, row, col);
-        }
+        return String.format(messages.getString("computerTurnWithPositionMessage"), playerName, row, col);
     }
 
     public static String gameMenuSwitchModeLabel() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Cambia modalit\u00E0";
-        } else {
-            return "Switch mode";
-        }
+        return messages.getString("gameMenuSwitchModeLabel");
     }
 
     public static String gameMenuExitLabel() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Esci";
-        } else {
-            return "Exit";
-        }
+        return messages.getString("gameMenuExitLabel");
     }
 
     public static String getEnterPlayerNamesMessage() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Inserisci i nomi dei giocatori";
-        } else {
-            return "Enter player names";
-        }
+        return messages.getString("enterPlayerNamesMessage");
     }
 
     public static String getComputerTurnMessage() {
-        if (currentLocale.getLanguage().equals("it")) {
-            return "Turno del computer...";
-        } else {
-            return "Computer's turn...";
-        }
+        return messages.getString("computerTurnMessage");
     }
 
 }
