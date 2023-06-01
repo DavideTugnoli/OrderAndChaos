@@ -309,4 +309,16 @@ class MessageBundleTest {
         }
     }
 
+    @Test
+    @DisplayName("Test soundMenuLabel() with both languages")
+    void testSoundMenuLabel() {
+        String[] expected = {"Sound", "Suoni"};
+
+        for (int i = 0; i < 2; i++) {
+            Locale locale = i == 0 ? Locale.ENGLISH : new Locale("it", "IT");
+            MessageBundle.setCurrentLocale(locale);
+            assertEquals(expected[i], MessageBundle.getSoundLabel());
+        }
+    }
+
 }

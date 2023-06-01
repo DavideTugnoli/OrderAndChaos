@@ -1,5 +1,6 @@
 package gameutils;
 
+import annotations.Generated;
 import entities.*;
 import exceptions.InvalidMoveException;
 
@@ -88,6 +89,7 @@ public class GameplayLogic {
         }
     }
 
+    @Generated
     private void shutdown() {
         if (executorService != null) {
             executorService.shutdown();

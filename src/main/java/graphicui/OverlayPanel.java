@@ -1,8 +1,11 @@
 package graphicui;
 
+import annotations.Generated;
+
 import javax.swing.*;
 import java.awt.*;
 
+@Generated
 public class OverlayPanel extends JPanel {
     public OverlayPanel() {
         setOpaque(false);
