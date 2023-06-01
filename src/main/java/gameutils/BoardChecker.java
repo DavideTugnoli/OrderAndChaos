@@ -36,7 +36,8 @@ public class BoardChecker {
     }
 
     private CellSequence handleSequenceFound(int sequenceLength, CellState[] cells, int i, int startRow, int startCol, int rowIncrement, int colIncrement) {
-        int row, col;
+        int row;
+        int col;
         if (i == 0) {
             row = startRow + rowIncrement * (i + sequenceLength);
             col = startCol + colIncrement * (i + sequenceLength);
