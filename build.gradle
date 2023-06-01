@@ -47,7 +47,7 @@ jacocoTestReport {
     }
 }
 
-sonarqube {
+sonar {
     properties {
         property "sonar.projectKey", "DavideTugnoli_OrderAndChaos"
         property "sonar.organization", "davidetugnoli"
