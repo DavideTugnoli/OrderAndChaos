@@ -36,7 +36,6 @@ public class BoardChecker {
     }
 
     private CellSequence handleSequenceFound(int sequenceLength, CellState[] cells, int i, int startRow, int startCol, int rowIncrement, int colIncrement) {
-        // if the sequence is a max length size, the last cell is not empty
         if (sequenceLength == board.getSize() - 1) {
             return new CellSequence(board.getCell(startRow, startCol), cells[i]);
         }
