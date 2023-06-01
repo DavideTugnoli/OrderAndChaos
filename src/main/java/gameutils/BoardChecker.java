@@ -14,68 +14,12 @@ public class BoardChecker {
     }
 
     public boolean isOrderWinner() {
-        for (int i = 0; i < board.getSize(); i++) {
-            if (checkRow(i) || checkCol(i)) {
-                return true;
-            }
-        }
-        return checkMainDiagonal() || checkSecondaryDiagonal() || checkMinorDiagonals();
+        CellSequence sequence = findSequenceInBoard(5);
+        return sequence != null;
     }
 
     public boolean isChaosWinner() {
         return board.isFull() && !isOrderWinner();
-    }
-
-    private boolean checkRow(int row) {
-        CellState[] cells = board.getRow(row);
-        return checkLine(cells);
-    }
-
-    private boolean checkCol(int col) {
-        CellState[] cells = board.getCol(col);
-        return checkLine(cells);
-    }
-
-    private boolean checkMainDiagonal() {
-        CellState[] cells = board.getMainDiagonal();
-        return checkLine(cells);
-    }
-
-    private boolean checkSecondaryDiagonal() {
-        CellState[] cells = board.getSecondaryDiagonal();
-        return checkLine(cells);
-    }
-
-    private boolean checkMinorDiagonals() {
-        for (int row = 0; row < board.getSize() - MIN_LINE_LENGTH; row++) {
-            for (int col = 0; col < board.getSize() - MIN_LINE_LENGTH; col++) {
-                if (checkLine(board.getMinorDiagonal(row, col, false)) ||
-                        checkLine(board.getMinorDiagonal(row + MIN_LINE_LENGTH, col, true))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean checkLine(CellState[] cells) {
-        int count = 0;
-        CellState currentCell = null;
-        for (CellState cell : cells) {
-            if (cell == CellState.EMPTY) {
-                count = 0;
-                currentCell = null;
-            } else if (cell == currentCell) {
-                count++;
-                if (count == 5) {
-                    return true;
-                }
-            } else {
-                count = 1;
-                currentCell = cell;
-            }
-        }
-        return false;
     }
 
     public boolean isGameOver() {
@@ -92,6 +36,10 @@ public class BoardChecker {
     }
 
     private CellSequence handleSequenceFound(int sequenceLength, CellState[] cells, int i, int startRow, int startCol, int rowIncrement, int colIncrement) {
+        // if the sequence is a max length size, the last cell is not empty
+        if (sequenceLength == board.getSize() - 1) {
+            return new CellSequence(board.getCell(startRow, startCol), cells[i]);
+        }
         int row, col;
         if (i == 0) {
             row = startRow + rowIncrement * (i + sequenceLength);
@@ -176,16 +124,8 @@ public class BoardChecker {
         }
 
         // Check minor diagonals
-        if (sequenceLength == 2) {
-            result = findSequenceInMinorDiagonals(2);
-        } else if (sequenceLength == 3) {
-            result = findSequenceInMinorDiagonals(3);
-        } else if (sequenceLength == 4) {
-            result = findSequenceInMinorDiagonals(4);
-        }
-
+        result = findSequenceInMinorDiagonals(sequenceLength);
         return result;
     }
-
 
 }
