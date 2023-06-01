@@ -30,6 +30,7 @@ public class GraphicUi extends JFrame implements GameEventListener {
     private boolean userInputAllowed = true;
     private final OverlayPanel overlayPanel;
     private final boolean isSinglePlayer;
+    private final UiSettings uiSettings = UiSettings.getInstance();
 
     public GraphicUi(boolean isSinglePlayer) {
         super("Order and Chaos");
@@ -108,6 +109,24 @@ public class GraphicUi extends JFrame implements GameEventListener {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createGameMenu());
         menuBar.add(createHelpMenu());
+        menuBar.add(Box.createHorizontalStrut(7));
+
+        // Inizializza il JButton per Sound:On/Off
+        JButton soundButton = new JButton(uiSettings.isSoundEnabled() ? MessageBundle.getSoundLabel() + ": ON" : MessageBundle.getSoundLabel() + ": OFF");
+        soundButton.addActionListener(e -> {
+            uiSettings.setSoundEnabled(!uiSettings.isSoundEnabled());
+            // Aggiorna l'etichetta dello stato del suono
+            soundButton.setText(uiSettings.isSoundEnabled() ? MessageBundle.getSoundLabel() + ": ON" : MessageBundle.getSoundLabel() + ": OFF");
+        });
+
+        // Riduci il padding a destra
+        soundButton.setMargin(new Insets(2, 2, 2, 2));
+
+        // Rimuovi i bordi
+        soundButton.setBorder(BorderFactory.createEmptyBorder());
+
+        menuBar.add(soundButton);
+        menuBar.add(Box.createHorizontalGlue());
         setJMenuBar(menuBar);
     }
 
@@ -356,6 +375,9 @@ public class GraphicUi extends JFrame implements GameEventListener {
     }
 
     private void playSound(String soundFilePath) {
+        if (!uiSettings.isSoundEnabled()) {
+            return;
+        }
         try {
             InputStream fis = getClass().getResourceAsStream(soundFilePath);
             if (fis != null) {

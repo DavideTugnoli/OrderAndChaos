@@ -132,4 +132,8 @@ public class MessageBundle {
         return messages.getString("computerTurnMessage");
     }
 
+    public static String getSoundLabel() {
+        return messages.getString("soundLabel");
+    }
+
 }
