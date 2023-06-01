@@ -4,17 +4,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class UiSettingsTest {
+class UiSettingsTest {
 
     private UiSettings uiSettings;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         uiSettings = UiSettings.getInstance();
     }
 
     @Test
-    public void testGetInstance() {
+    void testGetInstance() {
         UiSettings instance1 = UiSettings.getInstance();
         UiSettings instance2 = UiSettings.getInstance();
 
@@ -22,13 +22,13 @@ public class UiSettingsTest {
     }
 
     @Test
-    public void testDefaultSoundEnabled() {
+    void testDefaultSoundEnabled() {
         boolean soundEnabled = uiSettings.isSoundEnabled();
         Assertions.assertTrue(soundEnabled, "Default soundEnabled should be true.");
     }
 
     @Test
-    public void testSetSoundEnabled() {
+    void testSetSoundEnabled() {
         uiSettings.setSoundEnabled(false);
         boolean soundEnabled = uiSettings.isSoundEnabled();
         Assertions.assertFalse(soundEnabled, "setSoundEnabled(false) should set soundEnabled to false.");
