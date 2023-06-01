@@ -36,9 +36,12 @@ public class BoardChecker {
     }
 
     private CellSequence handleSequenceFound(int sequenceLength, CellState[] cells, int i, int startRow, int startCol, int rowIncrement, int colIncrement) {
+        /*
         if (sequenceLength == board.getSize() - 1) {
             return new CellSequence(board.getCell(startRow, startCol), cells[i]);
         }
+
+         */
         int row, col;
         if (i == 0) {
             row = startRow + rowIncrement * (i + sequenceLength);
@@ -64,6 +67,10 @@ public class BoardChecker {
     private CellSequence findSequenceInLine(int sequenceLength, CellState[] cells, int startRow, int startCol, int rowIncrement, int colIncrement) {
         for (int i = 0; i < cells.length - sequenceLength + 1; i++) {
             if (isSequenceFound(sequenceLength, cells, i)) {
+                // Check if we're looking at a minor diagonal and if the sequence length matches board size - 1
+                if ((rowIncrement == 1 && colIncrement == 1 || rowIncrement == -1 && colIncrement == 1) && sequenceLength == board.getSize() - 1) {
+                    return new CellSequence(board.getCell(startRow + rowIncrement * i, startCol + colIncrement * i), cells[i]);
+                }
                 CellSequence cellSequence = handleSequenceFound(sequenceLength, cells, i, startRow, startCol, rowIncrement, colIncrement);
                 if (cellSequence != null) {
                     return cellSequence;
