@@ -236,8 +236,8 @@ class BoardCheckerTest {
         CellSequence result = checker.findSequenceInBoard(2);
         assertNotNull(result);
         assertEquals(CellState.X, result.sequenceState());
-        assertEquals(0, result.lastCell().getRow());
-        assertEquals(2, result.lastCell().getCol());
+        assertEquals(0, result.lastEmptyCell().getRow());
+        assertEquals(2, result.lastEmptyCell().getCol());
     }
 
     @Test
@@ -252,8 +252,8 @@ class BoardCheckerTest {
         CellSequence result = checker.findSequenceInBoard(3);
         assertNotNull(result);
         assertEquals(CellState.X, result.sequenceState());
-        assertEquals(0, result.lastCell().getRow());
-        assertEquals(3, result.lastCell().getCol());
+        assertEquals(0, result.lastEmptyCell().getRow());
+        assertEquals(3, result.lastEmptyCell().getCol());
     }
 
     @Test
@@ -269,10 +269,42 @@ class BoardCheckerTest {
         CellSequence result = checker.findSequenceInBoard(4);
         assertNotNull(result);
         assertEquals(CellState.X, result.sequenceState());
-        assertEquals(0, result.lastCell().getRow());
-        assertEquals(4, result.lastCell().getCol());
+        assertEquals(0, result.lastEmptyCell().getRow());
+        assertEquals(4, result.lastEmptyCell().getCol());
     }
 
+    @Test
+    void testFindFourInSequenceInDiagonal() {
+        try {
+            moveParser.makeMove(new Cell(0, 0, CellState.X));
+            moveParser.makeMove(new Cell(1, 1, CellState.X));
+            moveParser.makeMove(new Cell(2, 2, CellState.X));
+            moveParser.makeMove(new Cell(3, 3, CellState.X));
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        CellSequence result = checker.findSequenceInBoard(4);
+        assertNotNull(result);
+        assertEquals(CellState.X, result.sequenceState());
+        assertEquals(4, result.lastEmptyCell().getRow());
+        assertEquals(4, result.lastEmptyCell().getCol());
+    }
+    
+    @Test
+    void testFindThreeInSequenceInMinorDiagonal() {
+        try {
+            moveParser.makeMove(new Cell(1, 0, CellState.X));
+            moveParser.makeMove(new Cell(2, 1, CellState.X));
+            moveParser.makeMove(new Cell(3, 2, CellState.X));
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        CellSequence result = checker.findSequenceInBoard(3);
+        assertNotNull(result);
+        assertEquals(CellState.X, result.sequenceState());
+        assertEquals(4, result.lastEmptyCell().getRow());
+        assertEquals(3, result.lastEmptyCell().getCol());
+    }
 
 }
 

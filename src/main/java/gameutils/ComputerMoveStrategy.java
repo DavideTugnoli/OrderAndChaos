@@ -20,7 +20,7 @@ public class ComputerMoveStrategy {
 
         CellSequence sequence = selectBestMove();
         if (sequence != null) {
-            return new Cell(sequence.lastCell().getRow(), sequence.lastCell().getCol(), getOppositeCellState(sequence.sequenceState()));
+            return new Cell(sequence.lastEmptyCell().getRow(), sequence.lastEmptyCell().getCol(), getOppositeCellState(sequence.sequenceState()));
         }
 
         CellState chosenState = random.nextBoolean() ? CellState.X : CellState.O;
