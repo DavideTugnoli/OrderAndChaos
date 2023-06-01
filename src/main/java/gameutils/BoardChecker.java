@@ -36,12 +36,6 @@ public class BoardChecker {
     }
 
     private CellSequence handleSequenceFound(int sequenceLength, CellState[] cells, int i, int startRow, int startCol, int rowIncrement, int colIncrement) {
-        /*
-        if (sequenceLength == board.getSize() - 1) {
-            return new CellSequence(board.getCell(startRow, startCol), cells[i]);
-        }
-
-         */
         int row, col;
         if (i == 0) {
             row = startRow + rowIncrement * (i + sequenceLength);
@@ -96,7 +90,6 @@ public class BoardChecker {
         }
         return null;
     }
-
 
     public CellSequence findSequenceInBoard(int sequenceLength) {
         CellSequence result;
