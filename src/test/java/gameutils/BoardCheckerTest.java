@@ -289,7 +289,7 @@ class BoardCheckerTest {
         assertEquals(4, result.lastEmptyCell().getRow());
         assertEquals(4, result.lastEmptyCell().getCol());
     }
-    
+
     @Test
     void testFindThreeInSequenceInMinorDiagonal() {
         try {
@@ -306,5 +306,21 @@ class BoardCheckerTest {
         assertEquals(3, result.lastEmptyCell().getCol());
     }
 
+    @Test
+    void testFindThreeInSequenceWithEmptyCellAtStart() {
+        try {
+            moveParser.makeMove(new Cell(0, 0, CellState.EMPTY));
+            moveParser.makeMove(new Cell(0, 1, CellState.X));
+            moveParser.makeMove(new Cell(0, 2, CellState.X));
+            moveParser.makeMove(new Cell(0, 3, CellState.X));
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        CellSequence result = checker.findSequenceInBoard(3);
+        assertNotNull(result);
+        assertEquals(CellState.X, result.sequenceState());
+        assertEquals(0, result.lastEmptyCell().getRow());
+        assertEquals(0, result.lastEmptyCell().getCol());
+    }
 }
 
