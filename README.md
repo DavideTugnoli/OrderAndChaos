@@ -20,21 +20,21 @@ Order And Chaos è un gioco da tavolo strategico, ispirato al Tris, in cui due g
 2. Fai il Build del progetto:
    - Su un sistema **Unix** (come Linux o Mac), esegui il comando `./build.sh` da una shell.
    - Su un sistema **Windows**, esegui `build.bat` da un prompt dei comandi.
-3. Questo creerà un file JAR chiamato `OrderAndChaos-1.0-SNAPSHOT.jar` nella cartella `build/libs` del tuo progetto.
-4. Esegui il file JAR con il comando `java -jar build/libs/OrderAndChaos-1.0-SNAPSHOT.jar`, passando i parametri appropriati come mostrato negli esempi qui sotto.
+3. Questo creerà un file JAR chiamato `OrderAndChaos.jar` nella cartella `build/libs` del tuo progetto.
+4. Esegui il file JAR con il comando `java -jar build/libs/OrderAndChaos.jar`, passando i parametri appropriati come mostrato negli esempi qui sotto.
 
 ### Esempi di comandi
 
 #### Inglese, interfaccia grafica, single-player:
 
 \```
-java -jar OrderAndChaos-1.0-SNAPSHOT.jar --english --graphic --single-player
+java -jar OrderAndChaos.jar --english --graphic --single-player
 \```
 
 #### Italiano, interfaccia console, multiplayer:
 
 \```
-java -jar OrderAndChaos-1.0-SNAPSHOT.jar --italian --console --multi-player
+java -jar OrderAndChaos.jar --italian --console --multi-player
 \```
 
 ## Regole

@@ -6,7 +6,6 @@ plugins {
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -66,7 +65,6 @@ jar {
 
 shadowJar {
     archiveBaseName.set('OrderAndChaos')
-    archiveVersion.set('1.0-SNAPSHOT')
     archiveClassifier.set('')
     manifest {
         attributes 'Main-Class': 'game.Game'
