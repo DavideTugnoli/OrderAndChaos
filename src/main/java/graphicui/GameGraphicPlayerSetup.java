@@ -12,9 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @Generated
-public class GameGraphicSetup {
+public class GameGraphicPlayerSetup {
 
-    private GameGraphicSetup() {
+    private GameGraphicPlayerSetup() {
         // This class should not be instantiated
         throw new UnsupportedOperationException();
     }
@@ -38,7 +38,7 @@ public class GameGraphicSetup {
         if (result != JOptionPane.OK_OPTION) {
             return new Player[0];
         }
-        String orderPlayerName = getPlayerName(panel, 0);
+        String orderPlayerName = truncateName(getPlayerName(panel, 0));
         if (orderPlayerName.isEmpty()) {
             orderPlayerName = "Order";
         }
@@ -48,7 +48,7 @@ public class GameGraphicSetup {
             Player player2 = new ComputerPlayer("Computer", PlayerRole.CHAOS);
             return new Player[]{player1, player2};
         } else {
-            String chaosPlayerName = getPlayerName(panel, 1);
+            String chaosPlayerName = truncateName(getPlayerName(panel, 1));
             if (chaosPlayerName.isEmpty()) {
                 chaosPlayerName = "Chaos";
             }
@@ -98,7 +98,7 @@ public class GameGraphicSetup {
     }
 
     public static ImageIcon loadCustomIcon() {
-        URL iconURL = GameGraphicSetup.class.getResource("/graphicui/images/game_icon.png");
+        URL iconURL = GameGraphicPlayerSetup.class.getResource("/graphicui/images/game_icon.png");
         if (iconURL != null) {
             ImageIcon originalIcon = new ImageIcon(iconURL);
             return resizeIcon(originalIcon); // Sostituisci 32, 32 con le dimensioni desiderate
@@ -120,4 +120,12 @@ public class GameGraphicSetup {
         Image resizedImage = img.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedImage);
     }
+
+    private static String truncateName(String name) {
+        if (name.length() > 18) {
+            return name.substring(0, 15) + "...";
+        }
+        return name;
+    }
+
 }

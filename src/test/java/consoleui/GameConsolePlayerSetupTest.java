@@ -13,8 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class GameConsoleSetupTest {
-
+class GameConsolePlayerSetupTest {
     @Test
     void testSetupPlayersWithValidInput() {
         // Simulate user input
@@ -23,11 +22,29 @@ class GameConsoleSetupTest {
         System.setIn(in);
 
         // Execute the method under test
-        List<Player> players = GameConsoleSetup.setupPlayers(false);
+        List<Player> players = GameConsolePlayerSetup.setupPlayers(false);
 
         // Verify the results
         assertEquals(2, players.size());
         assertEquals("Alice", players.get(0).getName());
+        assertEquals(PlayerRole.ORDER, players.get(0).getRole());
+        assertEquals("Bob", players.get(1).getName());
+        assertEquals(PlayerRole.CHAOS, players.get(1).getRole());
+    }
+
+    @Test
+    void testSetupPlayersWithValidInputTruncated() {
+        // Simulate user input
+        String input = "MassimilianoBarpFortissimo\nBob\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        // Execute the method under test
+        List<Player> players = GameConsolePlayerSetup.setupPlayers(false);
+
+        // Verify the results
+        assertEquals(2, players.size());
+        assertEquals("MassimilianoBar...", players.get(0).getName());
         assertEquals(PlayerRole.ORDER, players.get(0).getRole());
         assertEquals("Bob", players.get(1).getName());
         assertEquals(PlayerRole.CHAOS, players.get(1).getRole());
@@ -45,7 +62,7 @@ class GameConsoleSetupTest {
         System.setIn(in);
 
         // Execute the method under test
-        List<Player> players = GameConsoleSetup.setupPlayers(false);
+        List<Player> players = GameConsolePlayerSetup.setupPlayers(false);
 
         // Verify the results
         assertEquals(2, players.size());
@@ -65,7 +82,7 @@ class GameConsoleSetupTest {
         System.setIn(in);
 
         // Execute the method under test
-        List<Player> players = GameConsoleSetup.setupPlayers(false);
+        List<Player> players = GameConsolePlayerSetup.setupPlayers(false);
 
         // Verify the results
         assertEquals(2, players.size());
@@ -83,7 +100,7 @@ class GameConsoleSetupTest {
         System.setIn(in);
 
         // Execute the method under test
-        List<Player> players = GameConsoleSetup.setupPlayers(true);
+        List<Player> players = GameConsolePlayerSetup.setupPlayers(true);
 
         // Verify the results
         assertEquals(2, players.size());

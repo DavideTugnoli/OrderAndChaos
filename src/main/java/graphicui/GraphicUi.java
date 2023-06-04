@@ -157,11 +157,11 @@ public class GraphicUi extends JFrame implements GameEventListener {
         Player newPlayer2 = gameplayLogic.getPlayer2();
 
         if (this.isSinglePlayer) {
-            java.util.List<Player> players = GameGraphicSetup.setupPlayers(false);
+            java.util.List<Player> players = GameGraphicPlayerSetup.setupPlayers(false);
             newPlayer1 = new HumanPlayer(players.get(0).getName(), newPlayer1.getRole());
             newPlayer2 = new HumanPlayer(players.get(1).getName(), newPlayer2.getRole());
         } else {
-            java.util.List<Player> players = GameGraphicSetup.setupPlayers(true);
+            java.util.List<Player> players = GameGraphicPlayerSetup.setupPlayers(true);
             newPlayer1 = new HumanPlayer(players.get(0).getName(), newPlayer1.getRole());
             newPlayer2 = new ComputerPlayer("Chaos", newPlayer2.getRole());
         }

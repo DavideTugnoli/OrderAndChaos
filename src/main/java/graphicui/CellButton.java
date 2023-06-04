@@ -1,7 +1,9 @@
 package graphicui;
 
-import javax.swing.JButton;
+import annotations.Generated;
 
+import javax.swing.JButton;
+@Generated
 public class CellButton extends JButton {
     private final int row;
     private final int col;

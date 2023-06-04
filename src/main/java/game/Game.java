@@ -6,7 +6,7 @@ import entities.Board;
 import entities.Player;
 import gameutils.GameplayLogic;
 import gameutils.MessageBundle;
-import graphicui.GameGraphicSetup;
+import graphicui.GameGraphicPlayerSetup;
 import graphicui.GraphicUi;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class Game {
     private static void startGameWithConsoleInterface(Board board, boolean singlePlayer) {
         System.out.println(MessageBundle.getWelcomeMessage());
         System.out.println(MessageBundle.getInstructionsMessage());
-        List<Player> players = GameConsoleSetup.setupPlayers(singlePlayer);
+        List<Player> players = GameConsolePlayerSetup.setupPlayers(singlePlayer);
         ConsoleUi consoleUi = new ConsoleUi(new ConsoleInputHandler());
         GameplayLogic gameplayLogic = new GameplayLogic(board, players.get(0), players.get(1), consoleUi);
         consoleUi.setGameplayLogic(gameplayLogic);
@@ -60,7 +60,7 @@ public class Game {
 
     private static void startGameWithGraphicInterface(Board board, boolean singlePlayer) {
         GraphicUi graphicUi = new GraphicUi(singlePlayer);
-        List<Player> players = GameGraphicSetup.setupPlayers(singlePlayer);
+        List<Player> players = GameGraphicPlayerSetup.setupPlayers(singlePlayer);
         GameplayLogic gameplayLogic = new GameplayLogic(board, players.get(0), players.get(1), graphicUi);
         graphicUi.setGameplayLogic(gameplayLogic);
         graphicUi.setVisible(true);

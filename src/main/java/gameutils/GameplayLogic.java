@@ -62,7 +62,6 @@ public class GameplayLogic {
         updateGameState(cell, player);
     }
 
-
     private void updateGameState(Cell cell, Player player) {
         if (player instanceof HumanPlayer) {
             gameEventListener.onTurnPlayed(cell);

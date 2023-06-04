@@ -64,7 +64,7 @@ public class BoardChecker {
             if (isSequenceFound(sequenceLength, cells, i)) {
                 // Check if we're looking at a minor diagonal and if the sequence length matches board size - 1
                 if ((rowIncrement == 1 && colIncrement == 1 || rowIncrement == -1 && colIncrement == 1) && sequenceLength == board.getSize() - 1) {
-                    return new CellSequence(board.getCell(startRow + rowIncrement * i, startCol + colIncrement * i), cells[i]);
+                    return new CellSequence(null, cells[i]);
                 }
                 CellSequence cellSequence = handleSequenceFound(sequenceLength, cells, i, startRow, startCol, rowIncrement, colIncrement);
                 if (cellSequence != null) {

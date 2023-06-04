@@ -7,9 +7,9 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.Arrays;
 
-public class GameConsoleSetup {
+public class GameConsolePlayerSetup {
 
-    private GameConsoleSetup() {
+    private GameConsolePlayerSetup() {
         // This class should not be instantiated
         throw new UnsupportedOperationException();
     }
@@ -18,7 +18,7 @@ public class GameConsoleSetup {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print(MessageBundle.getOrderPlayerName());
-        String name1 = scanner.nextLine().trim();
+        String name1 = truncateName(scanner.nextLine().trim());
         if (name1.isEmpty()) {
             name1 = "Order";
         }
@@ -29,7 +29,7 @@ public class GameConsoleSetup {
             return Arrays.asList(player1, player2);
         } else {
             System.out.print(MessageBundle.getChaosPlayerName());
-            String name2 = scanner.nextLine().trim();
+            String name2 = truncateName(scanner.nextLine().trim());
             if (name2.isEmpty()) {
                 name2 = "Chaos";
             }
@@ -37,4 +37,12 @@ public class GameConsoleSetup {
             return Arrays.asList(player1, player2);
         }
     }
+
+    private static String truncateName(String name) {
+        if (name.length() > 18) {
+            return name.substring(0, 15) + "...";
+        }
+        return name;
+    }
+
 }
