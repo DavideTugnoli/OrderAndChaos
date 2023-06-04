@@ -5,8 +5,8 @@ Order And Chaos è un gioco da tavolo strategico, ispirato al Tris, in cui due g
 
 ## Obiettivo del gioco
 
-- **Obiettivo dell'Order**: Posizionare 5 pezzi uguali (X o O) in fila, colonna o diagonale.
-- **Obiettivo del Chaos**: Riempire l'intera griglia senza permettere ad Order di realizzare una sequenza di 5 pezzi uguali.
+- **Obiettivo di Order**: Posizionare 5 pezzi uguali (X o O) in fila, colonna o diagonale.
+- **Obiettivo di Chaos**: Riempire l'intera griglia senza permettere ad Order di realizzare una sequenza di 5 pezzi uguali.
 
 ## Caratteristiche
 
@@ -40,6 +40,6 @@ java -jar OrderAndChaos.jar --italian --console --multi-player
 ## Regole
 
 1. I giocatori si alternano nel posizionare un pezzo X o O sulla griglia di gioco.
-2. La partita termina quando Order posiziona 5 pezzi uguali in fila, colonna o diagonale, oppure quando Chaos riempie la griglia senza che Order realizzi questa configurazione.
+2. La partita termina quando Order posiziona 5 pezzi uguali in fila, colonna o diagonale, oppure quando Chaos riempie la griglia di gioco senza che Order realizzi questa configurazione.
 
 Buon divertimento!
