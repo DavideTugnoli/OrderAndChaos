@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.*;
@@ -186,6 +188,10 @@ class GameplayLogicTest {
 
     @Test
     void testPlayTurnInvalidMove() {
+        Logger logger = Logger.getLogger(GameplayLogic.class.getName());
+        Level originalLevel = logger.getLevel();
+
+        logger.setLevel(Level.OFF);
         player1 = new HumanPlayer("Player 1", PlayerRole.ORDER);
         player2 = new HumanPlayer("Player 2", PlayerRole.CHAOS);
         gameEventListener = new GameEventListenerStub();
@@ -195,6 +201,8 @@ class GameplayLogicTest {
         gameplayLogic.handleTurn(cell); // Dovrebbe ignorare questa mossa perché è stata già occupata la cella (0, 0)
 
         assertEquals(player2.getName(), gameplayLogic.getCurrentPlayer().getName()); // Il giocatore corrente non dovrebbe cambiare
+        
+        logger.setLevel(originalLevel);
     }
 
     @Test
