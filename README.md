@@ -10,14 +10,14 @@ Order And Chaos è un gioco da tavolo strategico, ispirato al Tris, in cui due g
 
 ## Caratteristiche
 
-- Interfacce console e grafiche disponibili
+- Interfacce console e grafica disponibili
 - Gioca in italiano o inglese
 - Scegli tra modalità single-player e multiplayer
 
 ## Come giocare
 
 1. Clona la repository.
-2. Costruisci il progetto:
+2. Fai il Build del progetto:
    - Su un sistema **Unix** (come Linux o Mac), esegui il comando `./build.sh` da una shell.
    - Su un sistema **Windows**, esegui `build.bat` da un prompt dei comandi.
 3. Questo creerà un file JAR chiamato `OrderAndChaos-1.0-SNAPSHOT.jar` nella cartella `build/libs` del tuo progetto.
@@ -39,7 +39,7 @@ java -jar OrderAndChaos-1.0-SNAPSHOT.jar --italian --console --multi-player
 
 ## Regole
 
-1. I giocatori si alternano nel posizionare un pezzo X o O sulla griglia.
+1. I giocatori si alternano nel posizionare un pezzo X o O sulla griglia di gioco.
 2. La partita termina quando Order posiziona 5 pezzi uguali in fila, colonna o diagonale, oppure quando Chaos riempie la griglia senza che Order realizzi questa configurazione.
 
 Buon divertimento!
